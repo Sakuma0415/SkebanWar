@@ -35,16 +35,14 @@ public class FieldManager : MonoBehaviour
     public MassData[,] massDatas;
 
     //ステージのサイズ
-    [SerializeField]
-    int stageSize = 0;
+    public int stageSize = 0;
 
     //テストの座標設定
     [SerializeField]
     Vector2Int  testSet=Vector2Int.zero ;
 
     //ステージの表示範囲
-    [SerializeField]
-    Vector2 fieldSpace = Vector2.zero;
+    public Vector2 fieldSpace = Vector2.zero;
 
     [SerializeField]
     GameObject massPrefab;
@@ -68,7 +66,7 @@ public class FieldManager : MonoBehaviour
                 GameObject MassObj= Instantiate(massPrefab);
                 Vector3 size = new Vector3(fieldSpace.x / stageSize, fieldSpace.y / stageSize);
                 MassObj.transform.localScale = size * MassObj.transform.localScale.x;
-                MassObj.transform.position = transform.position + new Vector3(size.x * i, -size.y * j) -new Vector3(size.x*((stageSize / 2) - 0.5f), -1* size.y * ((stageSize / 2)-0.5f),0) ;
+                MassObj.transform.position = transform.position + new Vector3(size.x * i, -size.y * j)-new Vector3(size.x*((stageSize / 2) -(stageSize%2==0? 0.5f:0)), -1* size.y * ((stageSize / 2)- (stageSize % 2 == 0 ? 0.5f : 0)),0) ;
                 MassObj.transform.parent = transform;
                 massDatas[i, j].MassPre = MassObj;
             }
