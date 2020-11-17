@@ -10,10 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
-  m_Name: New Piece Data
+  m_Name: T
   m_EditorClassIdentifier: 
-  m_hp_now: 100
-  m_hp_max: 100
-  m_spd: 6.4
-  m_name: "\u661F\u5BAE"
-  m_friends: []
+  name: T
+  posSet:
+  - {x: 0, y: 0}
+  - {x: 1, y: 0}
+  - {x: -1, y: 0}
+  - {x: 0, y: -1}
+  - {x: 1, y: 1}

@@ -15,9 +15,32 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     bool IsSelect = false;
 
+    //配置するピースの形
+    public PieceData pieceData;
+
+    //回転の状態
+    public int rotState = 0;
+
+    //配置予告のオブジェクトのプレハブ
+    [SerializeField]
+    GameObject noticeObj;
+
+    //配置予告の配列
+    GameObject[] notice= new GameObject[9];
+
+    //予告の色
+    [SerializeField ]
+    SpriteRenderer[] noticeColor = new SpriteRenderer[9]; 
+
     void Start()
     {
-        
+        for(int i = 0; i < 9;i++)
+        {
+            notice[i] = Instantiate(noticeObj);
+            notice[i].SetActive(false);
+            notice[i].transform.parent = transform;
+            noticeColor[i]=notice[i].GetComponent<SpriteRenderer>();
+        }
     }
 
 
@@ -27,25 +50,103 @@ public class TouchManager : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
             {
-                Vector2Int check = MousePosInField();
-                if (check != new Vector2Int(-1, -1))
+
+                if (MassCheck())
                 {
-                    fieldManager.MassSet(1, check.x, check.y);
+                    for (int i = 0; i < pieceData.posSet.Length; i++)
+                    {
+                        Vector2Int pos = MousePosInField()+ pieceData.posSet[i];
+                        fieldManager.MassSet(2, pos.x, pos.y);
+                    }
                 }
             }
 
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                Vector2Int check = MousePosInField();
-                if (check != new Vector2Int(-1, -1))
+                if (MassCheck())
                 {
-                    fieldManager.MassSet(2, check.x, check.y);
+                    for (int i = 0; i < pieceData.posSet.Length; i++)
+                    {
+                        Vector2Int pos = MousePosInField() + pieceData.posSet[i];
+                        fieldManager.MassSet(1, pos.x, pos.y);
+                    }
                 }
             }
+            Vector2Int check = MousePosInField();
+            if (check != new Vector2Int(-1, -1))
+            {
+                
+                for (int i = 0; i <9 ; i++)
+                {
+                    if(i< pieceData.posSet.Length)
+                    {
+                        notice[i].SetActive(true);
+                        notice[i].transform.position = fieldManager.massDatas[check.x, check.y].MassPre.transform.position+ new Vector3(pieceData.posSet[i].x , -pieceData.posSet[i].y);
+
+                        if (MassCheck())
+                        {
+                            noticeColor[i].color  = Color.green;
+                        }
+                        else
+                        {
+                            noticeColor[i].color  = Color.red;
+                        }
+                    }
+                    else
+                    {
+                        notice[i].SetActive(false);
+                    }
+                }
+
+
+
+            }
+            else
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                     notice[i].SetActive(false);
+                    
+                }
+            }
+
+
+
+
+
+
 
         }
     }
 
+    //ピースが盤面外に出ないかどうかのチェック
+    private bool MassCheck()
+    {
+        Vector2Int check = MousePosInField();
+        bool massCheck = true;
+        if(check==new Vector2Int(-1, -1))
+        {
+            massCheck = false;
+        }
+        for(int i = 0; i < pieceData.posSet.Length ; i++)
+        {
+            int data = pieceData.posSet[i].x + check.x;
+            int data2 = pieceData.posSet[i].y + check.y;
+
+            if(data<0||data>= fieldManager.stageSize|| data2 < 0 || data2 >= fieldManager.stageSize)
+            {
+                massCheck = false;
+            }
+        }
+
+        Debug.Log(massCheck);
+
+        return massCheck;
+    }
+
+
+
+    //盤面上のマウス座標を配列の番号に変換
     public Vector2Int MousePosInField()
     {
 

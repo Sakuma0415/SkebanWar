@@ -195,6 +195,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldManager: {fileID: 921652163}
   IsSelect: 1
+  pieceData: {fileID: 11400000, guid: a64462c8064bf0e4ba6e965e5706e17b, type: 2}
+  rotState: 0
+  noticeObj: {fileID: 303267144371422191, guid: 5d1aa584998547044ad7a9078a0bb6cd,
+    type: 3}
+  noticeColor:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &564806710
 GameObject:
   m_ObjectHideFlags: 0
