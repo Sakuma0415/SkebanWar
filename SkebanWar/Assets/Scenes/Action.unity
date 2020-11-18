@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cc827beb60eb9943bcfa622dfc1ce5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stageSize: 8
+  stageSize: 9
   testSet: {x: 0, y: 0}
   fieldSpace: {x: 8, y: 8}
   massPrefab: {fileID: 303267144371422191, guid: 55421dae9bebc414fbb816d2ef229c69,

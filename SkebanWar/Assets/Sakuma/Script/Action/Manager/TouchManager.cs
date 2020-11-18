@@ -30,17 +30,29 @@ public class TouchManager : MonoBehaviour
 
     //予告の色
     [SerializeField ]
-    SpriteRenderer[] noticeColor = new SpriteRenderer[9]; 
+    SpriteRenderer[] noticeColor = new SpriteRenderer[9];
+
+    //マスの比
+    Vector2 MassScale = Vector2 .zero ;
+
+    //マスのトグルを座標に変換するためのバッファ
+    Vector2Int[] MassPos; 
 
     void Start()
     {
         for(int i = 0; i < 9;i++)
         {
+            
             notice[i] = Instantiate(noticeObj);
             notice[i].SetActive(false);
+            MassScale = fieldManager.fieldSpace / fieldManager.stageSize ;
+            notice[i].transform.localScale = MassScale * notice[i].transform.localScale;
             notice[i].transform.parent = transform;
             noticeColor[i]=notice[i].GetComponent<SpriteRenderer>();
         }
+
+
+        ToggleToPos();
     }
 
 
@@ -53,9 +65,9 @@ public class TouchManager : MonoBehaviour
 
                 if (MassCheck())
                 {
-                    for (int i = 0; i < pieceData.posSet.Length; i++)
+                    for (int i = 0; i < MassPos.Length; i++)
                     {
-                        Vector2Int pos = MousePosInField()+ pieceData.posSet[i];
+                        Vector2Int pos = MousePosInField()+ MassPos[i];
                         fieldManager.MassSet(2, pos.x, pos.y);
                     }
                 }
@@ -63,25 +75,22 @@ public class TouchManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                if (MassCheck())
-                {
-                    for (int i = 0; i < pieceData.posSet.Length; i++)
-                    {
-                        Vector2Int pos = MousePosInField() + pieceData.posSet[i];
-                        fieldManager.MassSet(1, pos.x, pos.y);
-                    }
-                }
+                rotState= rotState==3?0:rotState +1;
+                ToggleToPos();
             }
+
+
+
             Vector2Int check = MousePosInField();
             if (check != new Vector2Int(-1, -1))
             {
                 
                 for (int i = 0; i <9 ; i++)
                 {
-                    if(i< pieceData.posSet.Length)
+                    if(i< MassPos.Length)
                     {
                         notice[i].SetActive(true);
-                        notice[i].transform.position = fieldManager.massDatas[check.x, check.y].MassPre.transform.position+ new Vector3(pieceData.posSet[i].x , -pieceData.posSet[i].y);
+                        notice[i].transform.position = fieldManager.massDatas[check.x, check.y].MassPre.transform.position+ new Vector3(MassPos[i].x* MassScale.x, -MassPos[i].y * MassScale.y);
 
                         if (MassCheck())
                         {
@@ -128,10 +137,10 @@ public class TouchManager : MonoBehaviour
         {
             massCheck = false;
         }
-        for(int i = 0; i < pieceData.posSet.Length ; i++)
+        for(int i = 0; i < MassPos.Length ; i++)
         {
-            int data = pieceData.posSet[i].x + check.x;
-            int data2 = pieceData.posSet[i].y + check.y;
+            int data = MassPos[i].x + check.x;
+            int data2 = MassPos[i].y + check.y;
 
             if(data<0||data>= fieldManager.stageSize|| data2 < 0 || data2 >= fieldManager.stageSize)
             {
@@ -186,6 +195,60 @@ public class TouchManager : MonoBehaviour
         }
 
     }
+
+
+
+    //トグルから座標に変換
+    private void ToggleToPos()
+    {
+
+        int count = 0;
+
+        //trueの数を検索
+        for(int i=0; i<3;i++)
+        {
+            for(int j = 0; j < 3; j++)
+            {
+                if(pieceData.piecePos[j, i])
+                {
+                    count++;
+                }
+            }
+        }
+
+        MassPos = new Vector2Int[count];
+        count = 0;
+
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                if (pieceData.piecePos[j, i])
+                {
+                    switch (rotState)
+                    {
+                        case 0:
+                            MassPos[count] = new Vector2Int(i - 1, j - 1);
+                            break;
+                        case 1:
+                            MassPos[count] = new Vector2Int(-j + 1, i - 1);
+                            break;
+                        case 2:
+                            MassPos[count] = new Vector2Int(-i + 1, -j + 1);
+                            break;
+                        case 3:
+                            MassPos[count] = new Vector2Int(j - 1, -i + 1);
+                            break;
+                    }
+                    
+
+                    count++;
+                }
+            }
+        }
+
+    }
+
 
 
 }
