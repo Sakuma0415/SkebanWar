@@ -45,9 +45,14 @@ public class PieceData : ScriptableObject
 
             pieceData.name = EditorGUILayout.TextField("名前", pieceData.name);
 
+            EditorGUILayout.Space();
+
+            EditorGUILayout.LabelField("配置");
+            EditorGUILayout.LabelField("赤のトグルが回転の中心です");
             //
             EditorGUILayout.BeginHorizontal();
 
+            GUI.color = Color.white;
             pieceData.T0 = EditorGUILayout.Toggle("", pieceData.T0, GUILayout.Width(12));
             pieceData.T1 = EditorGUILayout.Toggle("", pieceData.T1, GUILayout.Width(12));
             pieceData.T2 = EditorGUILayout.Toggle("", pieceData.T2, GUILayout.Width(12));
@@ -57,7 +62,9 @@ public class PieceData : ScriptableObject
             EditorGUILayout.BeginHorizontal();
 
             pieceData.T3 = EditorGUILayout.Toggle("", pieceData.T3, GUILayout.Width(12));
+            GUI.color = Color.red ;
             pieceData.T4 = EditorGUILayout.Toggle("", pieceData.T4, GUILayout.Width(12));
+            GUI.color = Color.white;
             pieceData.T5 = EditorGUILayout.Toggle("", pieceData.T5, GUILayout.Width(12));
 
             EditorGUILayout.EndHorizontal();
