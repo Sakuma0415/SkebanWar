@@ -58,6 +58,8 @@ public class TouchManager : MonoBehaviour
 
     void Update()
     {
+        IsSelect = Progress.Instance.gameMode == Progress.GameMode.P1Select || Progress.Instance.gameMode == Progress.GameMode.P2Select;
+
         if (IsSelect)
         {
             if(Input.GetKeyDown(KeyCode.Mouse0))
@@ -68,7 +70,8 @@ public class TouchManager : MonoBehaviour
                     for (int i = 0; i < MassPos.Length; i++)
                     {
                         Vector2Int pos = MousePosInField()+ MassPos[i];
-                        fieldManager.MassSet(2, pos.x, pos.y);
+                        fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select?1:2, pos.x, pos.y);
+                        Progress.Instance.endGameMode=true;
                     }
                 }
             }
@@ -79,53 +82,50 @@ public class TouchManager : MonoBehaviour
                 ToggleToPos();
             }
 
+        }
 
 
-            Vector2Int check = MousePosInField();
-            if (check != new Vector2Int(-1, -1))
+        //配置予告の表示
+        Vector2Int check = MousePosInField();
+        if (check != new Vector2Int(-1, -1) && IsSelect)
+        {
+
+            for (int i = 0; i < 9; i++)
             {
-                
-                for (int i = 0; i <9 ; i++)
+                if (i < MassPos.Length)
                 {
-                    if(i< MassPos.Length)
-                    {
-                        notice[i].SetActive(true);
-                        notice[i].transform.position = fieldManager.massDatas[check.x, check.y].MassPre.transform.position+ new Vector3(MassPos[i].x* MassScale.x, -MassPos[i].y * MassScale.y);
+                    notice[i].SetActive(true);
+                    notice[i].transform.position = fieldManager.massDatas[check.x, check.y].MassPre.transform.position + new Vector3(MassPos[i].x * MassScale.x, -MassPos[i].y * MassScale.y);
 
-                        if (MassCheck())
-                        {
-                            noticeColor[i].color  = Color.green;
-                        }
-                        else
-                        {
-                            noticeColor[i].color  = Color.red;
-                        }
+                    if (MassCheck())
+                    {
+                        noticeColor[i].color = Color.green;
                     }
                     else
                     {
-                        notice[i].SetActive(false);
+                        noticeColor[i].color = Color.red;
                     }
                 }
-
-
-
-            }
-            else
-            {
-                for (int i = 0; i < 9; i++)
+                else
                 {
-                     notice[i].SetActive(false);
-                    
+                    notice[i].SetActive(false);
                 }
             }
-
-
-
-
 
 
 
         }
+        else
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                notice[i].SetActive(false);
+
+            }
+        }
+
+
+
     }
 
     //ピースが盤面外に出ないかどうかのチェック
@@ -147,8 +147,6 @@ public class TouchManager : MonoBehaviour
                 massCheck = false;
             }
         }
-
-        Debug.Log(massCheck);
 
         return massCheck;
     }
@@ -204,12 +202,18 @@ public class TouchManager : MonoBehaviour
 
         int count = 0;
 
+        bool[,] piecePos = {
+            { pieceData .T0 , pieceData.T1 , pieceData.T2 } ,
+            { pieceData .T3 , pieceData.T4 , pieceData.T5 } ,
+            { pieceData .T6 , pieceData.T7 , pieceData.T8 } ,
+        };
+
         //trueの数を検索
-        for(int i=0; i<3;i++)
+        for (int i=0; i<3;i++)
         {
             for(int j = 0; j < 3; j++)
             {
-                if(pieceData.piecePos[j, i])
+                if(piecePos[j, i])
                 {
                     count++;
                 }
@@ -223,7 +227,7 @@ public class TouchManager : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                if (pieceData.piecePos[j, i])
+                if (piecePos[j, i])
                 {
                     switch (rotState)
                     {

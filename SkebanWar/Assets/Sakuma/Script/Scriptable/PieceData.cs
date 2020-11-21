@@ -16,6 +16,8 @@ public class PieceData : ScriptableObject
     //ピースの場所
     public Vector2Int[] posSet;
 
+    //HP
+    public int HP;
 
     //トグル
     public bool T0;
@@ -28,12 +30,6 @@ public class PieceData : ScriptableObject
     public bool T7;
     public bool T8;
 
-    public bool[,] piecePos
-    {
-        get { return new bool[,] { { T0, T1, T2 }, { T3, T4, T5 }, { T6, T7, T8 } }; }
-        private set { this.piecePos = value; }
-    }
-
 
     [CustomEditor (typeof (PieceData ))]
     public class PieceEditor:Editor 
@@ -44,7 +40,7 @@ public class PieceData : ScriptableObject
             PieceData pieceData = target as PieceData;
 
             pieceData.name = EditorGUILayout.TextField("名前", pieceData.name);
-
+            pieceData.HP = EditorGUILayout.IntField ("HP", pieceData.HP);
             EditorGUILayout.Space();
 
             EditorGUILayout.LabelField("配置");

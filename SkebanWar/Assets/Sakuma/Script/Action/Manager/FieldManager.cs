@@ -23,7 +23,6 @@ public class FieldManager : MonoBehaviour
         public MassState massState;
         public int serectSet;
         public GameObject MassPre;
-
         public void Init()
         {
             massState = MassState.None;
