@@ -36,7 +36,25 @@ public class TouchManager : MonoBehaviour
     Vector2 MassScale = Vector2 .zero ;
 
     //マスのトグルを座標に変換するためのバッファ
-    Vector2Int[] MassPos; 
+    Vector2Int[] MassPos;
+
+    //キャラクターをホールドしているかどうかのフラグ
+    bool IsHold = false;
+
+    //P1の手持ち
+    [SerializeField]
+    OnHand[] P1onHands;
+
+    //P2の手持ち
+    [SerializeField]
+    OnHand[] P2onHands;
+
+    //手持ちのScale
+    [SerializeField]
+    float onHandS = 0;
+
+    //Holdした配列番号
+    int holdCont = -1;
 
     void Start()
     {
@@ -62,17 +80,46 @@ public class TouchManager : MonoBehaviour
 
         if (IsSelect)
         {
-            if(Input.GetKeyDown(KeyCode.Mouse0))
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
+                OnHand[] onHands= Progress.Instance.gameMode == Progress.GameMode.P1Select? P1onHands : P2onHands;
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                for (int i=0;i< onHands.Length; i++)
+                {
+                    if(onHands[i].pieceData !=null&&
+                        onHands[i].gameObject .transform .position .x + onHandS > mousePos.x &&
+                        onHands[i].gameObject.transform.position.x - onHandS < mousePos.x &&
+                        onHands[i].gameObject.transform.position.y + onHandS > mousePos.y &&
+                        onHands[i].gameObject.transform.position.y - onHandS < mousePos.y
+                        )
+                    {
+                        Debug.Log(onHands[i].pieceData.name);
+                        pieceData = onHands[i].pieceData;
+                        IsHold = true;
+                        ToggleToPos();
+                        holdCont = i;
+                        break;
+                    }
+                }
+            }
+
+
+            if (Input.GetKeyUp(KeyCode.Mouse0)&& IsHold)
+            {
+                IsHold = false;
 
                 if (MassCheck())
                 {
                     for (int i = 0; i < MassPos.Length; i++)
                     {
-                        Vector2Int pos = MousePosInField()+ MassPos[i];
-                        fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select?1:2, pos.x, pos.y);
-                        Progress.Instance.endGameMode=true;
+                        Vector2Int pos = MousePosInField() + MassPos[i];
+                        fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select ? 1 : 2, pos.x, pos.y);
+                        Progress.Instance.endGameMode = true;
                     }
+
+                    OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
+                    onHands[holdCont].pieceData = null;
+
                 }
             }
 
@@ -87,7 +134,7 @@ public class TouchManager : MonoBehaviour
 
         //配置予告の表示
         Vector2Int check = MousePosInField();
-        if (check != new Vector2Int(-1, -1) && IsSelect)
+        if (check != new Vector2Int(-1, -1) && IsSelect&&IsHold )
         {
 
             for (int i = 0; i < 9; i++)

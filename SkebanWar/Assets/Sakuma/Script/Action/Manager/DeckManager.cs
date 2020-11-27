@@ -6,22 +6,46 @@ using UnityEngine;
 
 public class DeckManager : MonoBehaviour
 {
-    public DeckData deckData;
+    public DeckData P1deckData;
 
     public int[] deckSet;
 
-    public int[] hand = new int[2];
+    //P1の手持ち
+    [SerializeField]
+    OnHand[] P1onHands;
 
+    public int P1cont = 0;
 
 
     void Start()
     {
         int[] data = new int[] {0,1,2,3,4,5 };
         deckSet = data.OrderBy(i => Guid.NewGuid()).ToArray();
+
+        HandSet();
     }
 
     void Update()
     {
         
+
+
+
+
+
+
     }
+
+
+    void HandSet()
+    {
+        for (int i=0;i< P1onHands.Length ;i++)
+        {
+            P1onHands[i].pieceData = P1deckData.pieceDatas[deckSet[i]];
+        }
+
+        P1cont = 3;
+    }
+
+
 }
