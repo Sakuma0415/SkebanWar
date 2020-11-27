@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldManager: {fileID: 921652163}
   IsSelect: 1
-  pieceData: {fileID: 11400000, guid: e6f7543270b8014499cf2dbe984034cc, type: 2}
+  pieceData: {fileID: 11400000, guid: e66359968126eb542b54f6d62301dc19, type: 2}
   rotState: 0
   noticeObj: {fileID: 303267144371422191, guid: 5d1aa584998547044ad7a9078a0bb6cd,
     type: 3}
