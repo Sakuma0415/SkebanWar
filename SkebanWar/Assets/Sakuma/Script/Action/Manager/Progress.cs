@@ -33,6 +33,13 @@ public class Progress : MonoBehaviour
     //入力街を持つゲームモードの終了フラグ
     public bool endGameMode=false ;
 
+    ///外部マネージャー
+    [SerializeField]
+    DeckManager P1deckManager;
+    [SerializeField]
+    DeckManager P2deckManager;
+
+
     void Start()
     {
         Instance = this;
@@ -96,6 +103,41 @@ public class Progress : MonoBehaviour
         time = 0;
     }
 
+    void P1SelectStart()
+    {
+        P1deckManager.Draw();
+
+        if (P1deckManager.OnHandLess())
+        {
+            if (P2deckManager.OnHandLess())
+            {
+                ChagngeGameMode(GameMode.End , 0f);
+            }
+            else
+            {
+                ChagngeGameMode(GameMode.P2Select , 0f);
+            }
+        }
+
+    }
+    void P2SelectStart()
+    {
+        P2deckManager.Draw();
+
+        if (P2deckManager.OnHandLess())
+        {
+            if (P1deckManager.OnHandLess())
+            {
+                ChagngeGameMode(GameMode.End, 0f);
+            }
+            else
+            {
+                ChagngeGameMode(GameMode.P1Select, 0f);
+            }
+        }
+
+    }
+
     void IntervalUpdate()
     {
         if(time >= intervalTime)
@@ -106,8 +148,10 @@ public class Progress : MonoBehaviour
             switch (gameMode)
             {
                 case GameMode.P1Select:
+                    P1SelectStart();
                     break;
                 case GameMode.P2Select:
+                    P2SelectStart();
                     break;
                 case GameMode.Battle:
                     break;

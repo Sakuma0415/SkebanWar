@@ -77,14 +77,14 @@ public class FieldManager : MonoBehaviour
     private void Update()
     {
         ////テスト用
-        if(Input.GetKeyDown (KeyCode.A ))
-        {
-            VisualUpdate();
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            MassSet(1, testSet.x, testSet.y);
-        }
+        //if(Input.GetKeyDown (KeyCode.A ))
+        //{
+        //    VisualUpdate();
+        //}
+        //if (Input.GetKeyDown(KeyCode.S))
+        //{
+        //    MassSet(1, testSet.x, testSet.y);
+        //}
     }
 
     //マスに情報をセット

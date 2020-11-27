@@ -25,17 +25,6 @@ public class DeckManager : MonoBehaviour
         HandSet();
     }
 
-    void Update()
-    {
-        
-
-
-
-
-
-
-    }
-
 
     void HandSet()
     {
@@ -46,6 +35,41 @@ public class DeckManager : MonoBehaviour
 
         P1cont = 3;
     }
+
+    public void Draw()
+    {
+        if (P1cont != 6)
+        {
+            for (int i = 0; i < P1onHands.Length; i++)
+            {
+                if (P1onHands[i].pieceData == null)
+                {
+                    P1onHands[i].pieceData = P1deckData.pieceDatas[deckSet[P1cont]];
+                    P1cont++;
+                    break;
+                }
+            }
+
+        }
+    }
+
+
+    public bool OnHandLess()
+    {
+        int cont = 0;
+        for (int i = 0; i < P1onHands.Length; i++)
+        {
+            if (P1onHands[i].pieceData == null)
+            {
+                cont++;
+            }
+        }
+        return cont == P1onHands.Length;
+    }
+
+
+
+
 
 
 }
