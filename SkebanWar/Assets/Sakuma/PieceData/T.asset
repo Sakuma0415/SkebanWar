@@ -13,9 +13,14 @@ MonoBehaviour:
   m_Name: T
   m_EditorClassIdentifier: 
   name: T
-  posSet:
-  - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: -1, y: 0}
-  - {x: 0, y: -1}
-  - {x: 1, y: 1}
+  posSet: []
+  HP: 0
+  T0: 0
+  T1: 0
+  T2: 0
+  T3: 1
+  T4: 1
+  T5: 1
+  T6: 0
+  T7: 1
+  T8: 0
