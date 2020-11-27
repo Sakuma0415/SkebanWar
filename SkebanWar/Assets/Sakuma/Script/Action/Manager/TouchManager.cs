@@ -119,7 +119,7 @@ public class TouchManager : MonoBehaviour
 
                     OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
                     onHands[holdCont].pieceData = null;
-
+                    fieldManager.ScoreSet();
                 }
             }
 

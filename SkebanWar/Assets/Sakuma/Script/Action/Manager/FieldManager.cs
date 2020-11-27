@@ -37,8 +37,8 @@ public class FieldManager : MonoBehaviour
     public int stageSize = 0;
 
     //テストの座標設定
-    [SerializeField]
-    Vector2Int  testSet=Vector2Int.zero ;
+    //[SerializeField]
+    //Vector2Int  testSet=Vector2Int.zero ;
 
     //ステージの表示範囲
     public Vector2 fieldSpace = Vector2.zero;
@@ -46,7 +46,13 @@ public class FieldManager : MonoBehaviour
     [SerializeField]
     GameObject massPrefab;
 
-    
+
+    //現在の得点
+    public int P1Score = 0;
+    public int P2Score = 0;
+
+
+
     //開始時処理
     private void Start()
     {
@@ -113,7 +119,30 @@ public class FieldManager : MonoBehaviour
         VisualUpdate();
     }
 
+    public void ScoreSet()
+    {
+        int P1count = 0;
+        int P2count = 0;
 
+        for (int i = 0; i < stageSize; i++)
+        {
+            for (int j = 0; j < stageSize; j++)
+            {
+                if(massDatas[i, j].massState == MassState.P1)
+                {
+                    P1count++;
+                }
+                if (massDatas[i, j].massState == MassState.P2)
+                {
+                    P2count++;
+                }
+            }
+        }
+
+        P1Score = P1count;
+        P2Score = P2count;
+
+    }
 
 
     /////////////////////
