@@ -21,12 +21,12 @@ public class FieldManager : MonoBehaviour
     {
         //マスの状態
         public MassState massState;
-        public int serectSet;
+        public int benchNum;
         public GameObject MassPre;
         public void Init()
         {
             massState = MassState.None;
-            serectSet = 0;
+            benchNum = -1;
         }
     }
 
@@ -51,7 +51,13 @@ public class FieldManager : MonoBehaviour
     public int P1Score = 0;
     public int P2Score = 0;
 
+    //P1のCharacterManager
+    [SerializeField]
+    CharacterManager P1CharacterManager;
 
+    //P2のCharacterManager
+    [SerializeField]
+    CharacterManager P2CharacterManager;
 
     //開始時処理
     private void Start()
@@ -108,9 +114,11 @@ public class FieldManager : MonoBehaviour
                 break;
             case 1:
                 massDatas[X, Y].massState = MassState.P1;
+                massDatas[X, Y].benchNum = P1CharacterManager.count;
                 break;
             case 2:
                 massDatas[X, Y].massState = MassState.P2;
+                massDatas[X, Y].benchNum = P2CharacterManager.count;
                 break;
             default:
                 Debug.Log("マスの情報更新に失敗しました");

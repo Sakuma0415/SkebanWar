@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\u30B9"
   posSet: []
-  HP: 0
+  HP: 7
   T0: 1
   T1: 1
   T2: 0

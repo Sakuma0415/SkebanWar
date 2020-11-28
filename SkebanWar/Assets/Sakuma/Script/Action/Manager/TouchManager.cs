@@ -56,6 +56,14 @@ public class TouchManager : MonoBehaviour
     //Holdした配列番号
     int holdCont = -1;
 
+    //P1のCharacterManager
+    [SerializeField]
+    CharacterManager P1CharacterManager;
+
+    //P2のCharacterManager
+    [SerializeField]
+    CharacterManager P2CharacterManager;
+
     void Start()
     {
         for(int i = 0; i < 9;i++)
@@ -110,12 +118,17 @@ public class TouchManager : MonoBehaviour
 
                 if (MassCheck())
                 {
+                    
+
                     for (int i = 0; i < MassPos.Length; i++)
                     {
                         Vector2Int pos = MousePosInField() + MassPos[i];
                         fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select ? 1 : 2, pos.x, pos.y);
                         Progress.Instance.endGameMode = true;
                     }
+
+                    CharacterManager characterManager = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1CharacterManager : P2CharacterManager;
+                    characterManager.BenchSet(pieceData);
 
                     OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
                     onHands[holdCont].pieceData = null;
