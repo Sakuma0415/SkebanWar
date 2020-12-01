@@ -16,17 +16,29 @@ public class FieldManager : MonoBehaviour
         P2,
     }
 
+    public  struct MassOverlap
+    {
+        public int PlayerNum;
+        public int BenchNum;
+        public void Init()
+        {
+            PlayerNum = 0;
+            BenchNum = -1;
+        }
+    }
+
     //マスごとに保存させる情報の構造体
     public struct MassData
     {
         //マスの状態
         public MassState massState;
-        public int benchNum;
         public GameObject MassPre;
+        public MassOverlap[] Overlap;
         public void Init()
         {
             massState = MassState.None;
-            benchNum = -1;
+            Overlap= new MassOverlap[1];
+            Overlap[0].Init();
         }
     }
 
@@ -113,18 +125,37 @@ public class FieldManager : MonoBehaviour
                 massDatas[X, Y].massState = MassState.Block;
                 break;
             case 1:
+                OverlapSet(playerNum, X, Y);
                 massDatas[X, Y].massState = MassState.P1;
-                massDatas[X, Y].benchNum = P1CharacterManager.count;
+                massDatas[X, Y].Overlap[massDatas[X, Y].Overlap.Length - 1].BenchNum = P1CharacterManager.count;
                 break;
             case 2:
+                OverlapSet(playerNum, X, Y);
                 massDatas[X, Y].massState = MassState.P2;
-                massDatas[X, Y].benchNum = P2CharacterManager.count;
+                massDatas[X, Y].Overlap[massDatas[X, Y].Overlap.Length - 1].BenchNum = P2CharacterManager.count;
                 break;
             default:
                 Debug.Log("マスの情報更新に失敗しました");
                 return;
         }
         VisualUpdate();
+    }
+
+    private void OverlapSet(int playerNum,int X, int Y)
+    {
+        if(massDatas[X, Y].Overlap[0].PlayerNum  == 0)
+        {
+            massDatas[X, Y].Overlap[0].PlayerNum = playerNum;
+        }
+        else
+        {
+            System.Array.Resize(ref massDatas[X, Y].Overlap, massDatas[X, Y].Overlap.Length +1);
+            massDatas[X, Y].Overlap[massDatas[X, Y].Overlap.Length -1].PlayerNum = playerNum;
+        }
+
+
+
+
     }
 
     public void ScoreSet()
@@ -151,6 +182,122 @@ public class FieldManager : MonoBehaviour
         P2Score = P2count;
 
     }
+
+    //HPが0になっていてかつ相手の駒が重なっている場合の削除処理
+    public void FieldClean()
+    {
+
+        //P1の整理
+        for(int a=0; a<P1CharacterManager.CharacterBench.Length;a++)
+        {
+            if (a == -1)
+            {
+                break;
+            }
+
+            if(P1CharacterManager.CharacterBench[a].HP == 0)
+            {
+                for (int i = 0; i < stageSize; i++)
+                {
+                    for (int j = 0; j < stageSize; j++)
+                    {
+                        int CleanSet = 0;
+                        int leng = massDatas[i, j].Overlap.Length;
+                        MassOverlap [] count = new MassOverlap[1];
+                        count[0].Init();
+                        for (int ii=0;ii< massDatas[i, j].Overlap.Length; ii++)
+                        {
+                            if(massDatas[i, j].Overlap[ii].PlayerNum == 2 || massDatas[i, j].Overlap[ii].BenchNum != a)
+                            {
+                                if (CleanSet != 0)
+                                {
+                                    System.Array.Resize(ref count, count.Length  + 1);
+                                }
+                                count[CleanSet].BenchNum = massDatas[i, j].Overlap[ii].BenchNum;
+                                count[CleanSet].PlayerNum  = massDatas[i, j].Overlap[ii].PlayerNum;
+
+                                CleanSet++;
+                            }
+                        }
+
+                        if (CleanSet>0)
+                        {
+                            P1CharacterManager.getChar += leng - CleanSet;
+                            massDatas[i, j].Overlap = count;
+                            switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length -1].PlayerNum)
+                            {
+                                case 1:
+                                    massDatas[i, j].massState = MassState.P1;
+                                    break;
+                                case 2:
+                                    massDatas[i, j].massState = MassState.P2;
+                                    break;
+                            }
+                            
+                        }
+
+                    }
+                }
+            }
+        }
+
+        //P2の整理
+        for (int a = 0; a < P2CharacterManager.CharacterBench.Length; a++)
+        {
+            if (a == -1)
+            {
+                break;
+            }
+
+            if (P2CharacterManager.CharacterBench[a].HP == 0)
+            {
+                for (int i = 0; i < stageSize; i++)
+                {
+                    for (int j = 0; j < stageSize; j++)
+                    {
+                        int CleanSet = 0;
+                        int leng = massDatas[i, j].Overlap.Length;
+                        MassOverlap[] count = new MassOverlap[0];
+                        count[1].Init();
+                        for (int ii = 0; ii < massDatas[i, j].Overlap.Length; ii++)
+                        {
+                            if (massDatas[i, j].Overlap[ii].PlayerNum == 1 || massDatas[i, j].Overlap[ii].BenchNum != a)
+                            {
+                                if (CleanSet != 0)
+                                {
+                                    System.Array.Resize(ref count, count.Length + 1);
+                                }
+                                count[CleanSet].BenchNum = massDatas[i, j].Overlap[ii].BenchNum;
+                                count[CleanSet].PlayerNum = massDatas[i, j].Overlap[ii].PlayerNum;
+
+                                CleanSet++;
+                            }
+                        }
+
+                        if (CleanSet > 0)
+                        {
+                            P2CharacterManager.getChar += leng - CleanSet;
+                            massDatas[i, j].Overlap = count;
+                            switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length - 1].PlayerNum)
+                            {
+                                case 1:
+                                    massDatas[i, j].massState = MassState.P1;
+                                    break;
+                                case 2:
+                                    massDatas[i, j].massState = MassState.P2;
+                                    break;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+
+        VisualUpdate();
+    }
+
 
 
     /////////////////////

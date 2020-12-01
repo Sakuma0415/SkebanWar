@@ -88,6 +88,18 @@ public class TouchManager : MonoBehaviour
 
         if (IsSelect)
         {
+
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Vector2Int test = MousePosInField();
+                
+                for(int i=0;i< fieldManager.massDatas[test.x, test.y].Overlap.Length; i++)
+                {
+                    Debug.Log(fieldManager.massDatas[test.x, test.y].Overlap[i].BenchNum + " _ "+ fieldManager.massDatas[test.x, test.y].Overlap[i].PlayerNum );
+                }
+                
+            }
+
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 OnHand[] onHands= Progress.Instance.gameMode == Progress.GameMode.P1Select? P1onHands : P2onHands;
@@ -101,7 +113,7 @@ public class TouchManager : MonoBehaviour
                         onHands[i].gameObject.transform.position.y - onHandS < mousePos.y
                         )
                     {
-                        Debug.Log(onHands[i].pieceData.name);
+                        //Debug.Log(onHands[i].pieceData.name);
                         pieceData = onHands[i].pieceData;
                         IsHold = true;
                         ToggleToPos();
@@ -133,6 +145,8 @@ public class TouchManager : MonoBehaviour
                     OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
                     onHands[holdCont].pieceData = null;
                     fieldManager.ScoreSet();
+                    //仮につきのち削除
+                    fieldManager.FieldClean();
                 }
             }
 

@@ -67,7 +67,7 @@ public class Progress : MonoBehaviour
                 Instance.IntervalUpdate();
                 break;
         }
-        Debug.Log(gameMode);
+        //Debug.Log(gameMode);
     }
 
     void StartUpdate()

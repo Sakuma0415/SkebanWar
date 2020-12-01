@@ -30,7 +30,7 @@ public class CharacterManager : MonoBehaviour
 
     public CharacterStatus[] CharacterBench;
     public int count = 0;
-
+    public int getChar = 0;
 
     private void Start()
     {
@@ -40,6 +40,7 @@ public class CharacterManager : MonoBehaviour
     private void Init()
     {
         count = 0;
+        getChar = 0;
         CharacterBench = new CharacterStatus[6];
 
         for(int i=0;i< CharacterBench.Length; i++)
