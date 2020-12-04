@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Result : MonoBehaviour
+public class Result : SingletonMonoBehaviour<Result>
 {
     private Text redPointText;
     private Text bluePointText;
