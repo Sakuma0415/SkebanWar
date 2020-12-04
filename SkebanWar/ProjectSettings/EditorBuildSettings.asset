@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Iwasaki/Scene/Select.unity
     guid: 8d2730e0aefd31042ab905078dd6c1af
+  - enabled: 1
+    path: Assets/Iwasaki/Scene/Title.unity
+    guid: afb9dee3e5096e449a0df08cd8adecb6
   m_configObjects: {}
