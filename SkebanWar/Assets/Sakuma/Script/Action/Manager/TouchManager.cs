@@ -39,7 +39,11 @@ public class TouchManager : MonoBehaviour
     Vector2Int[] MassPos;
 
     //キャラクターをホールドしているかどうかのフラグ
-    bool IsHold = false;
+    //bool IsHold = false;
+
+    //
+    [SerializeField]
+    int holdProgress = 0;
 
     //P1の手持ち
     [SerializeField]
@@ -64,6 +68,11 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     CharacterManager P2CharacterManager;
 
+    Vector2 MsPosBf = Vector2.zero;
+
+    [SerializeField]
+    GameObject touchPro;
+
     void Start()
     {
         for(int i = 0; i < 9;i++)
@@ -86,6 +95,10 @@ public class TouchManager : MonoBehaviour
     {
         IsSelect = Progress.Instance.gameMode == Progress.GameMode.P1Select || Progress.Instance.gameMode == Progress.GameMode.P2Select;
 
+        touchPro.SetActive(holdProgress == 2);
+
+
+
         if (IsSelect)
         {
 
@@ -100,7 +113,8 @@ public class TouchManager : MonoBehaviour
                 
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0))
+            //最初のクリック
+            if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
             {
                 OnHand[] onHands= Progress.Instance.gameMode == Progress.GameMode.P1Select? P1onHands : P2onHands;
                 Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -115,7 +129,7 @@ public class TouchManager : MonoBehaviour
                     {
                         //Debug.Log(onHands[i].pieceData.name);
                         pieceData = onHands[i].pieceData;
-                        IsHold = true;
+                        holdProgress = 1;
                         ToggleToPos();
                         holdCont = i;
                         break;
@@ -123,46 +137,68 @@ public class TouchManager : MonoBehaviour
                 }
             }
 
-
-            if (Input.GetKeyUp(KeyCode.Mouse0)&& IsHold)
+            //最初のクリック
+            if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 2)
             {
-                IsHold = false;
+                Vector2Int inField = MousePosInField();
+                bool Catch = false;
 
-                if (MassCheck())
+                for (int i = 0; i < MassPos.Length; i++)
                 {
-                    
-
-                    for (int i = 0; i < MassPos.Length; i++)
+                    Vector2Int pos = MousePosInField(true, MsPosBf) + MassPos[i];
+                    if (inField == pos)
                     {
-                        Vector2Int pos = MousePosInField() + MassPos[i];
-                        fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select ? 1 : 2, pos.x, pos.y);
-                        Progress.Instance.endGameMode = true;
+                        Catch = true;
+                        break;
                     }
+                }
 
-                    CharacterManager characterManager = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1CharacterManager : P2CharacterManager;
-                    characterManager.BenchSet(pieceData);
+                if (Catch)
+                {
+                    holdProgress = 1;
+                }
 
-                    OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
-                    onHands[holdCont].pieceData = null;
-                    fieldManager.ScoreSet();
-                    //仮につきのち削除
-                    fieldManager.FieldClean();
+            }
+
+
+
+
+
+
+            if (Input.GetKeyUp(KeyCode.Mouse0)&& holdProgress==1)
+            {
+                Vector2 pivotPos = (Vector2)fieldManager.gameObject.transform.position + new Vector2(-fieldManager.fieldSpace.x / 2, fieldManager.fieldSpace.y / 2);
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                if (mousePos.x > pivotPos.x && mousePos.y < pivotPos.y && mousePos.x < pivotPos.x + fieldManager.fieldSpace.x && mousePos.y > pivotPos.y - fieldManager.fieldSpace.y)
+                {
+                    holdProgress = 2;
+                    MsPosBf = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    //touchPro.transform.position = MsPosBf+new Vector2 (0.5f,-0.5f);
+                }
+                else
+                {
+                    holdProgress = 0;
                 }
             }
 
-            if (Input.GetKeyDown(KeyCode.Mouse1))
-            {
-                rotState= rotState==3?0:rotState +1;
-                ToggleToPos();
-            }
+            //if (Input.GetKeyDown(KeyCode.Mouse1))
+            //{
+
+            //}
 
         }
 
 
         //配置予告の表示
         Vector2Int check = MousePosInField();
-        if (check != new Vector2Int(-1, -1) && IsSelect&&IsHold )
+        if (holdProgress == 2)
         {
+            check = MousePosInField(true, MsPosBf);
+        }
+        if (check != new Vector2Int(-1, -1) && IsSelect&& (holdProgress==1||holdProgress == 2))
+        {
+
 
             for (int i = 0; i < 9; i++)
             {
@@ -171,7 +207,7 @@ public class TouchManager : MonoBehaviour
                     notice[i].SetActive(true);
                     notice[i].transform.position = fieldManager.massDatas[check.x, check.y].MassPre.transform.position + new Vector3(MassPos[i].x * MassScale.x, -MassPos[i].y * MassScale.y);
 
-                    if (MassCheck())
+                    if (holdProgress == 2?MassCheck(true, MsPosBf): MassCheck())
                     {
                         noticeColor[i].color = Color.green;
                     }
@@ -203,9 +239,9 @@ public class TouchManager : MonoBehaviour
     }
 
     //ピースが盤面外に出ないかどうかのチェック
-    private bool MassCheck()
+    private bool MassCheck(bool IS = false, Vector2 vec2 = new Vector2())
     {
-        Vector2Int check = MousePosInField();
+        Vector2Int check = MousePosInField(IS, vec2);
         bool massCheck = true;
         if(check==new Vector2Int(-1, -1))
         {
@@ -228,7 +264,7 @@ public class TouchManager : MonoBehaviour
 
 
     //盤面上のマウス座標を配列の番号に変換
-    public Vector2Int MousePosInField()
+    public Vector2Int MousePosInField(bool IS=false ,Vector2 vec2=new Vector2() )
     {
 
         //フィールド左上の座標
@@ -236,7 +272,17 @@ public class TouchManager : MonoBehaviour
         //マスの大きさ
         Vector2 MassSize = new Vector2(fieldManager.fieldSpace.x / fieldManager.stageSize, fieldManager.fieldSpace.y / fieldManager.stageSize);
         //マウスの座標
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 mousePos = Vector2.zero;
+        if (IS)
+        {
+
+            mousePos = vec2;
+        }
+        else
+        {
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+
         if (mousePos.x > pivotPos.x && mousePos.y < pivotPos.y && mousePos.x < pivotPos.x + fieldManager.fieldSpace.x && mousePos.y > pivotPos.y - fieldManager.fieldSpace.y)
         {
             Vector2Int lengPos = new Vector2Int(0, 0);
@@ -327,6 +373,45 @@ public class TouchManager : MonoBehaviour
 
     }
 
+    public void PUT()
+    {
 
+        if (MassCheck(true, MsPosBf))
+        {
+            if (holdProgress == 2)
+            {
+                for (int i = 0; i < MassPos.Length; i++)
+                {
+                    Vector2Int pos = MousePosInField(true, MsPosBf) + MassPos[i];
+                    fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select ? 1 : 2, pos.x, pos.y);
+                    Progress.Instance.endGameMode = true;
+                }
+
+                CharacterManager characterManager = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1CharacterManager : P2CharacterManager;
+                characterManager.BenchSet(pieceData);
+
+                OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
+                onHands[holdCont].pieceData = null;
+                fieldManager.ScoreSet();
+                //仮につきのち削除
+                fieldManager.FieldClean();
+                holdProgress = 0;
+            }
+        }
+
+
+    }
+
+
+    public void ROT()
+    {
+        rotState = rotState == 3 ? 0 : rotState + 1;
+        ToggleToPos();
+    }
+
+    public void CANT()
+    {
+        holdProgress = 0;
+    }
 
 }
