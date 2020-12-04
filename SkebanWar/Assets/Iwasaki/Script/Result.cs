@@ -14,8 +14,10 @@ public class Result : MonoBehaviour
     private GameObject redResultText;
     [SerializeField]
     private GameObject drowText;
-    private int bluePoint = 2;
-    private int redPoint = 2;
+    [HideInInspector]
+    public int bluePoint;
+    [HideInInspector]
+    public int redPoint;
 
     private bool toTitleBool;
     [SerializeField]

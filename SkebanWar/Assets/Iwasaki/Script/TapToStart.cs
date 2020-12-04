@@ -10,6 +10,10 @@ public class TapToStart : MonoBehaviour
     private AudioClip sound;
     [SerializeField]
     private Animator anim;
+    void Start()
+    {
+
+    }
     public void Event()
     {
         audioSource.PlayOneShot(sound);
