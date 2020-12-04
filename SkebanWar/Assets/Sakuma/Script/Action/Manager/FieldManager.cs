@@ -314,13 +314,13 @@ public class FieldManager : MonoBehaviour
                 switch (massDatas[j, i].massState)
                 {
                     case MassState.None:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color =Color.white ;
+                        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 0;
                         break;
                     case MassState.P1:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.red ;
+                        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode =1;
                         break;
                     case MassState.P2:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.blue ;
+                        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 2;
                         break;
                     case MassState.Block:
                         massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.black;
