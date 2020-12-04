@@ -1,28 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class SaundoManager : MonoBehaviour
 {
-    static public SaundoManager Instans;
-    public AudioClip[] audioClip;
-    public AudioSource audioSource;
-    private float step_time;
+    [SerializeField, Range(0, 1), Tooltip("全体音量")]
+    float volume = 1;
+    [SerializeField, Range(0, 1), Tooltip("BGM音量")]
+    float BGMvolume = 1;
+    [SerializeField, Range(0, 1), Tooltip("SE音量")]
+    float SEvolume = 1;
 
-    //音楽流す
-    public void PlaySE(int num)
+    static public SaundoManager Instans;
+
+    public AudioClip[] BGMaudioClip;
+    public AudioClip[] SEaudioClip;
+
+    public AudioSource BGM_audioSource;
+    public AudioSource SE_audioSource;
+
+    #region soundvolume関係
+    public float _Volume
     {
-        audioSource.PlayOneShot(audioClip[num]);
+        set
+        {
+            volume = Mathf.Clamp01(volume);
+            BGM_audioSource.volume = BGMvolume * volume;
+            SE_audioSource.volume = SEvolume * volume;
+        }
+        get
+        {
+            return volume;
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public float BGM_Volume
     {
-        //タイマー初期化
-        step_time = 0.0f;
+        set
+        {
+            BGMvolume = Mathf.Clamp01(volume);
+            BGM_audioSource.volume = BGMvolume * volume;
+        }
+        get
+        {
+            return BGMvolume;
+        }
+    }
 
+    public float SE_Volume
+    {
+        set
+        {
+            SEvolume = Mathf.Clamp01(volume);
+            SE_audioSource.volume = SEvolume * volume;
+        }
+        get
+        {
+            return SEvolume;
+        }
+    }
+
+    #endregion
+    public void Awake()
+    {
         //呼びだされる
         if (Instans == null)
         {
@@ -35,20 +76,17 @@ public class SaundoManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlayBGM(int num)
     {
-        step_time += Time.deltaTime;
-
-        if (step_time >= 2.0f)
-        {
-            SceneManager.LoadScene("test2");
-            //Debug.Log("切り替えた");
-        }
-
-
+        BGM_audioSource.PlayOneShot(BGMaudioClip[num], BGM_Volume * _Volume);
+        //BGM_audioSource.volume = BGM_Volume * _Volume;
     }
+
+    public void PlaySE(int num)
+    {
+        SE_audioSource.PlayOneShot(SEaudioClip[num], SE_Volume * _Volume);
+    }
+
 }
