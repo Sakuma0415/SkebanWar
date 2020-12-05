@@ -11,6 +11,12 @@ public class CharacterChoice : MonoBehaviour
     [SerializeField]
     GameObject[] Character;
 
+    [SerializeField]
+    int choice = 0;
+
+    [SerializeField]
+    GameObject[] Decsion;
+
     // ボタンを押したら選んだキャラクターを描画
     public void C1Change()
     {
@@ -30,7 +36,13 @@ public class CharacterChoice : MonoBehaviour
     // いいえを押したら選択に戻る
     public void Cancel()
     {
+        choice = 1;
         select = 0;
+    }
+
+    public void OK()
+    {
+        choice = 2;
     }
 
     void Update()
@@ -38,6 +50,10 @@ public class CharacterChoice : MonoBehaviour
         for (int i = 0; i < Character.Length; i++)
         {
             Character[i].SetActive(i == select); 
+        }
+        for (int j = 0; j < Decsion.Length; j++)
+        {
+            Decsion[j].SetActive(j == choice);
         }
     }
 }
