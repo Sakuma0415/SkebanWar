@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class SaundoManager : MonoBehaviour
 {
+    static public SaundoManager Instans;
+
+    //ボリューム関係
     [SerializeField, Range(0, 1), Tooltip("全体音量")]
     float volume = 1;
     [SerializeField, Range(0, 1), Tooltip("BGM音量")]
@@ -12,7 +15,6 @@ public class SaundoManager : MonoBehaviour
     [SerializeField, Range(0, 1), Tooltip("SE音量")]
     float SEvolume = 1;
 
-    static public SaundoManager Instans;
 
     public AudioClip[] BGMaudioClip;
     public AudioClip[] SEaudioClip;
@@ -20,7 +22,11 @@ public class SaundoManager : MonoBehaviour
     public AudioSource BGM_audioSource;
     public AudioSource SE_audioSource;
 
+    Dictionary<string, int> bgmIndex = new Dictionary<string, int>();
+    Dictionary<string, int> seIndex = new Dictionary<string, int>();
+
     #region soundvolume関係
+    //全体ボリューム
     public float _Volume
     {
         set
@@ -34,7 +40,7 @@ public class SaundoManager : MonoBehaviour
             return volume;
         }
     }
-
+    //BGMボリューム
     public float BGM_Volume
     {
         set
@@ -48,6 +54,7 @@ public class SaundoManager : MonoBehaviour
         }
     }
 
+    //SEボリューム
     public float SE_Volume
     {
         set
@@ -76,17 +83,62 @@ public class SaundoManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        for (int i = 0; i < BGMaudioClip.Length; i++)
+        {
+            bgmIndex.Add(BGMaudioClip[i].name, i);
+        }
+        for (int i = 0; i < SEaudioClip.Length; i++)
+        {
+            seIndex.Add(SEaudioClip[i].name, i++);
+        }
+
     }
 
-    public void PlayBGM(int num)
+    public int GetBgmIndex(string name)
     {
-        BGM_audioSource.PlayOneShot(BGMaudioClip[num], BGM_Volume * _Volume);
-        //BGM_audioSource.volume = BGM_Volume * _Volume;
+        if (bgmIndex.ContainsKey(name))
+        {
+            return bgmIndex[name];
+        }
+        else
+        {
+            return 0;
+        }
     }
 
-    public void PlaySE(int num)
+    public int GetSeIndex(string name)
     {
-        SE_audioSource.PlayOneShot(SEaudioClip[num], SE_Volume * _Volume);
+        if (seIndex.ContainsKey(name))
+        {
+            return seIndex[name];
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+
+
+    public void PlayBGM(int index)
+    {
+        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
+
+        BGM_audioSource.PlayOneShot(BGMaudioClip[index], BGM_Volume * _Volume);
+    }
+
+    public void PlayBgmName(string name)
+    {
+        PlayBGM(GetBgmIndex(name));
+    }
+
+    public void PlaySE(int index)
+    {
+        SE_audioSource.PlayOneShot(SEaudioClip[index], SE_Volume * _Volume);
+    }
+    public void PlaySeName(string name)
+    {
+        PlaySE(GetSeIndex(name));
     }
 
 }

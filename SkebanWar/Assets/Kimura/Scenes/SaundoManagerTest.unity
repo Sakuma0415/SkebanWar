@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c8235638efe3294683af8c2cbbb9fa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: 0.046
+  volume: 1
   BGMvolume: 1
   SEvolume: 1
   BGMaudioClip:

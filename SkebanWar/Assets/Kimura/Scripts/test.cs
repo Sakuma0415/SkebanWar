@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class test : MonoBehaviour
 {
 
     void Start()
     {
-        SaundoManager.Instans.PlayBGM(0);
+        SaundoManager.Instans.PlayBgmName("TestBGM");
     }
 
     void Update()
@@ -15,7 +16,7 @@ public class test : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            SaundoManager.Instans.PlaySE(0);
+            SaundoManager.Instans.PlaySeName("TestSE");
 
         }
 
