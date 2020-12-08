@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Dice : MonoBehaviour
@@ -13,22 +14,25 @@ public class Dice : MonoBehaviour
     GameObject clickedGameObject;
     bool Catch = false;
     Vector2 vector;
+    bool IsMove = false;
+    [SerializeField]
+    GameObject wall = null;
+    float timer = 0;
+    [SerializeField]
+    bool deleteWall = false;
+    [SerializeField]
+    LayerMask layerMask;
+
     void Start()
     {
-        
+
     }
 
     void Update()
     {
-        if(Input .GetKeyDown (KeyCode.H))
-        {
-           
-        }
-
-
         if (Input.GetMouseButtonDown(0))
         {
-            
+
             clickedGameObject = null;
 
             Ray ray = diceCamera.ScreenPointToRay(Input.mousePosition);
@@ -39,23 +43,41 @@ public class Dice : MonoBehaviour
                 clickedGameObject = hit.collider.gameObject;
             }
 
-            if(this.gameObject == clickedGameObject)
+            if (this.gameObject == clickedGameObject)
             {
-                Debug.Log("触りますた");
+                
+                UnityEngine . Debug.Log("触りますた");
                 Catch = true;
-                vector= Input.mousePosition;
+                vector = Input.mousePosition;
             }
         }
 
 
-        if (Input.GetMouseButtonUp(0)&& Catch)
+
+        if (Input.GetMouseButtonUp(0) && Catch)
         {
-            
-            Vector2 nevec= Input.mousePosition;
-            Debug.Log(nevec);
-            Catch = false ;
-            Push(( vector- nevec).normalized);
+
+            Vector2 nevec = Input.mousePosition;
+            UnityEngine.Debug.Log(nevec);
+            Catch = false;
+            Push((vector - nevec).normalized);
+            IsMove = true;
+            timer = 0;
         }
+
+        if (IsMove)
+        {
+            timer += Time.deltaTime;
+
+
+            if (rigidbody.velocity.magnitude < 0.01f && timer > 0.5f)
+            {
+                IsMove = false;
+                wall.SetActive(!deleteWall);
+                UnityEngine .Debug .Log ( Check());
+            }
+        }
+
 
 
 
@@ -64,9 +86,67 @@ public class Dice : MonoBehaviour
     public void Push(Vector3 vector)
     {
         rigidbody.AddForce(vector * pow);
-        
-    }
 
+    }
+    private int Check()
+    {
+        RaycastHit hit;
+        Ray ray;
+
+        for(int i = 0; i < 6; i++)
+        {
+            switch(i){
+                case 0:
+                    ray = new Ray(transform.position, transform.up);
+                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    {
+                        return 3;
+                    }
+                    break;
+                case 1:
+                    ray = new Ray(transform.position, -transform.up);
+                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    {
+                        return 4;
+                    }
+                    break;
+                case 2:
+                    ray = new Ray(transform.position, transform.right  );
+                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    {
+                        return 6;
+                    }
+                    break;
+                case 3:
+                    ray = new Ray(transform.position, -transform.right);
+                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    {
+                        return 1;
+                    }
+                    break;
+                case 4:
+                    ray = new Ray(transform.position, transform.forward );
+                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    {
+                        return 2;
+                    }
+                    break;
+                default:
+                    ray = new Ray(transform.position, -transform.forward);
+                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    {
+                        return 5;
+                    }
+                    break;
+            }
+
+
+
+
+        }
+
+        return 0;
+    }
 
 
 

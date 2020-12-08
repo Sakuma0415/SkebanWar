@@ -104,12 +104,12 @@ public class TouchManager : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.S))
             {
-                Vector2Int test = MousePosInField();
+                //Vector2Int test = MousePosInField();
                 
-                for(int i=0;i< fieldManager.massDatas[test.x, test.y].Overlap.Length; i++)
-                {
-                    Debug.Log(fieldManager.massDatas[test.x, test.y].Overlap[i].BenchNum + " _ "+ fieldManager.massDatas[test.x, test.y].Overlap[i].PlayerNum );
-                }
+                //for(int i=0;i< fieldManager.massDatas[test.x, test.y].Overlap.Length; i++)
+                //{
+                //    Debug.Log(fieldManager.massDatas[test.x, test.y].Overlap[i].BenchNum + " _ "+ fieldManager.massDatas[test.x, test.y].Overlap[i].PlayerNum );
+                //}
                 
             }
 
