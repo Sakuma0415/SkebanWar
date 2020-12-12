@@ -73,6 +73,10 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     GameObject touchPro;
 
+    //攻撃選択中かどうかのフラグ
+    [SerializeField ]
+    bool IsAttackSelect = false;
+
     void Start()
     {
         for(int i = 0; i < 9;i++)
@@ -99,19 +103,8 @@ public class TouchManager : MonoBehaviour
 
 
 
-        if (IsSelect)
+        if (IsSelect&&!IsAttackSelect)
         {
-
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                //Vector2Int test = MousePosInField();
-                
-                //for(int i=0;i< fieldManager.massDatas[test.x, test.y].Overlap.Length; i++)
-                //{
-                //    Debug.Log(fieldManager.massDatas[test.x, test.y].Overlap[i].BenchNum + " _ "+ fieldManager.massDatas[test.x, test.y].Overlap[i].PlayerNum );
-                //}
-                
-            }
 
             //最初のクリック
             if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
@@ -137,7 +130,6 @@ public class TouchManager : MonoBehaviour
                 }
             }
 
-            //最初のクリック
             if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 2)
             {
                 Vector2Int inField = MousePosInField();

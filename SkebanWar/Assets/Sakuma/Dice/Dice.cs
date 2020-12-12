@@ -22,64 +22,88 @@ public class Dice : MonoBehaviour
     bool deleteWall = false;
     [SerializeField]
     LayerMask layerMask;
+    public bool IsDice=false ;
 
-    void Start()
+
+    public void DiceSet()
     {
-
+        IsDice = true;
+        transform.localPosition = Vector3.zero;
+        wall.SetActive(true);
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if(Input.GetKeyDown(KeyCode.F))
         {
-
-            clickedGameObject = null;
-
-            Ray ray = diceCamera.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit = new RaycastHit();
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                clickedGameObject = hit.collider.gameObject;
-            }
-
-            if (this.gameObject == clickedGameObject)
-            {
-                
-                UnityEngine . Debug.Log("触りますた");
-                Catch = true;
-                vector = Input.mousePosition;
-            }
+            DiceSet();
         }
 
 
-
-        if (Input.GetMouseButtonUp(0) && Catch)
+        if (IsDice)
         {
 
-            Vector2 nevec = Input.mousePosition;
-            UnityEngine.Debug.Log(nevec);
-            Catch = false;
-            Push((vector - nevec).normalized);
-            IsMove = true;
-            timer = 0;
-        }
 
-        if (IsMove)
-        {
-            timer += Time.deltaTime;
-
-
-            if (rigidbody.velocity.magnitude < 0.01f && timer > 0.5f)
+            if (Input.GetMouseButtonDown(0))
             {
-                IsMove = false;
-                wall.SetActive(!deleteWall);
-                UnityEngine .Debug .Log ( Check());
+
+                clickedGameObject = null;
+
+                Ray ray = diceCamera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit = new RaycastHit();
+
+                if (Physics.Raycast(ray, out hit))
+                {
+                    clickedGameObject = hit.collider.gameObject;
+                }
+
+                if (this.gameObject == clickedGameObject)
+                {
+
+                    UnityEngine.Debug.Log("触りますた");
+                    Catch = true;
+                    vector = Input.mousePosition;
+                }
             }
+
+
+
+            if (Input.GetMouseButtonUp(0) && Catch)
+            {
+
+                Vector2 nevec = Input.mousePosition;
+                UnityEngine.Debug.Log(nevec);
+                Catch = false;
+                Push((vector - nevec).normalized);
+                IsMove = true;
+                timer = 0;
+            }
+
+            if (IsMove)
+            {
+                timer += Time.deltaTime;
+
+
+                if (rigidbody.velocity.magnitude < 0.01f && timer > 0.5f)
+                {
+                    IsMove = false;
+                    
+                    int ret = Check();
+                    if (ret == 0)
+                    {
+                        wall.SetActive(!deleteWall);
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.Log(ret);
+                    }
+
+                    
+                }
+            }
+
+
         }
-
-
-
 
     }
 
@@ -98,42 +122,42 @@ public class Dice : MonoBehaviour
             switch(i){
                 case 0:
                     ray = new Ray(transform.position, transform.up);
-                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
                     {
                         return 3;
                     }
                     break;
                 case 1:
                     ray = new Ray(transform.position, -transform.up);
-                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
                     {
                         return 4;
                     }
                     break;
                 case 2:
                     ray = new Ray(transform.position, transform.right  );
-                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
                     {
                         return 6;
                     }
                     break;
                 case 3:
                     ray = new Ray(transform.position, -transform.right);
-                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
                     {
                         return 1;
                     }
                     break;
                 case 4:
                     ray = new Ray(transform.position, transform.forward );
-                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
                     {
                         return 2;
                     }
                     break;
                 default:
                     ray = new Ray(transform.position, -transform.forward);
-                    if (Physics.Raycast(ray, out hit, 10, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
                     {
                         return 5;
                     }

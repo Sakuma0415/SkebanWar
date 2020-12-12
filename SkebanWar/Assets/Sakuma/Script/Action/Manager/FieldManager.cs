@@ -311,21 +311,22 @@ public class FieldManager : MonoBehaviour
         {
             for (int j = 0; j < stageSize; j++)
             {
-                switch (massDatas[j, i].massState)
-                {
-                    case MassState.None:
-                        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 0;
-                        break;
-                    case MassState.P1:
-                        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode =1;
-                        break;
-                    case MassState.P2:
-                        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 2;
-                        break;
-                    case MassState.Block:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.black;
-                        break;
-                }
+                massDatas[j, i].MassPre.GetComponent<PcSelect>().massOverlaps = massDatas[j, i].Overlap;
+                //switch (massDatas[j, i].massState)
+                //{
+                //    case MassState.None:
+                //        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 0;
+                //        break;
+                //    case MassState.P1:
+                //        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode =1;
+                //        break;
+                //    case MassState.P2:
+                //        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 2;
+                //        break;
+                //    case MassState.Block:
+                //        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.black;
+                //        break;
+                //}
                 
             }
         }
