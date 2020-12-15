@@ -23,7 +23,7 @@ public class Dice : MonoBehaviour
     [SerializeField]
     LayerMask layerMask;
     public bool IsDice=false ;
-
+    bool lastAc = false;
 
     public void DiceSet()
     {
@@ -60,7 +60,7 @@ public class Dice : MonoBehaviour
                 if (this.gameObject == clickedGameObject)
                 {
 
-                    UnityEngine.Debug.Log("触りますた");
+
                     Catch = true;
                     vector = Input.mousePosition;
                 }
@@ -72,7 +72,7 @@ public class Dice : MonoBehaviour
             {
 
                 Vector2 nevec = Input.mousePosition;
-                UnityEngine.Debug.Log(nevec);
+                lastAc = false;
                 Catch = false;
                 Push((vector - nevec).normalized);
                 IsMove = true;
@@ -86,15 +86,21 @@ public class Dice : MonoBehaviour
 
                 if (rigidbody.velocity.magnitude < 0.01f && timer > 0.5f)
                 {
-                    IsMove = false;
+                   
                     
                     int ret = Check();
                     if (ret == 0)
                     {
-                        wall.SetActive(!deleteWall);
+                        if (!lastAc)
+                        {
+                            lastAc = true;
+                            wall.SetActive(!deleteWall);
+                            rigidbody.AddForce(Vector3.up);
+                        }
                     }
                     else
                     {
+                        IsMove = false;
                         UnityEngine.Debug.Log(ret);
                     }
 
@@ -122,42 +128,42 @@ public class Dice : MonoBehaviour
             switch(i){
                 case 0:
                     ray = new Ray(transform.position, transform.up);
-                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.51f, layerMask))
                     {
                         return 3;
                     }
                     break;
                 case 1:
                     ray = new Ray(transform.position, -transform.up);
-                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.51f, layerMask))
                     {
                         return 4;
                     }
                     break;
                 case 2:
                     ray = new Ray(transform.position, transform.right  );
-                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.51f, layerMask))
                     {
                         return 6;
                     }
                     break;
                 case 3:
                     ray = new Ray(transform.position, -transform.right);
-                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.51f, layerMask))
                     {
                         return 1;
                     }
                     break;
                 case 4:
                     ray = new Ray(transform.position, transform.forward );
-                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.51f, layerMask))
                     {
                         return 2;
                     }
                     break;
                 default:
                     ray = new Ray(transform.position, -transform.forward);
-                    if (Physics.Raycast(ray, out hit, 0.6f, layerMask))
+                    if (Physics.Raycast(ray, out hit, 0.51f, layerMask))
                     {
                         return 5;
                     }

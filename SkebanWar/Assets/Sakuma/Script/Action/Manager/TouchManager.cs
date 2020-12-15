@@ -77,6 +77,10 @@ public class TouchManager : MonoBehaviour
     [SerializeField ]
     bool IsAttackSelect = false;
 
+    //攻撃対象になっているベンチ番号
+    int[] AttackNum=new int[1]; 
+
+
     void Start()
     {
         for(int i = 0; i < 9;i++)
@@ -103,83 +107,120 @@ public class TouchManager : MonoBehaviour
 
 
 
-        if (IsSelect&&!IsAttackSelect)
+        if (IsSelect)
         {
 
-            //最初のクリック
-            if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
+            //ピース選択、配置の処理
+            if (!IsAttackSelect)
             {
-                OnHand[] onHands= Progress.Instance.gameMode == Progress.GameMode.P1Select? P1onHands : P2onHands;
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                for (int i=0;i< onHands.Length; i++)
+
+                //最初のクリック
+                if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
                 {
-                    if(onHands[i].pieceData !=null&&
-                        onHands[i].gameObject .transform .position .x + onHandS > mousePos.x &&
-                        onHands[i].gameObject.transform.position.x - onHandS < mousePos.x &&
-                        onHands[i].gameObject.transform.position.y + onHandS > mousePos.y &&
-                        onHands[i].gameObject.transform.position.y - onHandS < mousePos.y
-                        )
+                    OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    for (int i = 0; i < onHands.Length; i++)
                     {
-                        //Debug.Log(onHands[i].pieceData.name);
-                        pieceData = onHands[i].pieceData;
+                        if (onHands[i].pieceData != null &&
+                            onHands[i].gameObject.transform.position.x + onHandS > mousePos.x &&
+                            onHands[i].gameObject.transform.position.x - onHandS < mousePos.x &&
+                            onHands[i].gameObject.transform.position.y + onHandS > mousePos.y &&
+                            onHands[i].gameObject.transform.position.y - onHandS < mousePos.y
+                            )
+                        {
+                            //Debug.Log(onHands[i].pieceData.name);
+                            pieceData = onHands[i].pieceData;
+                            holdProgress = 1;
+                            ToggleToPos();
+                            holdCont = i;
+                            break;
+                        }
+                    }
+                }
+
+                if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 2)
+                {
+                    Vector2Int inField = MousePosInField();
+                    bool Catch = false;
+
+                    for (int i = 0; i < MassPos.Length; i++)
+                    {
+                        Vector2Int pos = MousePosInField(true, MsPosBf) + MassPos[i];
+                        if (inField == pos)
+                        {
+                            Catch = true;
+                            break;
+                        }
+                    }
+
+                    if (Catch)
+                    {
                         holdProgress = 1;
-                        ToggleToPos();
-                        holdCont = i;
-                        break;
                     }
+
                 }
-            }
 
-            if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 2)
-            {
-                Vector2Int inField = MousePosInField();
-                bool Catch = false;
 
-                for (int i = 0; i < MassPos.Length; i++)
+
+
+
+
+                if (Input.GetKeyUp(KeyCode.Mouse0) && holdProgress == 1)
                 {
-                    Vector2Int pos = MousePosInField(true, MsPosBf) + MassPos[i];
-                    if (inField == pos)
+                    Vector2 pivotPos = (Vector2)fieldManager.gameObject.transform.position + new Vector2(-fieldManager.fieldSpace.x / 2, fieldManager.fieldSpace.y / 2);
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+                    if (mousePos.x > pivotPos.x && mousePos.y < pivotPos.y && mousePos.x < pivotPos.x + fieldManager.fieldSpace.x && mousePos.y > pivotPos.y - fieldManager.fieldSpace.y)
                     {
-                        Catch = true;
-                        break;
+                        holdProgress = 2;
+                        MsPosBf = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                        //touchPro.transform.position = MsPosBf+new Vector2 (0.5f,-0.5f);
+                    }
+                    else
+                    {
+                        holdProgress = 0;
                     }
                 }
 
-                if (Catch)
-                {
-                    holdProgress = 1;
-                }
+                //if (Input.GetKeyDown(KeyCode.Mouse1))
+                //{
 
+                //}
             }
-
-
-
-
-
-
-            if (Input.GetKeyUp(KeyCode.Mouse0)&& holdProgress==1)
+            //攻撃対象選択の処理
+            else
             {
-                Vector2 pivotPos = (Vector2)fieldManager.gameObject.transform.position + new Vector2(-fieldManager.fieldSpace.x / 2, fieldManager.fieldSpace.y / 2);
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
 
-                if (mousePos.x > pivotPos.x && mousePos.y < pivotPos.y && mousePos.x < pivotPos.x + fieldManager.fieldSpace.x && mousePos.y > pivotPos.y - fieldManager.fieldSpace.y)
-                {
-                    holdProgress = 2;
-                    MsPosBf = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    //touchPro.transform.position = MsPosBf+new Vector2 (0.5f,-0.5f);
-                }
-                else
-                {
-                    holdProgress = 0;
+                    Vector2Int vecI= MousePosInField();
+                    int playernum = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? 2 : Progress.Instance.gameMode == Progress.GameMode.P2Select ? 1 : 0);
+                    int attack = -1;
+
+                    for (int i = 0; i < fieldManager.massDatas[vecI.x,vecI.y].Overlap .Length;i++)
+                    {
+                        for(int j=0;j< AttackNum.Length; j++)
+                        {
+                            if(fieldManager.massDatas[vecI.x, vecI.y].Overlap[i].BenchNum == AttackNum[j]&& playernum== fieldManager.massDatas[vecI.x, vecI.y].Overlap[i].PlayerNum )
+                            {
+                                attack = AttackNum[j];
+                            }
+                        }
+                    }
+                    if (attack != -1)
+                    {
+                        fieldManager.AttackSelectEnd();
+                        IsAttackSelect = false;
+                        Progress.Instance.endGameMode = true;
+                    }
+
                 }
             }
-
-            //if (Input.GetKeyDown(KeyCode.Mouse1))
-            //{
-
-            //}
-
         }
+
+
+
+
 
 
         //配置予告の表示
@@ -372,10 +413,60 @@ public class TouchManager : MonoBehaviour
         {
             if (holdProgress == 2)
             {
+
+                IsAttackSelect = false;
+                int playernum = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? 2:Progress.Instance.gameMode == Progress.GameMode.P2Select ? 1 : 0);
+                CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? P2CharacterManager  : P1CharacterManager);
+                AttackNum = new int[]{-1};
                 for (int i = 0; i < MassPos.Length; i++)
                 {
                     Vector2Int pos = MousePosInField(true, MsPosBf) + MassPos[i];
+
+                    for(int j=0;j< fieldManager.massDatas[pos.x, pos.y].Overlap.Length; j++)
+                    {
+                        if(
+                            fieldManager.massDatas[pos.x, pos.y].Overlap[j].PlayerNum== playernum &&
+                            character.CharacterBench [fieldManager.massDatas[pos.x, pos.y].Overlap[j].BenchNum ].HP >0
+                          )
+                        {
+                            bool fass = false;
+                            for(int a=0;a< AttackNum.Length; a++)
+                            {
+                                if(AttackNum[a]== fieldManager.massDatas[pos.x, pos.y].Overlap[j].BenchNum)
+                                {
+                                    fass = true;
+                                }
+                            }
+
+                            if (!fass)
+                            {
+                                if (AttackNum[0] != -1)
+                                {
+                                    System.Array.Resize(ref AttackNum, AttackNum.Length + 1);
+                                }
+                                AttackNum[AttackNum.Length - 1] = fieldManager.massDatas[pos.x, pos.y].Overlap[j].BenchNum;
+                            }
+                            IsAttackSelect = true;
+                        }
+                    }
+
                     fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select ? 1 : 2, pos.x, pos.y);
+                    
+                }
+
+                if (IsAttackSelect)
+                {
+                    Debug.Log("喧嘩上等");
+                    for(int i=0;i< AttackNum.Length; i++)
+                    {
+                        Debug.Log("攻撃対象　"+ AttackNum[i]);
+                    }
+
+                    fieldManager.AttackSelect(AttackNum, playernum);
+                    Progress.Instance.battleFlg = true;
+                }
+                else
+                {
                     Progress.Instance.endGameMode = true;
                 }
 

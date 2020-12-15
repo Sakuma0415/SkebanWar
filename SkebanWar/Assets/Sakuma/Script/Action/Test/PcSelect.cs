@@ -15,6 +15,11 @@ public class PcSelect : MonoBehaviour
     [SerializeField]
     float overlapSize = 0;
 
+    public int attackSelectMode = 0;
+
+    [SerializeField]
+    GameObject[] MassMask;
+
     private void Start()
     {
         for(int i=0;i< massOverlaps.Length; i++)
@@ -44,5 +49,26 @@ public class PcSelect : MonoBehaviour
                 count++;
             }
         }
+
+        switch (attackSelectMode)
+        {
+            case 0:
+                MassMask[0].SetActive(false );
+                MassMask[1].SetActive(false);
+                break;
+            case 1:
+                MassMask[0].SetActive(true);
+                MassMask[1].SetActive(false );
+                break;
+            case 2:
+                MassMask[0].SetActive(false );
+                MassMask[1].SetActive(true);
+                break;
+
+        }
+
+
+
+
     }
 }
