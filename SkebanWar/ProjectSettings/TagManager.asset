@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Character1
+  - C1NDecision
   layers:
   - Default
   - TransparentFX
