@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CharacterChoice : MonoBehaviour
 {
@@ -51,6 +52,10 @@ public class CharacterChoice : MonoBehaviour
     public void C1OK()
     {
         choice = 2;
+        //StartCoroutine(DelayMethod(1.5f, () =>
+        //{
+        //    SceneManager.LoadScene("Action");
+        //}));
     }
     
     public void C2Cancel()
@@ -66,6 +71,10 @@ public class CharacterChoice : MonoBehaviour
     public void C2OK()
     {
         choice = 4;
+        //StartCoroutine(DelayMethod(1.5f, () =>
+        //{
+        //    SceneManager.LoadScene("Action");
+        //}));
     }
 
     public void C3Cancel()
@@ -81,6 +90,10 @@ public class CharacterChoice : MonoBehaviour
     public void C3OK()
     {
         choice = 6;
+        //StartCoroutine(DelayMethod(1.5f, () =>
+        //{
+        //    SceneManager.LoadScene("Action");
+        //}));
     }
 
     /// <summary>
