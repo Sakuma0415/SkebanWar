@@ -15,9 +15,18 @@ EditorBuildSettings:
     path: Assets/Kimura/Scenes/test2.unity
     guid: 21425da7eb094bd4c9f0ee424248a2c6
   - enabled: 1
-    path: Assets/Iwasaki/Scene/Select.unity
-    guid: 8d2730e0aefd31042ab905078dd6c1af
+    path: Assets/Someya/Scene/CharacterSelect.unity
+    guid: b26e2120fd7ef5b4983e7e9fee92a68a
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
+  - enabled: 0
+    path: Assets/Someya/Scene/Character2.unity
+    guid: 2b86f44d36c5ad3429e606b48a68956b
   - enabled: 1
-    path: Assets/Iwasaki/Scene/Title.unity
-    guid: afb9dee3e5096e449a0df08cd8adecb6
+    path: Assets/Someya/Scene/Character3.unity
+    guid: f62e551d77619354581dbb403df714bf
+  - enabled: 1
+    path: Assets/Scenes/Action.unity
+    guid: cb0b36cc73602544ab432b65f364d8d9
   m_configObjects: {}

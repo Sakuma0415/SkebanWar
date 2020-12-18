@@ -47,6 +47,19 @@ public class Select : MonoBehaviour
         // インタラクトとウィンドウの同時に開かないようにする
         yield return null;
 
+        // クリック待機
+        yield return new WaitUntil(() =>
+        {
+            if (!Input.GetMouseButtonDown(0)) return false;
+
+            currentSelected = EventSystem.current.currentSelectedGameObject;
+
+            if (currentSelected == null) return false;
+
+            return !(currentSelected.gameObject == yesButtonObj ||
+                     currentSelected.gameObject == noButtonObj);
+        });
+
         // 現在選択中のゲームオブジェクト
         currentSelected = EventSystem.current.currentSelectedGameObject;
 
