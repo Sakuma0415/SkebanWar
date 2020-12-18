@@ -33,6 +33,12 @@ public class Progress : MonoBehaviour
     //入力街を持つゲームモードの終了フラグ
     public bool endGameMode=false ;
 
+    //バトルに分岐するかどうかのフラグ
+    public bool battleFlg = false;
+
+    //バトル終了後のターンプレイヤーの保存
+    public int afterBattleTrnePlayer = 0;
+
     ///外部マネージャー
     [SerializeField]
     DeckManager P1deckManager;
@@ -82,7 +88,16 @@ public class Progress : MonoBehaviour
     {
         if(endGameMode)
         {
-            ChagngeGameMode(GameMode.P2Select, 1f);
+            if (!battleFlg)
+            {
+                ChagngeGameMode(GameMode.P2Select, 1f);
+            }
+            else
+            {
+                afterBattleTrnePlayer = 2;
+                ChagngeGameMode(GameMode.Battle , 0.5f);
+            }
+            
         }
     }
 
@@ -90,7 +105,15 @@ public class Progress : MonoBehaviour
     {
         if (endGameMode)
         {
-            ChagngeGameMode(GameMode.P1Select, 1f);
+            if (!battleFlg)
+            {
+                ChagngeGameMode(GameMode.P1Select, 1f);
+            }
+            else
+            {
+                afterBattleTrnePlayer = 1;
+                ChagngeGameMode(GameMode.Battle, 0.5f);
+            }
         }
     }
 
@@ -105,6 +128,7 @@ public class Progress : MonoBehaviour
 
     void P1SelectStart()
     {
+        battleFlg = false;
         P1deckManager.Draw();
 
         if (P1deckManager.OnHandLess())
@@ -122,6 +146,7 @@ public class Progress : MonoBehaviour
     }
     void P2SelectStart()
     {
+        battleFlg = false;
         P2deckManager.Draw();
 
         if (P2deckManager.OnHandLess())

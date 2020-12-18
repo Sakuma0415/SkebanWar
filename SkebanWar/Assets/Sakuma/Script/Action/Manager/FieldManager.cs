@@ -34,6 +34,7 @@ public class FieldManager : MonoBehaviour
         public MassState massState;
         public GameObject MassPre;
         public MassOverlap[] Overlap;
+        public PcSelect pcSelect;
         public void Init()
         {
             massState = MassState.None;
@@ -91,6 +92,7 @@ public class FieldManager : MonoBehaviour
                 MassObj.transform.localScale = size * MassObj.transform.localScale.x;
                 MassObj.transform.position = transform.position + new Vector3(size.x * i, -size.y * j)-new Vector3(size.x*((stageSize / 2) -(stageSize%2==0? 0.5f:0)), -1* size.y * ((stageSize / 2)- (stageSize % 2 == 0 ? 0.5f : 0)),0) ;
                 MassObj.transform.parent = transform;
+                massDatas[i, j].pcSelect = MassObj.GetComponent<PcSelect>();
                 massDatas[i, j].MassPre = MassObj;
             }
         }
@@ -182,6 +184,50 @@ public class FieldManager : MonoBehaviour
         P2Score = P2count;
 
     }
+
+    //攻撃対象を選択するときの画面暗転
+
+    public void AttackSelect(int[] Attack,int trne)
+    {
+
+        for (int i = 0; i < stageSize; i++)
+        {
+            for (int j = 0; j < stageSize; j++)
+            {
+                bool select = false;
+                for(int a = 0; a < massDatas[i, j].Overlap.Length; a++)
+                {
+                    for(int b=0;b< Attack.Length; b++)
+                    {
+                        if(massDatas[i, j].Overlap[a].BenchNum == Attack[b]&& trne== massDatas[i, j].Overlap[a].PlayerNum )
+                        {
+                            select = true;
+                        }
+                    }
+                }
+                massDatas[i, j].pcSelect .attackSelectMode  = select?1:2;
+
+            }
+        }
+
+
+    }
+
+    public void AttackSelectEnd()
+    {
+        for (int i = 0; i < stageSize; i++)
+        {
+            for (int j = 0; j < stageSize; j++)
+            {
+                massDatas[j, i].pcSelect.attackSelectMode = 0;
+
+            }
+        }
+        Debug.Log("d");
+    }
+
+
+
 
     //HPが0になっていてかつ相手の駒が重なっている場合の削除処理
     public void FieldClean()
@@ -311,21 +357,22 @@ public class FieldManager : MonoBehaviour
         {
             for (int j = 0; j < stageSize; j++)
             {
-                switch (massDatas[j, i].massState)
-                {
-                    case MassState.None:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color =Color.white ;
-                        break;
-                    case MassState.P1:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.red ;
-                        break;
-                    case MassState.P2:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.blue ;
-                        break;
-                    case MassState.Block:
-                        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.black;
-                        break;
-                }
+                massDatas[j, i].pcSelect.massOverlaps = massDatas[j, i].Overlap;
+                //switch (massDatas[j, i].massState)
+                //{
+                //    case MassState.None:
+                //        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 0;
+                //        break;
+                //    case MassState.P1:
+                //        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode =1;
+                //        break;
+                //    case MassState.P2:
+                //        massDatas[j, i].MassPre.GetComponent<PcSelect>().mode = 2;
+                //        break;
+                //    case MassState.Block:
+                //        massDatas[j, i].MassPre.GetComponent<SpriteRenderer>().color = Color.black;
+                //        break;
+                //}
                 
             }
         }

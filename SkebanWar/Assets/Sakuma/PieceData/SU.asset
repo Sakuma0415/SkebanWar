@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
   m_Name: SU
   m_EditorClassIdentifier: 
+  element: 1
   name: "\u30B9"
   posSet: []
   HP: 7
