@@ -78,8 +78,11 @@ public class TouchManager : MonoBehaviour
     bool IsAttackSelect = false;
 
     //攻撃対象になっているベンチ番号
-    int[] AttackNum=new int[1]; 
+    int[] AttackNum=new int[1];
+    [SerializeField]
+    BattleManager battleManager;
 
+ 
 
     void Start()
     {
@@ -209,6 +212,7 @@ public class TouchManager : MonoBehaviour
                     }
                     if (attack != -1)
                     {
+                        battleManager.BattleStart();
                         fieldManager.AttackSelectEnd();
                         IsAttackSelect = false;
                         Progress.Instance.endGameMode = true;

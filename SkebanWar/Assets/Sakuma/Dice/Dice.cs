@@ -25,8 +25,11 @@ public class Dice : MonoBehaviour
     public bool IsDice=false ;
     bool lastAc = false;
 
+    public bool diceEnd=false ;
+
     public void DiceSet()
     {
+        diceEnd = false;
         IsDice = true;
         transform.localPosition = Vector3.zero;
         wall.SetActive(true);
@@ -102,6 +105,7 @@ public class Dice : MonoBehaviour
                     {
                         IsMove = false;
                         UnityEngine.Debug.Log(ret);
+                        diceEnd = true;
                     }
 
                     
