@@ -8,7 +8,7 @@ public class test : MonoBehaviour
 
     void Start()
     {
-        SaundoManager.Instans.PlayBgmName("TestBGM");
+        
     }
 
     void Update()
@@ -16,8 +16,13 @@ public class test : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.A))
         {
-            SaundoManager.Instans.PlaySeName("TestSE");
-
+            //SaundoManager.Instans.PlaySeName("TestSE");
+            SoundManager.Instans.PlayBgmName("TestBGM",7f);
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            //SaundoManager.Instans.PlaySeName("TestSE");
+            SoundManager.Instans.PlaySeName("TestSE");
         }
 
 
