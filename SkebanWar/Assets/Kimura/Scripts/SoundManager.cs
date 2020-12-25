@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SaundoManager : MonoBehaviour
+public class SoundManager : MonoBehaviour
 {
-    static public SaundoManager Instans;
+    static public SoundManager Instans;
 
     //ボリューム関係
     [SerializeField, Range(0, 1), Tooltip("全体音量")]
@@ -24,6 +24,23 @@ public class SaundoManager : MonoBehaviour
 
     Dictionary<string, int> bgmIndex = new Dictionary<string, int>();
     Dictionary<string, int> seIndex = new Dictionary<string, int>();
+
+    //フェードイン初期値
+    //フェード再生するか？
+    public bool IsFade;
+    //フェードインする時間
+    float fadeIntime = 0;
+    //フェードアウトする時間
+    float fadeOuttime = 0;
+
+    float fadeTimeLate = 0;
+
+    float fadeTimeLate2 = 0;
+    //
+    bool IsFadeIn = false;
+    //
+    bool IsFadeOut = false;
+
 
     #region soundvolume関係
     //全体ボリューム
@@ -83,6 +100,7 @@ public class SaundoManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+        //AudioClipの読み込み
         for (int i = 0; i < BGMaudioClip.Length; i++)
         {
             bgmIndex.Add(BGMaudioClip[i].name, i);
@@ -90,6 +108,32 @@ public class SaundoManager : MonoBehaviour
         for (int i = 0; i < SEaudioClip.Length; i++)
         {
             seIndex.Add(SEaudioClip[i].name, i++);
+        }
+
+    }
+
+
+    void Update()
+    {
+        //フェードイン(例)
+        //if (fadetime > 0)
+        //{
+        //    fadetime -= Time.deltaTime;
+        //    BGM_audioSource.volume = 1 - (fadetime / fadeTimeLate);
+        //}
+
+        if (fadeIntime > 0)
+        {
+            fadeIntime -= Time.deltaTime;
+            IsFadeIn = false;
+            BGM_audioSource.volume = 1 - (fadeIntime / fadeTimeLate);
+        }
+        if(fadeOuttime > 0)
+        {
+            fadeOuttime -= Time.deltaTime;
+            IsFadeIn = false;
+            BGM_audioSource.volume = (fadeOuttime / fadeTimeLate2);
+
         }
 
     }
@@ -118,24 +162,30 @@ public class SaundoManager : MonoBehaviour
         }
     }
 
-
-
-    public void PlayBGM(int index)
+    //BGM再生
+    public void PlayBGM(int index, float fadeIn_Time = 0,float fadeOut_Time=0)
     {
-        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
+        fadeIntime = fadeIn_Time;
+        fadeTimeLate = fadeIntime;
 
+        fadeOuttime = fadeOut_Time;
+        fadeTimeLate2 = fadeOuttime;
+
+        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
         BGM_audioSource.PlayOneShot(BGMaudioClip[index], BGM_Volume * _Volume);
     }
 
-    public void PlayBgmName(string name)
+    public void PlayBgmName(string name, float fadeintime = 0, float fadeOut_Time = 0)
     {
-        PlayBGM(GetBgmIndex(name));
+        PlayBGM(GetBgmIndex(name), fadeintime, fadeOut_Time);
     }
 
+    //SE再生
     public void PlaySE(int index)
     {
         SE_audioSource.PlayOneShot(SEaudioClip[index], SE_Volume * _Volume);
     }
+
     public void PlaySeName(string name)
     {
         PlaySE(GetSeIndex(name));
