@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - RedText
-  - BlueText
+  - UpperImage
+  - LowerImage
   layers:
   - Default
   - TransparentFX
