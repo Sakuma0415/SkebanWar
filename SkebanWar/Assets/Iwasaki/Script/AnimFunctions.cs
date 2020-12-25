@@ -7,6 +7,6 @@ public class AnimFunctions : MonoBehaviour
 {
     public void AnimEvent()
     {
-        SceneManager.LoadScene("Select");
+        SceneManager.LoadScene("CharacterSelect");
     }
 }

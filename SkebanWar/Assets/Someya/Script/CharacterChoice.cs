@@ -19,26 +19,26 @@ public class CharacterChoice : MonoBehaviour
     GameObject[] Decision;
 
     // ボタンを押したら選んだキャラクターを描画
-    public void C1Change()
+    public void AkaneChange()
     {
         choice = 0;
         select = 1;
     }
 
-    public void C2Change()
+    public void IoriChange()
     {
         choice = 0;
         select = 2;
     }
 
-    public void C3Change()
+    public void NanaChange()
     {
         choice = 0;
         select = 3;
     }
 
     // いいえを押したらキャラクター選択に戻る
-    public void C1Cancel()
+    public void AkaneCancel()
     {
         choice = 1;
         // 1.5秒後にシーン(画像)に移行
@@ -49,7 +49,7 @@ public class CharacterChoice : MonoBehaviour
     }
 
     // はいを押したらゲームシーンに移行
-    public void C1OK()
+    public void AkaneOK()
     {
         choice = 2;
         //StartCoroutine(DelayMethod(1.5f, () =>
@@ -58,7 +58,7 @@ public class CharacterChoice : MonoBehaviour
         //}));
     }
     
-    public void C2Cancel()
+    public void IoriCancel()
     {
         choice = 3;
         // 1.5秒後にシーン(画像)に移行
@@ -68,7 +68,7 @@ public class CharacterChoice : MonoBehaviour
         }));
     }
 
-    public void C2OK()
+    public void IoriOK()
     {
         choice = 4;
         //StartCoroutine(DelayMethod(1.5f, () =>
@@ -77,7 +77,7 @@ public class CharacterChoice : MonoBehaviour
         //}));
     }
 
-    public void C3Cancel()
+    public void NanaCancel()
     {
         choice = 5;
         // 1.5秒後にシーン(画像)に移行
@@ -87,7 +87,7 @@ public class CharacterChoice : MonoBehaviour
         }));
     }
 
-    public void C3OK()
+    public void NanaOK()
     {
         choice = 6;
         //StartCoroutine(DelayMethod(1.5f, () =>
