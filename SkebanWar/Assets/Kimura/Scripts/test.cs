@@ -17,12 +17,12 @@ public class test : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A))
         {
             //SaundoManager.Instans.PlaySeName("TestSE");
-            SoundManager.Instans.PlayBgmName("TestBGM",7f);
+            SoundManagerTest.Instans.PlayBgmName("TestBGM",7f);
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             //SaundoManager.Instans.PlaySeName("TestSE");
-            SoundManager.Instans.PlaySeName("TestSE");
+            SoundManagerTest.Instans.PlaySeName("TestSE");
         }
 
 

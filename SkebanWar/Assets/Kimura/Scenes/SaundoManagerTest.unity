@@ -413,6 +413,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5dcb23142dffa2b46ad83fc27a356630, type: 3}
   BGM_audioSource: {fileID: 181432081}
   SE_audioSource: {fileID: 531911890}
+  IsFade: 0
 --- !u!4 &707948835
 Transform:
   m_ObjectHideFlags: 0

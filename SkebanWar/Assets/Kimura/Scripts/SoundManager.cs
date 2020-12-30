@@ -2,10 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class SoundManager : MonoBehaviour
+public enum BGM
 {
-    static public SoundManager Instans;
+
+}
+
+public enum SE
+{
+    None,
+}
+
+public class SoundManagerTest : MonoBehaviour
+{
+    static public SoundManagerTest Instans;
 
     //ボリューム関係
     [SerializeField, Range(0, 1), Tooltip("全体音量")]
@@ -111,6 +120,26 @@ public class SoundManager : MonoBehaviour
         }
 
     }
+    // FadeOutの設定
+    //public void FadeOutBgm(float fadeTime)
+    //{
+    //    StartCoroutine(FadeOut(fadeTime));
+    //}
+
+    //private IEnumerator FadeOut(float time)
+    //{
+    //    float _time = time;
+    //    float vol = BGM_audioSource.volume;
+    //    while (_time > 0f)
+    //    {
+    //        _time -= Time.deltaTime;
+    //        BGM_audioSource.volume = vol * _time / time;
+    //        yield return null;
+    //    }
+    //    BGM_audioSource.Stop();
+    //    BGM_audioSource.clip = null;
+    //    yield break;
+    //}
 
 
     void Update()
@@ -128,7 +157,7 @@ public class SoundManager : MonoBehaviour
             IsFadeIn = false;
             BGM_audioSource.volume = 1 - (fadeIntime / fadeTimeLate);
         }
-        if(fadeOuttime > 0)
+        if (fadeOuttime > 0)
         {
             fadeOuttime -= Time.deltaTime;
             IsFadeIn = false;
