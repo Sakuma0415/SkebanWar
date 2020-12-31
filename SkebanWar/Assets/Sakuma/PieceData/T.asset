@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
   m_Name: T
   m_EditorClassIdentifier: 
+  element: 2
   name: T
   posSet: []
-  HP: 0
+  HP: 3
   T0: 0
   T1: 0
   T2: 0

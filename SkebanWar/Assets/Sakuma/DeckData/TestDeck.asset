@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: "\u30C6\u30B9\u30C8"
   pieceDatas:
-  - {fileID: 11400000, guid: c275493e2c49bd34e8dbcdba4c734338, type: 2}
+  - {fileID: 11400000, guid: e66359968126eb542b54f6d62301dc19, type: 2}
   - {fileID: 11400000, guid: ae276f37b616d3f4f9ff8a32bfe6d988, type: 2}
   - {fileID: 11400000, guid: 870b2306dd2f31a40a225849cb2bf7df, type: 2}
   - {fileID: 11400000, guid: 3cf5c5d620a60e04ea3da9eaf241a8ac, type: 2}
-  - {fileID: 11400000, guid: a64462c8064bf0e4ba6e965e5706e17b, type: 2}
+  - {fileID: 11400000, guid: 672c190aafd7c7a47a8f745773179e52, type: 2}
   - {fileID: 11400000, guid: e6f7543270b8014499cf2dbe984034cc, type: 2}
+  character: 0

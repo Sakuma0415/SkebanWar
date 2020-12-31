@@ -9,6 +9,13 @@ using UnityEditor;
 [CreateAssetMenu(menuName = "Scriptable/PieceData")]
 public class PieceData : ScriptableObject
 {
+    public enum Element
+    {
+        R,
+        S,
+        P
+    }
+    public Element element;
 
     //名前
     public string name;
