@@ -17,4 +17,6 @@ public class CharacterData : ScriptableObject
     public CharColor Color = CharColor.Yellow;
 
     public int HP;
+
+    public Sprite IconImage;
 }

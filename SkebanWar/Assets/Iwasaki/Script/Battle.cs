@@ -56,19 +56,28 @@ public class Battle : MonoBehaviour
     //下側のキャラHP
     [SerializeField]
     private Text lowerText;
+    [SerializeField]
+    private CanvasGroup fadeCanvas;
+    private Animator anim_Icon;
+    private Animator anim_Plate;
 
     void Start()
     {
-        //デバッグ用
-        upperChar.HP = 7;
-        lowerChar.HP = 7;
+        anim_Icon = GameObject.FindGameObjectWithTag("IconAnim").GetComponent<Animator>();
+        anim_Plate = GameObject.FindGameObjectWithTag("PlateAnim").GetComponent<Animator>();
 
+        fadeCanvas.alpha = 0;
         Instance = this;
         upperImage = GameObject.FindGameObjectWithTag("UpperImage");
         lowerImage = GameObject.FindGameObjectWithTag("LowerImage");
         //キャラクター情報追加
         upperChar = charData.characterDatas[0];
         lowerChar = charData.characterDatas[8];
+
+        //デバッグ用
+        upperChar.HP = 7;
+        lowerChar.HP = 7;
+
         //ImageとHPを表示
         upperImage.GetComponent<Image>().sprite = upperChar.Image;
         upperText.text = upperChar.HP.ToString();
@@ -114,10 +123,31 @@ public class Battle : MonoBehaviour
     }
     void StartUpdate()
     {
-        if (time > 1)
+        //if (time > 1)
+        //{
+        //    ChagngeGameMode(BattleProcess.FirstDice, 1f);
+        //}
+        if (doOnce)
         {
-            ChagngeGameMode(BattleProcess.FirstDice, 1f);
+            doOnce = false;
+            StartCoroutine(FadeOut(1.0f));
+        }        
+    }
+    private IEnumerator FadeOut(float fadeTime)
+    {
+        float time = 0f;
+        while (fadeCanvas.alpha < 1)
+        {
+            time += Time.deltaTime;
+            fadeCanvas.alpha = 1f * (time / fadeTime);
+            yield return null;
         }
+        anim_Plate.SetTrigger("Plates");
+        yield return new WaitForSeconds(anim_Plate.GetCurrentAnimatorStateInfo(0).length);
+        anim_Icon.SetTrigger("Icons");
+        yield return new WaitForSeconds(anim_Icon.GetCurrentAnimatorStateInfo(0).length);
+        ChagngeGameMode(BattleProcess.FirstDice, 1f);
+        yield break;
     }
 
     private void DiceShake()

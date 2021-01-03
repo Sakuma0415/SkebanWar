@@ -15,3 +15,5 @@ MonoBehaviour:
   Image: {fileID: 21300000, guid: 4d41aa6ad3c6e534da2b8ef8ccfa0d22, type: 3}
   Color: 0
   HP: 6
+  IconImage: {fileID: 8751216044421993764, guid: 9037a4a360f759142a418c0325767788,
+    type: 3}
