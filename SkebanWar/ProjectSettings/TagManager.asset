@@ -9,6 +9,11 @@ TagManager:
   - LowerImage
   - PlateAnim
   - IconAnim
+  - TextAnim
+  - PlateImageLeft
+  - PlateImageRight
+  - LeftPlate
+  - RightPlate
   layers:
   - Default
   - TransparentFX

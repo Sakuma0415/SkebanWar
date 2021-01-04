@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe47ddab4634b1b42b526080c7384927, type: 3}
+  m_Name: Iori_Blue2
+  m_EditorClassIdentifier: 
+  Image: {fileID: 21300000, guid: dbdcdcee374b052419d01dc1e71ef413, type: 3}
+  Color: 2
+  HP: 6
+  IconImage: {fileID: -8558875489060833781, guid: 9745bce0d8ac0db41abee41be2af2398,
+    type: 3}
