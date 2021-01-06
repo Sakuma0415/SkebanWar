@@ -3,7 +3,17 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Character1
+  - UpperImage
+  - LowerImage
+  - PlateAnim
+  - IconAnim
+  - TextAnim
+  - PlateImageLeft
+  - PlateImageRight
+  - LeftPlate
+  - RightPlate
   layers:
   - Default
   - TransparentFX
@@ -13,7 +23,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - YUKA
   - 
   - 
   - 
