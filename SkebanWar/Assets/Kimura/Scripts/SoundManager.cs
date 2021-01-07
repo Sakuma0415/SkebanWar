@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum BGM
-{
+//public enum BGM
+//{
 
-}
+//}
 
-public enum SE
-{
-    None,
-}
+//public enum SE
+//{
+//    None,
+//}
 
 public class SoundManagerTest : MonoBehaviour
 {
@@ -120,27 +120,6 @@ public class SoundManagerTest : MonoBehaviour
         }
 
     }
-    // FadeOutの設定
-    //public void FadeOutBgm(float fadeTime)
-    //{
-    //    StartCoroutine(FadeOut(fadeTime));
-    //}
-
-    //private IEnumerator FadeOut(float time)
-    //{
-    //    float _time = time;
-    //    float vol = BGM_audioSource.volume;
-    //    while (_time > 0f)
-    //    {
-    //        _time -= Time.deltaTime;
-    //        BGM_audioSource.volume = vol * _time / time;
-    //        yield return null;
-    //    }
-    //    BGM_audioSource.Stop();
-    //    BGM_audioSource.clip = null;
-    //    yield break;
-    //}
-
 
     void Update()
     {
