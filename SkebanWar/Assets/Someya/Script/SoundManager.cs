@@ -21,10 +21,8 @@ public class Sound
 }
 
 [DefaultExecutionOrder(-1)]
-public class SoundManager : MonoBehaviour
+public class SoundManager : SingletonMonoBehaviour<SoundManager>
 {
-    static public SoundManager Instance;
-
     public Sound[] bgmSound;
     public Sound[] seSound;
 
