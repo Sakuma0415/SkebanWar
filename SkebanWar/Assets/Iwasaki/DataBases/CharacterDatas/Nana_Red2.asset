@@ -17,3 +17,4 @@ MonoBehaviour:
   HP: 7
   IconImage: {fileID: 8751216044421993764, guid: 9037a4a360f759142a418c0325767788,
     type: 3}
+  CutInImage: {fileID: 21300000, guid: d1b8a20373986a049855c9dc97fb0c55, type: 3}
