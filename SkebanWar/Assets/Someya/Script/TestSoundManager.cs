@@ -3,230 +3,180 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
-[System.Serializable]
-public class SoundVolume
-{
-    public float bgm = 1.0f;
-    public float se = 1.0f;
-
-    public bool mute = false;
-
-    public void Reset()
-    {
-        bgm = 1.0f;
-        se = 1.0f;
-        mute = false;
-    }
-}
-
 public class TestSoundManager : SingletonMonoBehaviour<TestSoundManager>
 {
-    public class Handle
+    //ボリューム関係
+    [SerializeField, Range(0, 1), Tooltip("全体音量")]
+    float volume = 1;
+    [SerializeField, Range(0, 1), Tooltip("BGM音量")]
+    float BGMvolume = 1;
+    [SerializeField, Range(0, 1), Tooltip("SE音量")]
+    float SEvolume = 1;
+
+    public AudioClip[] BGMaudioClip;
+    public AudioClip[] SEaudioClip;
+
+    public AudioSource BGM_audioSource;
+    public AudioSource SE_audioSource;
+
+    Dictionary<string, int> bgmIndex = new Dictionary<string, int>();
+    Dictionary<string, int> seIndex = new Dictionary<string, int>();
+
+    //フェードイン初期値
+    //フェード再生するか？
+    public bool IsFade;
+    //フェードインする時間
+    float fadeIntime = 0;
+    //フェードアウトする時間
+    float fadeOuttime = 0;
+
+    float fadeTimeLate = 0;
+
+    float fadeTimeLate2 = 0;
+    //
+    bool IsFadeIn = false;
+    //
+    bool IsFadeOut = false;
+
+    //全体ボリューム
+    public float _Volume
     {
-        public float volume = 1.0f;
-        public float fadeSpeed = 1.0f;
-        public long frame = 0;
-
-        public void FadeIn()
+        set
         {
-            SoundManager.Instance.StartCoroutine(fadeIn());
+            volume = Mathf.Clamp01(volume);
+            BGM_audioSource.volume = BGMvolume * volume;
+            SE_audioSource.volume = SEvolume * volume;
         }
-
-        public void FadeOut()
+        get
         {
-            SoundManager.Instance.StartCoroutine(fadeOut());
-        }
-
-        public void ResetParams()
-        {
-            volume = 1.0f;
-            fadeSpeed = 1.0f;
-            frame = 0;
-        }
-
-        private IEnumerator fadeIn()
-        {
-            while (volume < 1.0f)
-            {
-                volume += fadeSpeed * Time.deltaTime;
-                yield return null;
-            }
-            volume = 1.0f;
-        }
-
-        private IEnumerator fadeOut()
-        {
-            while (volume > 0.0f)
-            {
-                volume -= fadeSpeed * Time.deltaTime;
-                yield return null;
-            }
-            volume = 0.0f;
+            return volume;
         }
     }
 
-    [SerializeField]
-    private SoundVolume volume = new SoundVolume();
-    public SoundVolume Volume
+    //BGMボリューム
+    public float BGM_Volume
     {
-        get { return volume; }
-        set { volume = value; }
+        set
+        {
+            BGMvolume = Mathf.Clamp01(volume);
+            BGM_audioSource.volume = BGMvolume * volume;
+        }
+        get
+        {
+            return BGMvolume;
+        }
     }
 
-    private AudioClip[] seClips;
-    private AudioClip[] bgmClips;
-
-    private Dictionary<string, int> seIndexes = new Dictionary<string, int>();
-    private Dictionary<string, int> bgmIndexes = new Dictionary<string, int>();
-
-    private const int cNumChannel = 16;
-
-    private AudioSource bgmSource;
-    private Handle bgmHandle = new Handle();
-
-    private AudioSource[] seSources = new AudioSource[cNumChannel];
-    private Dictionary<Handle, AudioSource> seHandles = new Dictionary<Handle, AudioSource>();
-
-    private long frameCounter;
-
-    void Awake()
+    //SEボリューム
+    public float SE_Volume
     {
+        set
+        {
+            SEvolume = Mathf.Clamp01(volume);
+            SE_audioSource.volume = SEvolume * volume;
+        }
+        get
+        {
+            return SEvolume;
+        }
+    }
+    public void Awake()
+    {
+        //呼びだされる
         if (this != Instance)
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
+        DontDestroyOnLoad(this);
 
-        bgmSource = gameObject.AddComponent<AudioSource>();
-        bgmSource.loop = true;
-
-        for (int i = 0; i < seSources.Length; i++)
+        //AudioClipの読み込み
+        for (int i = 0; i < BGMaudioClip.Length; i++)
         {
-            seSources[i] = gameObject.AddComponent<AudioSource>();
-            seHandles[new Handle()] = seSources[i];
+            bgmIndex.Add(BGMaudioClip[i].name, i);
+        }
+        for (int i = 0; i < SEaudioClip.Length; i++)
+        {
+            seIndex.Add(SEaudioClip[i].name, i++);
         }
 
-        seClips = Resources.LoadAll<AudioClip>("Audio/SE");
-        bgmClips = Resources.LoadAll<AudioClip>("Audio/BGM");
-
-        for (int i = 0; i < seClips.Length; ++i)
-        {
-            seIndexes[seClips[i].name] = i;
-        }
-
-        for (int i = 0; i < bgmClips.Length; ++i)
-        {
-            bgmIndexes[bgmClips[i].name] = i;
-        }
     }
 
     void Update()
     {
-        bgmSource.mute = volume.mute;
-        foreach (var source in seSources)
+        //フェードイン(例)
+        //if (fadetime > 0)
+        //{
+        //    fadetime -= Time.deltaTime;
+        //    BGM_audioSource.volume = 1 - (fadetime / fadeTimeLate);
+        //}
+
+        if (fadeIntime > 0)
         {
-            source.mute = volume.mute;
+            fadeIntime -= Time.deltaTime;
+            IsFadeIn = false;
+            BGM_audioSource.volume = 1 - (fadeIntime / fadeTimeLate);
+        }
+        if (fadeOuttime > 0)
+        {
+            fadeOuttime -= Time.deltaTime;
+            IsFadeIn = false;
+            BGM_audioSource.volume = (fadeOuttime / fadeTimeLate2);
+
         }
 
-        bgmSource.volume = volume.bgm * bgmHandle.volume;
-        foreach (var pair in seHandles)
-        {
-            pair.Value.volume = volume.se * pair.Key.volume;
-        }
+    }
 
-        frameCounter++;
+    public int GetBgmIndex(string name)
+    {
+        if (bgmIndex.ContainsKey(name))
+        {
+            return bgmIndex[name];
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public int GetSeIndex(string name)
     {
-        return seIndexes[name];
-    }
-    public int GetBgmIndex(string name)
-    {
-        return bgmIndexes[name];
-    }
-    public Handle PlayBgm(string name)
-    {
-        int index = bgmIndexes[name];
-        return PlayBgm(index);
-    }
-    public Handle PlayBgm(int index)
-    {
-        if (0 > index || bgmClips.Length <= index)
+        if (seIndex.ContainsKey(name))
         {
-            return null;
+            return seIndex[name];
         }
-
-        if (bgmSource.clip == bgmClips[index])
+        else
         {
-            return bgmHandle;
+            return 0;
         }
-
-        bgmSource.Stop();
-        bgmSource.clip = bgmClips[index];
-        bgmSource.Play();
-
-        bgmHandle.ResetParams();
-        bgmHandle.frame = frameCounter;
-
-        return bgmHandle;
     }
 
-    public void StopBgm()
+    //BGM再生
+    public void PlayBGM(int index, float fadeIn_Time = 0, float fadeOut_Time = 0)
     {
-        bgmSource.Stop();
-        bgmSource.clip = null;
+        fadeIntime = fadeIn_Time;
+        fadeTimeLate = fadeIntime;
+
+        fadeOuttime = fadeOut_Time;
+        fadeTimeLate2 = fadeOuttime;
+
+        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
+        BGM_audioSource.PlayOneShot(BGMaudioClip[index], BGM_Volume * _Volume);
     }
 
-    public bool IsBgmPlaying { get { return bgmSource.isPlaying; } }
-
-    public Handle PlaySe(string name)
+    public void PlayBgmName(string name, float fadeintime = 0, float fadeOut_Time = 0)
     {
-        return PlaySe(GetSeIndex(name));
-    }
-    public Handle PlaySe(int index)
-    {
-        if (0 > index || seClips.Length <= index)
-        {
-            return null;
-        }
-        foreach (var k in seHandles)
-        {
-            AudioSource source = k.Value;
-            Handle handle = k.Key;
-            if (source.clip == seClips[index] &&
-                 handle.frame == frameCounter)
-            {
-                return handle;
-            }
-        }
-        //二回ループは一回ループにまとめられるが、
-        //可読性重視で二回ループにしておく
-        //for avoiding duplicated sounds
-        //同一フレームでの重複再生回避
-        foreach (var k in seHandles)
-        {
-            AudioSource source = k.Value;
-            Handle handle = k.Key;
-            if (false == source.isPlaying)
-            {
-                handle.ResetParams();
-                source.clip = seClips[index];
-                source.Play();
-                handle.frame = frameCounter;
-                return handle;
-            }
-        }
-
-        return null;
+        PlayBGM(GetBgmIndex(name), fadeintime, fadeOut_Time);
     }
 
-    public void StopSe()
+    //SE再生
+    public void PlaySE(int index)
     {
-        foreach (AudioSource source in seSources)
-        {
-            source.Stop();
-            source.clip = null;
-        }
+        SE_audioSource.PlayOneShot(SEaudioClip[index], SE_Volume * _Volume);
+    }
+
+    public void PlaySeName(string name)
+    {
+        PlaySE(GetSeIndex(name));
     }
 }
