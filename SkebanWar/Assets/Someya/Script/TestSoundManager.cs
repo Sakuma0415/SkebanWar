@@ -1,182 +1,310 @@
-﻿using System.Collections;
+﻿using UnityEngine;
+using System;
+using System.Linq;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
 
+/// <summary>
+/// BGMの再生、停止を制御します。
+/// </summary>
 public class TestSoundManager : SingletonMonoBehaviour<TestSoundManager>
 {
-    //ボリューム関係
-    [SerializeField, Range(0, 1), Tooltip("全体音量")]
-    float volume = 1;
-    [SerializeField, Range(0, 1), Tooltip("BGM音量")]
-    float BGMvolume = 1;
-    [SerializeField, Range(0, 1), Tooltip("SE音量")]
-    float SEvolume = 1;
+	/// <summary>
+	/// デバッグモード
+	/// </summary>
+	public bool DebugMode = true;
+	/// <summary>
+	/// BGM再生音量
+	/// 次回フェードインから適用されます。
+	/// 再生中の音量を変更するには、CurrentAudioSource.Volumeを変更してください。
+	/// </summary>
+	[Range(0f, 1f)]
+	public float TargetVolume = 1.0f;
+	/// <summary>
+	/// フェードイン、フェードアウトにかかる時間です。
+	/// </summary>
+	public float TimeToFade = 2.0f;
+	/// <summary>
+	/// フェードインとフェードアウトの実行を重ねる割合です。
+	/// 0を指定すると、完全にフェードアウトしてからフェードインを開始します。
+	/// 1を指定すると、フェードアウトとフェードインを同時に開始します。
+	/// </summary>
+	[Range(0f, 1f)]
+	public float CrossFadeRatio = 1.0f;
+	/// <summary>
+	/// 現在再生中のAudioSource
+	/// FadeOut中のものは除く
+	/// </summary>
+	[NonSerialized]
+	public AudioSource CurrentAudioSource = null;
 
-    public AudioClip[] BGMaudioClip;
-    public AudioClip[] SEaudioClip;
+	/// <summary>
+	/// FadeOut中、もしくは再生待機中のAudioSource
+	/// </summary>
+	public AudioSource SubAudioSource
+	{
+		get
+		{
+			//bgmSourcesのうち、CurrentAudioSourceでない方を返す
+			if (this.AudioSources == null)
+				return null;
+			foreach (AudioSource s in this.AudioSources)
+			{
+				if (s != this.CurrentAudioSource)
+				{
+					return s;
+				}
+			}
+			return null;
+		}
+	}
 
-    public AudioSource BGM_audioSource;
-    public AudioSource SE_audioSource;
+	/// <summary>
+	/// BGMを再生するためのAudioSourceです。
+	/// クロスフェードを実現するための２つの要素を持ちます。
+	/// </summary>
+	private List<AudioSource> AudioSources = null;
+	/// <summary>
+	/// 再生可能なBGM(AudioClip)のリストです。
+	/// 実行時に Resources/Audio/BGM フォルダから自動読み込みされます。
+	/// </summary>
+	private Dictionary<string, AudioClip> AudioClipDict = null;
+	/// <summary>
+	/// コルーチン中断に使用
+	/// </summary>
+	private IEnumerator fadeOutCoroutine;
+	/// <summary>
+	/// コルーチン中断に使用
+	/// </summary>
+	private IEnumerator fadeInCoroutine;
 
-    Dictionary<string, int> bgmIndex = new Dictionary<string, int>();
-    Dictionary<string, int> seIndex = new Dictionary<string, int>();
+	public void Awake()
+	{
+		//シングルトンのためのコード
+		if (this != Instance)
+		{
+			Destroy(this.gameObject);
+			return;
+		}
+		DontDestroyOnLoad(this.gameObject);
 
-    //フェードイン初期値
-    //フェード再生するか？
-    public bool IsFade;
-    //フェードインする時間
-    float fadeIntime = 0;
-    //フェードアウトする時間
-    float fadeOuttime = 0;
+		//AudioSourceを２つ用意。クロスフェード時に同時再生するために２つ用意する。
+		this.AudioSources = new List<AudioSource>();
+		this.AudioSources.Add(this.gameObject.AddComponent<AudioSource>());
+		this.AudioSources.Add(this.gameObject.AddComponent<AudioSource>());
+		foreach (AudioSource s in this.AudioSources)
+		{
+			s.playOnAwake = false;
+			s.volume = 0f;
+			s.loop = true;
+		}
 
-    float fadeTimeLate = 0;
+		//[Resources/Audio/BGM]フォルダからBGMを探す
+		this.AudioClipDict = new Dictionary<string, AudioClip>();
+		foreach (AudioClip bgm in Resources.LoadAll<AudioClip>("Audio/BGM"))
+		{
+			this.AudioClipDict.Add(bgm.name, bgm);
+		}
 
-    float fadeTimeLate2 = 0;
-    //
-    bool IsFadeIn = false;
-    //
-    bool IsFadeOut = false;
+		//有効なAudioListenerが一つも無い場合は生成する。（大体はMainCameraについてる）
+		if (FindObjectsOfType(typeof(AudioListener)).All(o => !((AudioListener)o).enabled))
+		{
+			this.gameObject.AddComponent<AudioListener>();
+		}
+	}
 
-    //全体ボリューム
-    public float _Volume
-    {
-        set
-        {
-            volume = Mathf.Clamp01(volume);
-            BGM_audioSource.volume = BGMvolume * volume;
-            SE_audioSource.volume = SEvolume * volume;
-        }
-        get
-        {
-            return volume;
-        }
-    }
+	/// <summary>
+	/// デバッグ用操作パネルを表示
+	/// </summary>
+	public void OnGUI()
+	{
+		if (this.DebugMode)
+		{
+			//AudioClipが見つからなかった場合
+			if (this.AudioClipDict.Count == 0)
+			{
+				GUI.Box(new Rect(10, 10, 200, 50), "BGM Manager(Debug Mode)");
+				GUI.Label(new Rect(10, 35, 80, 20), "Audio clips not found.");
+				return;
+			}
 
-    //BGMボリューム
-    public float BGM_Volume
-    {
-        set
-        {
-            BGMvolume = Mathf.Clamp01(volume);
-            BGM_audioSource.volume = BGMvolume * volume;
-        }
-        get
-        {
-            return BGMvolume;
-        }
-    }
+			//枠
+			GUI.Box(new Rect(10, 10, 200, 150 + this.AudioClipDict.Count * 25), "BGM Manager(Debug Mode)");
+			int i = 0;
+			GUI.Label(new Rect(20, 30 + i++ * 20, 180, 20), "Target Volume : " + this.TargetVolume.ToString("0.00"));
+			GUI.Label(new Rect(20, 30 + i++ * 20, 180, 20), "Time to Fade : " + this.TimeToFade.ToString("0.00"));
+			GUI.Label(new Rect(20, 30 + i++ * 20, 180, 20), "Crossfade Ratio : " + this.CrossFadeRatio.ToString("0.00"));
 
-    //SEボリューム
-    public float SE_Volume
-    {
-        set
-        {
-            SEvolume = Mathf.Clamp01(volume);
-            SE_audioSource.volume = SEvolume * volume;
-        }
-        get
-        {
-            return SEvolume;
-        }
-    }
-    public void Awake()
-    {
-        //呼びだされる
-        if (this != Instance)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        DontDestroyOnLoad(this);
+			i = 0;
+			//再生ボタン
+			foreach (AudioClip bgm in this.AudioClipDict.Values)
+			{
+				bool currentBgm = (this.CurrentAudioSource != null && this.CurrentAudioSource.clip == this.AudioClipDict[bgm.name]);
 
-        //AudioClipの読み込み
-        for (int i = 0; i < BGMaudioClip.Length; i++)
-        {
-            bgmIndex.Add(BGMaudioClip[i].name, i);
-        }
-        for (int i = 0; i < SEaudioClip.Length; i++)
-        {
-            seIndex.Add(SEaudioClip[i].name, i++);
-        }
+				if (GUI.Button(new Rect(20, 100 + i * 25, 40, 20), "Play"))
+				{
+					this.Play(bgm.name);
+				}
+				string txt = string.Format("[{0}] {1}", currentBgm ? "X" : "_", bgm.name);
+				GUI.Label(new Rect(70, 100 + i * 25, 1000, 20), txt);
 
-    }
+				i++;
+			}
 
-    void Update()
-    {
-        //フェードイン(例)
-        //if (fadetime > 0)
-        //{
-        //    fadetime -= Time.deltaTime;
-        //    BGM_audioSource.volume = 1 - (fadetime / fadeTimeLate);
-        //}
+			//停止ボタン
+			if (GUI.Button(new Rect(20, 100 + i++ * 25, 180, 20), "Stop"))
+			{
+				this.Stop();
+			}
+			if (GUI.Button(new Rect(20, 100 + i++ * 25, 180, 20), "Stop Immediately"))
+			{
+				this.StopImmediately();
+			}
+		}
+	}
 
-        if (fadeIntime > 0)
-        {
-            fadeIntime -= Time.deltaTime;
-            IsFadeIn = false;
-            BGM_audioSource.volume = 1 - (fadeIntime / fadeTimeLate);
-        }
-        if (fadeOuttime > 0)
-        {
-            fadeOuttime -= Time.deltaTime;
-            IsFadeIn = false;
-            BGM_audioSource.volume = (fadeOuttime / fadeTimeLate2);
+	/// <summary>
+	/// BGMを再生します。
+	/// </summary>
+	/// <param name="bgmName">BGM名</param>
+	public void Play(string bgmName)
+	{
+		if (!this.AudioClipDict.ContainsKey(bgmName))
+		{
+			Debug.LogError(string.Format("BGM名[{0}]が見つかりません。", bgmName));
+			return;
+		}
 
-        }
+		if ((this.CurrentAudioSource != null)
+			&& (this.CurrentAudioSource.clip == this.AudioClipDict[bgmName]))
+		{
+			//すでに指定されたBGMを再生中
+			return;
+		}
 
-    }
+		//クロスフェード中なら中止
+		stopFadeOut();
+		stopFadeIn();
 
-    public int GetBgmIndex(string name)
-    {
-        if (bgmIndex.ContainsKey(name))
-        {
-            return bgmIndex[name];
-        }
-        else
-        {
-            return 0;
-        }
-    }
+		//再生中のBGMをフェードアウト開始
+		this.Stop();
 
-    public int GetSeIndex(string name)
-    {
-        if (seIndex.ContainsKey(name))
-        {
-            return seIndex[name];
-        }
-        else
-        {
-            return 0;
-        }
-    }
+		float fadeInStartDelay = this.TimeToFade * (1.0f - this.CrossFadeRatio);
 
-    //BGM再生
-    public void PlayBGM(int index, float fadeIn_Time = 0, float fadeOut_Time = 0)
-    {
-        fadeIntime = fadeIn_Time;
-        fadeTimeLate = fadeIntime;
+		//BGM再生開始
+		this.CurrentAudioSource = this.SubAudioSource;
+		this.CurrentAudioSource.clip = this.AudioClipDict[bgmName];
+		this.fadeInCoroutine = fadeIn(this.CurrentAudioSource, this.TimeToFade, this.CurrentAudioSource.volume, this.TargetVolume, fadeInStartDelay);
+		StartCoroutine(this.fadeInCoroutine);
+	}
 
-        fadeOuttime = fadeOut_Time;
-        fadeTimeLate2 = fadeOuttime;
+	/// <summary>
+	/// BGMを停止します。
+	/// </summary>
+	public void Stop()
+	{
+		if (this.CurrentAudioSource != null)
+		{
+			this.fadeOutCoroutine = fadeOut(this.CurrentAudioSource, this.TimeToFade, this.CurrentAudioSource.volume, 0f);
+			StartCoroutine(this.fadeOutCoroutine);
+		}
+	}
 
-        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
-        BGM_audioSource.PlayOneShot(BGMaudioClip[index], BGM_Volume * _Volume);
-    }
+	/// <summary>
+	/// BGMをただちに停止します。
+	/// </summary>
+	public void StopImmediately()
+	{
+		this.fadeInCoroutine = null;
+		this.fadeOutCoroutine = null;
+		foreach (AudioSource s in this.AudioSources)
+		{
+			s.Stop();
+		}
+		this.CurrentAudioSource = null;
+	}
 
-    public void PlayBgmName(string name, float fadeintime = 0, float fadeOut_Time = 0)
-    {
-        PlayBGM(GetBgmIndex(name), fadeintime, fadeOut_Time);
-    }
+	/// <summary>
+	/// BGMをフェードインさせながら再生を開始します。
+	/// </summary>
+	/// <param name="bgm">AudioSource</param>
+	/// <param name="timeToFade">フェードインにかかる時間</param>
+	/// <param name="fromVolume">初期音量</param>
+	/// <param name="toVolume">フェードイン完了時の音量</param>
+	/// <param name="delay">フェードイン開始までの待ち時間</param>
+	private IEnumerator fadeIn(AudioSource bgm, float timeToFade, float fromVolume, float toVolume, float delay)
+	{
+		if (delay > 0)
+		{
+			yield return new WaitForSeconds(delay);
+		}
 
-    //SE再生
-    public void PlaySE(int index)
-    {
-        SE_audioSource.PlayOneShot(SEaudioClip[index], SE_Volume * _Volume);
-    }
 
-    public void PlaySeName(string name)
-    {
-        PlaySE(GetSeIndex(name));
-    }
+		float startTime = Time.time;
+		bgm.Play();
+		while (true)
+		{
+			float spentTime = Time.time - startTime;
+			if (spentTime > timeToFade)
+			{
+				bgm.volume = toVolume;
+				this.fadeInCoroutine = null;
+				break;
+			}
+
+			float rate = spentTime / timeToFade;
+			float vol = Mathf.Lerp(fromVolume, toVolume, rate);
+			bgm.volume = vol;
+			yield return null;
+		}
+	}
+
+	/// <summary>
+	/// BGMをフェードアウトし、その後停止します。
+	/// </summary>
+	/// <param name="bgm">フェードアウトさせるAudioSource</param>
+	/// <param name="timeToFade">フェードアウトにかかる時間</param>
+	/// <param name="fromVolume">フェードアウト開始前の音量</param>
+	/// <param name="toVolume">フェードアウト完了時の音量</param>
+	private IEnumerator fadeOut(AudioSource bgm, float timeToFade, float fromVolume, float toVolume)
+	{
+		float startTime = Time.time;
+		while (true)
+		{
+			float spentTime = Time.time - startTime;
+			if (spentTime > timeToFade)
+			{
+				bgm.volume = toVolume;
+				bgm.Stop();
+				this.fadeOutCoroutine = null;
+				break;
+			}
+
+			float rate = spentTime / timeToFade;
+			float vol = Mathf.Lerp(fromVolume, toVolume, rate);
+			bgm.volume = vol;
+			yield return null;
+		}
+	}
+
+	/// <summary>
+	/// フェードイン処理を中断します。
+	/// </summary>
+	private void stopFadeIn()
+	{
+		if (this.fadeInCoroutine != null)
+			StopCoroutine(this.fadeInCoroutine);
+		this.fadeInCoroutine = null;
+
+	}
+
+	/// <summary>
+	/// フェードアウト処理を中断します。
+	/// </summary>
+	private void stopFadeOut()
+	{
+		if (this.fadeOutCoroutine != null)
+			StopCoroutine(this.fadeOutCoroutine);
+		this.fadeOutCoroutine = null;
+	}
 }
