@@ -409,10 +409,12 @@ MonoBehaviour:
   SEvolume: 1
   BGMaudioClip:
   - {fileID: 8300000, guid: cb5b51f85daeec24c9eb1cd70e3114ca, type: 3}
+  - {fileID: 8300000, guid: 1d0d38709204f9148bd1decb75aa5c00, type: 3}
   SEaudioClip:
   - {fileID: 8300000, guid: 5dcb23142dffa2b46ad83fc27a356630, type: 3}
   BGM_audioSource: {fileID: 181432081}
   SE_audioSource: {fileID: 531911890}
+  IsFade: 0
 --- !u!4 &707948835
 Transform:
   m_ObjectHideFlags: 0

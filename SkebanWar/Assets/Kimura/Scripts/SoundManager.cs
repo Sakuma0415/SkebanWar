@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+//honnbann
 public class SoundManager : MonoBehaviour
 {
     static public SoundManager Instans;
@@ -32,14 +32,10 @@ public class SoundManager : MonoBehaviour
     float fadeIntime = 0;
     //フェードアウトする時間
     float fadeOuttime = 0;
-
+    //フェードイン・アウトの経過時間
     float fadeTimeLate = 0;
-
+    //フェードイン・アウトの経過時間
     float fadeTimeLate2 = 0;
-    //
-    bool IsFadeIn = false;
-    //
-    bool IsFadeOut = false;
 
 
     #region soundvolume関係
@@ -121,21 +117,21 @@ public class SoundManager : MonoBehaviour
         //    fadetime -= Time.deltaTime;
         //    BGM_audioSource.volume = 1 - (fadetime / fadeTimeLate);
         //}
-
         if (fadeIntime > 0)
         {
             fadeIntime -= Time.deltaTime;
-            IsFadeIn = false;
             BGM_audioSource.volume = 1 - (fadeIntime / fadeTimeLate);
         }
-        if(fadeOuttime > 0)
+
+        if (fadeOuttime > 0)
         {
             fadeOuttime -= Time.deltaTime;
-            IsFadeIn = false;
             BGM_audioSource.volume = (fadeOuttime / fadeTimeLate2);
-
+            if (BGM_audioSource.volume < 0)
+            {
+                BGM_audioSource.Stop();
+            }
         }
-
     }
 
     public int GetBgmIndex(string name)
@@ -163,21 +159,43 @@ public class SoundManager : MonoBehaviour
     }
 
     //BGM再生
-    public void PlayBGM(int index, float fadeIn_Time = 0,float fadeOut_Time=0)
+    public void PlayBGM(int index, float fadeIn_Time = 0)
     {
+        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
+
+        //フェードイン時間の設定
         fadeIntime = fadeIn_Time;
         fadeTimeLate = fadeIntime;
 
+        BGM_audioSource.clip = BGMaudioClip[index];
+        BGM_audioSource.loop = true;
+        BGM_audioSource.volume = BGM_Volume * _Volume;
+        BGM_audioSource.Play();
+    }
+
+    public void Stop_BGM(int index, float fadeOut_Time = 0)
+    {
+        //フェードアウト時間の設定
         fadeOuttime = fadeOut_Time;
         fadeTimeLate2 = fadeOuttime;
 
-        index = Mathf.Clamp(index, 0, BGMaudioClip.Length);
-        BGM_audioSource.PlayOneShot(BGMaudioClip[index], BGM_Volume * _Volume);
+        BGM_audioSource.clip = BGMaudioClip[index];
+        BGM_audioSource.volume = BGM_Volume * _Volume;
     }
 
-    public void PlayBgmName(string name, float fadeintime = 0, float fadeOut_Time = 0)
+    public void PlayBgmName(string name, float fadeintime = 0)
     {
-        PlayBGM(GetBgmIndex(name), fadeintime, fadeOut_Time);
+        PlayBGM(GetBgmIndex(name), fadeintime);
+    }
+
+    public void StopBgmName(string name, float fadeOuttime = 0)
+    {
+        Stop_BGM(GetBgmIndex(name), fadeOuttime);
+    }
+    public void StopBgm()
+    {
+        BGM_audioSource.Stop();
+        BGM_audioSource.clip = null;
     }
 
     //SE再生
