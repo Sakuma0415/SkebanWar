@@ -8,15 +8,19 @@ public class test : MonoBehaviour
 
     void Start()
     {
-        SaundoManager.Instans.PlayBgmName("TestBGM");
+        
     }
 
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            SaundoManager.Instans.PlaySeName("TestSE");
+            SoundManager.Instans.FadeInBGM("TestBGM");
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            SoundManager.Instans.FadeOutBGM();
 
         }
 
@@ -24,6 +28,7 @@ public class test : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S))
         {
             SceneManager.LoadScene("test2");
+            SoundManager.Instans.FadeInBGM("Ataku");
         }
 
     }
