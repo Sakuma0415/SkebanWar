@@ -2026,6 +2026,8 @@ MonoBehaviour:
   endGameMode: 0
   diceText: {fileID: 1958554987}
   diceButton: {fileID: 250456600}
+  rollTheDice: {fileID: 1356398340}
+  diceArrow: {fileID: 167760780}
   charData: {fileID: 11400000, guid: 9716986832f415e4899799569d8f4cca, type: 2}
   spriteData: {fileID: 11400000, guid: 98e146aefdebba74cb5281367e7e4d91, type: 2}
   upperText: {fileID: 1489323302}
@@ -2034,6 +2036,7 @@ MonoBehaviour:
   nextPlayerTexts: {fileID: 493577817}
   CutInImage: {fileID: 653512945}
   reRollImage: {fileID: 370014862}
+  grayScale: {fileID: 2100000, guid: 181787d4e6d509e44a97355636260def, type: 2}
 --- !u!4 &955712932
 Transform:
   m_ObjectHideFlags: 0
