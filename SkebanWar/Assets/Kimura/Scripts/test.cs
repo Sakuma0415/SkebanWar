@@ -14,24 +14,21 @@ public class test : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            //SaundoManager.Instans.PlaySeName("TestSE");
-            SoundManager.Instans.PlayBgmName("TestBGM",7f);
+            SoundManager.Instans.FadeInBGM("TestBGM");
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            //SaundoManager.Instans.PlaySeName("TestSE");
-            //SoundManager.Instans.PlaySeName("TestSE");
-            SoundManager.Instans.StopBgmName("TestBGM", 3f);
+            SoundManager.Instans.FadeOutBGM();
 
         }
 
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            //SceneManager.LoadScene("test2");
-            SoundManager.Instans.PlayBgmName("Ataku", 7f);
+            SceneManager.LoadScene("test2");
+            SoundManager.Instans.FadeInBGM("Ataku");
         }
 
     }
