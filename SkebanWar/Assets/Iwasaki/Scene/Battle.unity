@@ -1984,8 +1984,8 @@ RectTransform:
   - {fileID: 370014861}
   - {fileID: 246413272}
   - {fileID: 442636457}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_Father: {fileID: 14863534927227058}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2028,6 +2028,7 @@ MonoBehaviour:
   diceButton: {fileID: 250456600}
   rollTheDice: {fileID: 1356398340}
   diceArrow: {fileID: 167760780}
+  doOnce: 0
   charData: {fileID: 11400000, guid: 9716986832f415e4899799569d8f4cca, type: 2}
   spriteData: {fileID: 11400000, guid: 98e146aefdebba74cb5281367e7e4d91, type: 2}
   upperText: {fileID: 1489323302}
@@ -2164,12 +2165,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315782724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -325.2787, y: 1125.4658, z: -114.52051}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -325.2787, y: 1125.4658, z: -114.520515}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1356398338
 GameObject:
@@ -3344,6 +3345,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2123203380}
   m_CullTransparentMesh: 0
+--- !u!4 &14863534927227058
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1554221042337799737}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.83708876, y: -0.41559222, z: 63.834587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 5828812713459508471}
+  - {fileID: 878559412}
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1141212486368137643
 GameObject:
   m_ObjectHideFlags: 0
@@ -3360,6 +3377,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1554221042337799737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 14863534927227058}
+  m_Layer: 0
+  m_Name: Battle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!4 &5828812713459508471
 Transform:
   m_ObjectHideFlags: 0
@@ -3367,13 +3400,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1141212486368137643}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.45933178, y: -0.31285158, z: 762.2031}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.37775698, y: 0.102740645, z: 698.3685}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1862877981}
   - {fileID: 725397652}
   - {fileID: 955712932}
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 14863534927227058}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

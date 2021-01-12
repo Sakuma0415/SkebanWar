@@ -66,6 +66,7 @@ public class Progress : MonoBehaviour
                 Instance.P2SelectUpdate();
                 break;
             case GameMode.Battle:
+                BattleUpdate();
                 break;
             case GameMode.End:
                 break;
@@ -74,6 +75,15 @@ public class Progress : MonoBehaviour
                 break;
         }
         //Debug.Log(gameMode);
+    }
+
+
+    void BattleUpdate()
+    {
+        if (endGameMode)
+        {
+            ChagngeGameMode(afterBattleTrnePlayer ==1? GameMode.P1Select: GameMode.P2Select, 1f);
+        }
     }
 
     void StartUpdate()

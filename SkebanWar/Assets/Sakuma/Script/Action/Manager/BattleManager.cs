@@ -23,6 +23,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     GameObject diceObj;
 
+    [SerializeField]
+    FieldManager fieldManager;
+    [SerializeField]
+    CharacterManager P1CharacterManager;
+    [SerializeField]
+    CharacterManager P2CharacterManager;
+
+    public int attack=0;
+    public int defense=0;
+
     public void BattleStart()
     {
         IsBattle = true;
@@ -50,9 +60,24 @@ public class BattleManager : MonoBehaviour
                 case 1:
                     Progress1();
                     break;
+                case 2:
+                    Progress2();
+                    break;
             }
         }
     }
+
+    void Progress2()
+    {
+        CharacterManager character = (Progress.Instance .afterBattleTrnePlayer ==1 ? P1CharacterManager : P2CharacterManager);
+
+        character.CharacterBench[defense].HP = (character.CharacterBench[defense].HP - dice.Ans ) <= 0 ?0:( character.CharacterBench[defense].HP - dice.Ans );
+        //character.CharacterBench[defense].HP -= 10;
+        fieldManager.FieldClean();
+        Progress.Instance.endGameMode = true;
+        NextProgress();
+    }
+
     //画面暗転＆喧嘩上等演出
     void Progress0()
     {

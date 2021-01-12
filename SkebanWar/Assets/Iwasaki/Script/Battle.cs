@@ -51,7 +51,7 @@ public class Battle : MonoBehaviour
     [SerializeField]
     private Image diceArrow;
 
-    private bool doOnce = true;
+    public bool doOnce = false ;
     private int diceNumber;
 
     //キャラクターデータ
@@ -98,7 +98,7 @@ public class Battle : MonoBehaviour
     private bool witchAttackBool = true;
 
     private bool cutInBool;
-    private Touch touch = Input.GetTouch(0);
+    private Touch touch ;
     [SerializeField]
     private GameObject nextPlayerTexts;
     [SerializeField]
@@ -114,8 +114,6 @@ public class Battle : MonoBehaviour
     void Start()
     {
         Instance = this;
-        fadeCanvas.alpha = 0;        
-
         //アニメーター初期化
         anim_Icon = GameObject.FindGameObjectWithTag("IconAnim").GetComponent<Animator>();
         anim_Plate = GameObject.FindGameObjectWithTag("PlateAnim").GetComponent<Animator>();
@@ -128,14 +126,10 @@ public class Battle : MonoBehaviour
         //ボタン初期化
         yesButton = GameObject.FindGameObjectWithTag("YesButton").GetComponent<Button>();
         noButton = GameObject.FindGameObjectWithTag("NoButton").GetComponent<Button>();
-        yesButton.gameObject.SetActive(false);
-        noButton.gameObject.SetActive(false);
 
         //キャラクターアイコン初期化
         upperImage = GameObject.FindGameObjectWithTag("UpperImage").GetComponent<Image>();
         lowerImage = GameObject.FindGameObjectWithTag("LowerImage").GetComponent<Image>();
-        upperImage.gameObject.SetActive(false);
-        lowerImage.gameObject.SetActive(false);
 
         //喧嘩上等 時の左右のキャラクターイメージ初期化
         kenkaImage_Left = GameObject.FindGameObjectWithTag("PlateImageLeft").GetComponent<Image>();
@@ -144,6 +138,24 @@ public class Battle : MonoBehaviour
         //喧嘩上等 時の左右のプレートイメージ初期化
         plateLeft = GameObject.FindGameObjectWithTag("LeftPlate").GetComponent<Image>();
         plateRight = GameObject.FindGameObjectWithTag("RightPlate").GetComponent<Image>();
+
+
+        Init();
+    }
+
+
+    void Init()
+    {
+        
+        fadeCanvas.alpha = 0;
+
+
+        yesButton.gameObject.SetActive(false);
+        noButton.gameObject.SetActive(false);
+
+
+        upperImage.gameObject.SetActive(false);
+        lowerImage.gameObject.SetActive(false);
 
         //キャラクター情報追加
         upperChar = charData.characterDatas[0];
@@ -195,14 +207,16 @@ public class Battle : MonoBehaviour
             reRollImage.transform.rotation = Quaternion.Euler(0, 0, 180);
             yesButton.transform.rotation = Quaternion.Euler(0, 0, 180);
             noButton.transform.rotation = Quaternion.Euler(0, 0, 180);
-        }     
+        }
     }
+
+
+
 
     // Update is called once per frame
     void Update()
     {        
         Instance.time += Time.deltaTime;
-
         switch (nowProcess)
         {
             case BattleProcess.Start:
@@ -237,6 +251,13 @@ public class Battle : MonoBehaviour
     }
     void StartUpdate()
     {
+
+        if(Input .GetKeyDown (KeyCode.A))
+        {
+            doOnce = true;
+        }
+
+
         if (doOnce)
         {
             doOnce = false;
@@ -270,7 +291,7 @@ public class Battle : MonoBehaviour
         }
         yield return new WaitForSeconds(2.0f);
 
-        ChagngeGameMode(BattleProcess.FirstDice, 1f);
+        ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
 
         yield break;
     }
@@ -343,7 +364,7 @@ public class Battle : MonoBehaviour
                 diceButton.gameObject.SetActive(true);
                 if(beforeProcess == BattleProcess.FirstDice)
                 {
-                    ChagngeGameMode(BattleProcess.FirstDice, 1f);
+                    ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
                     if (witchAttackBool)
                     {
                         GameManager.Instance.HaveCoins_1P -= 2;
@@ -356,7 +377,7 @@ public class Battle : MonoBehaviour
                 }
                 if (beforeProcess == BattleProcess.SecondDice)
                 {
-                    ChagngeGameMode(BattleProcess.SecondDice, 1f);
+                    ChagngeGameMode(BattleProcess.SecondDice, 0.25f);
                     if (witchAttackBool)
                     {
                         GameManager.Instance.HaveCoins_2P -= 2;
@@ -374,7 +395,7 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
-                ChagngeGameMode(BattleProcess.FirstAttack, 1f);
+                ChagngeGameMode(BattleProcess.FirstAttack, 0.25f);
             }
         }
     }
@@ -423,14 +444,14 @@ public class Battle : MonoBehaviour
                         {
                             lowerImage.material = grayScale;
                         }
-                        ChagngeGameMode(BattleProcess.End, 1f);
+                        ChagngeGameMode(BattleProcess.End, 0.25f);
                         yield break;
                     }
 
                     yield return null;                    
                 }
 
-                ChagngeGameMode(BattleProcess.CutIn, 3f);
+                ChagngeGameMode(BattleProcess.CutIn, 0.25f);
                 break;
 
             case BattleProcess.SecondAttack:
@@ -462,14 +483,14 @@ public class Battle : MonoBehaviour
                         {
                             lowerImage.material = grayScale;
                         }
-                        ChagngeGameMode(BattleProcess.End, 1f);
+                        ChagngeGameMode(BattleProcess.End, 0.25f);
                         yield break;
                     }
 
                     yield return null;
                 }
 
-                ChagngeGameMode(BattleProcess.End, 1f);
+                ChagngeGameMode(BattleProcess.End, 0.25f);
                 break;
         }
         yield break;
@@ -493,12 +514,25 @@ public class Battle : MonoBehaviour
     {        
         anim_CutInMask.SetTrigger("CutInMask");
         yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + waitTime);
-        ChagngeGameMode(BattleProcess.SecondDice, 1f);
+        ChagngeGameMode(BattleProcess.SecondDice, 0.25f);
         yield break;
     }
 
     private void EndPhase()
     {
+        anim_Icon.gameObject .SetActive (true);
+        anim_Plate.gameObject.SetActive(true);
+        anim_Text.gameObject.SetActive(true);
+        anim_Attack.gameObject.SetActive(true);
+        anim_FlashUpper.gameObject.SetActive(true);
+        anim_FlashLower.gameObject.SetActive(true);
+        anim_CutInMask.gameObject.SetActive(true);
+
+        anim_Icon.SetBool("End", true);
+
+        Init();
+        doOnce = false;
+        ChagngeGameMode(BattleProcess.Start, 0.25f);
 
     }
     public void ChagngeGameMode(BattleProcess changeGameMode, float intervalSet = 0)
@@ -622,11 +656,11 @@ public class Battle : MonoBehaviour
             if (GameManager.Instance.HaveCoins_1P > 1)
             {
                 beforeProcess = BattleProcess.FirstDice;
-                ChagngeGameMode(BattleProcess.ReRollChance, 1f);
+                ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
             {
-                ChagngeGameMode(BattleProcess.FirstAttack, 1f);
+                ChagngeGameMode(BattleProcess.FirstAttack, 0.25f);
             }
         }
         if (!witchAttackBool)
@@ -634,11 +668,11 @@ public class Battle : MonoBehaviour
             if (GameManager.Instance.HaveCoins_2P > 1)
             {
                 beforeProcess = BattleProcess.FirstDice;
-                ChagngeGameMode(BattleProcess.ReRollChance, 1f);
+                ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
             {
-                ChagngeGameMode(BattleProcess.FirstAttack, 1f);
+                ChagngeGameMode(BattleProcess.FirstAttack, 0.25f);
             }
         }
     }
@@ -649,11 +683,11 @@ public class Battle : MonoBehaviour
             if (GameManager.Instance.HaveCoins_2P > 1)
             {
                 beforeProcess = BattleProcess.SecondDice;
-                ChagngeGameMode(BattleProcess.ReRollChance, 1f);
+                ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
             {
-                ChagngeGameMode(BattleProcess.SecondAttack, 1f);
+                ChagngeGameMode(BattleProcess.SecondAttack, 0.25f);
             }
         }
         if (!witchAttackBool)
@@ -661,11 +695,11 @@ public class Battle : MonoBehaviour
             if (GameManager.Instance.HaveCoins_1P > 1)
             {
                 beforeProcess = BattleProcess.SecondDice;
-                ChagngeGameMode(BattleProcess.ReRollChance, 1f);
+                ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
             {
-                ChagngeGameMode(BattleProcess.SecondAttack, 1f);
+                ChagngeGameMode(BattleProcess.SecondAttack, 0.25f);
             }
         }
     }
