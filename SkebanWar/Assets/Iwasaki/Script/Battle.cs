@@ -150,7 +150,7 @@ public class Battle : MonoBehaviour
     {
         
         fadeCanvas.alpha = 0;
-
+        kenkaImage_Right.color = new Color(0, 0, 0);
 
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
@@ -287,7 +287,7 @@ public class Battle : MonoBehaviour
             kenkaImage_Right.color = new Color(0.25f * (time / fadeTime), 0.25f * (time / fadeTime), 0.25f * (time / fadeTime));
             yield return null;
         }
-        yield return new WaitForSeconds(2.0f);
+        //yield return new WaitForSeconds(2.0f);
 
         ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
 
@@ -409,7 +409,7 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
-                ChagngeGameMode(BattleProcess.FirstAttack, 0.25f);
+                ChagngeGameMode(beforeProcess == BattleProcess.FirstDice ? BattleProcess.FirstAttack : BattleProcess.SecondAttack, 0.25f);
             }
         }
     }
@@ -512,13 +512,13 @@ public class Battle : MonoBehaviour
 
     private void CharCutIn()
     {
-        if (/*touch.phase == TouchPhase.Began ||*/ Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             nextPlayerTexts.gameObject.SetActive(false);
             if (doOnce)
             {
                 doOnce = false;
-                StartCoroutine(CutInCor(2.0f));
+                StartCoroutine(CutInCor(0.5f));
             }
         }     
         
@@ -624,6 +624,8 @@ public class Battle : MonoBehaviour
                     doOnce = true;
                     break;
                 case BattleProcess.End:
+                    //beta用
+                    CutInImage.gameObject.SetActive(false);
                     break;
                 case BattleProcess.Interval:
                     break;
