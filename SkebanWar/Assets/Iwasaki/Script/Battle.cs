@@ -110,6 +110,8 @@ public class Battle : MonoBehaviour
     private bool rerollDiceBool = true;
     [SerializeField]
     private Material grayScale;
+    [SerializeField]
+    private GameObject rerollButtons;
 
     void Start()
     {
@@ -162,8 +164,8 @@ public class Battle : MonoBehaviour
         lowerChar = charData.characterDatas[8];
 
         //デバッグ用
-        upperChar.HP = 1;
-        lowerChar.HP = 1;
+        upperChar.HP = 6;
+        lowerChar.HP = 6;
         GameManager.Instance.HaveCoins_1P += 4;
         GameManager.Instance.HaveCoins_2P += 4;
 
@@ -172,7 +174,7 @@ public class Battle : MonoBehaviour
         upperText.text = upperChar.HP.ToString();
         lowerImage.sprite = lowerChar.Image;
         lowerText.text = lowerChar.HP.ToString();
-        CutInImage.GetComponent<SpriteRenderer>().sprite = upperChar.CutInImage;
+        
 
         //先攻後攻で画像を分ける
         if (witchAttackBool)
@@ -187,9 +189,7 @@ public class Battle : MonoBehaviour
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
             rollTheDice.transform.rotation = Quaternion.Euler(0, 0, 0);
             diceArrow.transform.rotation = Quaternion.Euler(0, 0, 0);
-            reRollImage.transform.rotation = Quaternion.Euler(0, 0, 0);
-            yesButton.transform.rotation = Quaternion.Euler(0, 0, 0);
-            noButton.transform.rotation = Quaternion.Euler(0, 0, 0);
+            CutInImage.GetComponent<SpriteRenderer>().sprite = upperChar.CutInImage;
         }
 
         if (!witchAttackBool)
@@ -204,9 +204,7 @@ public class Battle : MonoBehaviour
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 180);
             rollTheDice.transform.rotation = Quaternion.Euler(0, 0, 180);
             diceArrow.transform.rotation = Quaternion.Euler(0, 0, 180);
-            reRollImage.transform.rotation = Quaternion.Euler(0, 0, 180);
-            yesButton.transform.rotation = Quaternion.Euler(0, 0, 180);
-            noButton.transform.rotation = Quaternion.Euler(0, 0, 180);
+            CutInImage.GetComponent<SpriteRenderer>().sprite = lowerChar.CutInImage;
         }
     }
 
@@ -330,9 +328,25 @@ public class Battle : MonoBehaviour
         switch (nowProcess)
         {
             case BattleProcess.FirstDice:
+                if (witchAttackBool)
+                {
+                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
+                if (!witchAttackBool)
+                {
+                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
+                }
                 FirstShake();
                 break;
             case BattleProcess.SecondDice:
+                if (witchAttackBool)
+                {
+                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
+                }
+                if (!witchAttackBool)
+                {
+                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
+                }
                 SecondShake();
                 break;
         }
@@ -457,32 +471,32 @@ public class Battle : MonoBehaviour
             case BattleProcess.SecondAttack:
                 TypeMatchUpper();
                 AttackAnimPos();
-                while (diceNumber >= 0)
+                while (diceNumber > 0)
                 {
                     AttackAnim();
                     yield return new WaitForSeconds(1f);
-                    if (!witchAttackBool)
-                    {
-                        upperChar.HP--;
-                        upperText.text = upperChar.HP.ToString();
-                    }
                     if (witchAttackBool)
                     {
                         lowerChar.HP--;
                         lowerText.text = lowerChar.HP.ToString();
                     }
+                    if (!witchAttackBool)
+                    {
+                        upperChar.HP--;
+                        upperText.text = upperChar.HP.ToString();
+                    }                    
                     diceNumber--;
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
                     if (upperChar.HP == 0 || lowerChar.HP == 0)
                     {
-                        if (!witchAttackBool)
-                        {
-                            upperImage.material = grayScale;
-                        }
                         if (witchAttackBool)
                         {
                             lowerImage.material = grayScale;
                         }
+                        if (!witchAttackBool)
+                        {
+                            upperImage.material = grayScale;
+                        }                        
                         ChagngeGameMode(BattleProcess.End, 0.25f);
                         yield break;
                     }
@@ -589,6 +603,8 @@ public class Battle : MonoBehaviour
                 case BattleProcess.SecondDice:
                     doOnce = true;
                     CutInImage.gameObject.SetActive(false);
+                    diceText.gameObject.SetActive(true);
+                    diceButton.gameObject.SetActive(true);
                     break;
                 case BattleProcess.SecondAttack:
                     doOnce = true;
@@ -711,12 +727,13 @@ public class Battle : MonoBehaviour
             anim_Attack.transform.position = upperImage.transform.position;
         }
 
-        if (!witchAttackBool && nowProcess == BattleProcess.FirstAttack)
+        if (witchAttackBool && nowProcess == BattleProcess.SecondAttack)
         {
             anim_Attack.transform.position = lowerImage.transform.position;
         }
 
-        if (witchAttackBool && nowProcess == BattleProcess.SecondAttack)
+
+        if (!witchAttackBool && nowProcess == BattleProcess.FirstAttack)
         {
             anim_Attack.transform.position = lowerImage.transform.position;
         }
@@ -735,13 +752,14 @@ public class Battle : MonoBehaviour
             anim_FlashUpper.SetTrigger("Flash");
         }
 
-        if (!witchAttackBool && nowProcess == BattleProcess.FirstAttack)
+        if (witchAttackBool && nowProcess == BattleProcess.SecondAttack)
         {
             anim_Attack.SetTrigger("Attack");
             anim_FlashLower.SetTrigger("FlashLower");
         }
 
-        if (witchAttackBool && nowProcess == BattleProcess.SecondAttack)
+
+        if (!witchAttackBool && nowProcess == BattleProcess.FirstAttack)
         {
             anim_Attack.SetTrigger("Attack");
             anim_FlashLower.SetTrigger("FlashLower");
