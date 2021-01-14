@@ -25,6 +25,8 @@ public class Dice : MonoBehaviour
     public bool IsDice=false ;
     bool lastAc = false;
 
+
+
     public bool diceEnd=false ;
     public int Ans = 0;
     public void DiceSet()

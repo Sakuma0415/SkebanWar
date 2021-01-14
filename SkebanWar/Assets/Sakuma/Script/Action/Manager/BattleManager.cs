@@ -30,6 +30,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     CharacterManager P2CharacterManager;
 
+    [SerializeField]
+    Battle battle;
+
     public int attack=0;
     public int defense=0;
 
@@ -69,9 +72,8 @@ public class BattleManager : MonoBehaviour
 
     void Progress2()
     {
-        CharacterManager character = (Progress.Instance .afterBattleTrnePlayer ==1 ? P1CharacterManager : P2CharacterManager);
-
-        character.CharacterBench[defense].HP = (character.CharacterBench[defense].HP - dice.Ans ) <= 0 ?0:( character.CharacterBench[defense].HP - dice.Ans );
+        Resetb();
+        //character.CharacterBench[defense].HP = (character.CharacterBench[defense].HP - dice.Ans ) <= 0 ?0:( character.CharacterBench[defense].HP - dice.Ans );
         //character.CharacterBench[defense].HP -= 10;
         fieldManager.FieldClean();
         Progress.Instance.endGameMode = true;
@@ -85,13 +87,13 @@ public class BattleManager : MonoBehaviour
         if (timeEnd < time)
         {
             NextProgress();
-            dice.IsDice = true;
-            diceObj.SetActive(true);
-            dice.DiceSet();
-        }
-        else
-        {
-            Darkening.color =new Color (0,0,0, ((time / timeEnd) * Darkeninglate)/255);
+            CharacterManager character = (Progress.Instance.afterBattleTrnePlayer == 1 ? P1CharacterManager : P2CharacterManager);
+            CharacterManager character2 = (Progress.Instance.afterBattleTrnePlayer == 2? P1CharacterManager : P2CharacterManager);
+            battle.upperChar.HP =   character.CharacterBench[defense ].HP;
+            battle.lowerChar .HP = character2.CharacterBench[attack].HP;
+            Debug.Log(attack);
+            battle.doOnce = true;
+            //battle.witchAttackBool = Progress.Instance.afterBattleTrnePlayer == 2;
         }
     }
 
@@ -99,21 +101,24 @@ public class BattleManager : MonoBehaviour
     {
         float timeEnd = 0.5f;
 
-        if(!dice.diceEnd)
+        if(!battle.EndPass)
         {
             time = 0;
         }
 
         if (timeEnd < time)
         {
+            Debug.Log("end");
             NextProgress();
-            dice.IsDice = false;
-            diceObj.SetActive(false);
-            Darkening.gameObject.SetActive(false);
-            dice.DiceSet();
         }
     }
 
-
+    public void Resetb()
+    {
+        CharacterManager character = (Progress.Instance.afterBattleTrnePlayer == 1 ? P1CharacterManager : P2CharacterManager);
+        CharacterManager character2 = (Progress.Instance.afterBattleTrnePlayer == 2 ? P1CharacterManager : P2CharacterManager);
+        character.CharacterBench[defense].HP = battle.upperChar.HP;
+        character2.CharacterBench[attack].HP = battle.lowerChar.HP;
+    }
 
 }

@@ -220,8 +220,16 @@ public class TouchManager : MonoBehaviour
                     {
                         battleManager.BattleStart();
                         battleManager.defense = attack;
-                        CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? P2CharacterManager : P1CharacterManager);
-                        battleManager.attack  = character.count;
+                        CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P2Select ? P2CharacterManager : P1CharacterManager);
+                        for(int c=0;c< character.CharacterBench.Length; c++)
+                        {
+                            if (character.CharacterBench[c].HP == -1)
+                            {
+                                battleManager.attack = c-1;
+                                break;
+                            }
+                        }
+                        
                         fieldManager.AttackSelectEnd();
                         IsAttackSelect = false;
                         Progress.Instance.endGameMode = true;

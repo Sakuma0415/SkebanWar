@@ -57,8 +57,8 @@ public class Battle : MonoBehaviour
     //キャラクターデータ
     [SerializeField]
     private CharDataBase charData;
-    private CharacterData lowerChar;
-    private CharacterData upperChar;
+    public  CharacterData lowerChar;
+    public  CharacterData upperChar;
 
     //スプライトデータ
     [SerializeField]
@@ -95,7 +95,7 @@ public class Battle : MonoBehaviour
     private Animator anim_CutInMask;
 
     //先攻後攻決め(true=1P,false=2P)
-    private bool witchAttackBool = true;
+    public bool witchAttackBool = true;
 
     private bool cutInBool;
     private Touch touch ;
@@ -112,6 +112,19 @@ public class Battle : MonoBehaviour
     private Material grayScale;
     [SerializeField]
     private GameObject rerollButtons;
+
+
+
+    //佐久間
+    [SerializeField]
+    Dice dice;
+    [SerializeField]
+    GameObject diceObj;
+    public bool EndPass = false;
+    [SerializeField]
+    BattleManager battleManager;
+
+
 
     void Start()
     {
@@ -160,12 +173,12 @@ public class Battle : MonoBehaviour
         lowerImage.gameObject.SetActive(false);
 
         //キャラクター情報追加
-        upperChar = charData.characterDatas[0];
-        lowerChar = charData.characterDatas[8];
+        //upperChar = charData.characterDatas[0];
+        //lowerChar = charData.characterDatas[8];
 
         //デバッグ用
-        upperChar.HP = 6;
-        lowerChar.HP = 6;
+        //upperChar.HP = 6;
+        //lowerChar.HP = 6;
         GameManager.Instance.HaveCoins_1P += 4;
         GameManager.Instance.HaveCoins_2P += 4;
 
@@ -174,7 +187,7 @@ public class Battle : MonoBehaviour
         upperText.text = upperChar.HP.ToString();
         lowerImage.sprite = lowerChar.Image;
         lowerText.text = lowerChar.HP.ToString();
-        
+        //Debug.Log(upperChar.HP.ToString()+"   "+ lowerChar.HP.ToString());
 
         //先攻後攻で画像を分ける
         if (witchAttackBool)
@@ -245,7 +258,7 @@ public class Battle : MonoBehaviour
                 Instance.IntervalUpdate();
                 break;
         }
-        Debug.Log(nowProcess);
+        //Debug.Log(nowProcess);
     }
     void StartUpdate()
     {
@@ -260,6 +273,7 @@ public class Battle : MonoBehaviour
         {
             doOnce = false;
             StartCoroutine(FadeOut(1.0f));
+            EndPass = false ;
         }        
     }
     private IEnumerator FadeOut(float fadeTime)
@@ -284,7 +298,7 @@ public class Battle : MonoBehaviour
         while (kenkaImage_Right.color.r < 1)
         {
             time += Time.deltaTime;
-            kenkaImage_Right.color = new Color(0.25f * (time / fadeTime), 0.25f * (time / fadeTime), 0.25f * (time / fadeTime));
+            kenkaImage_Right.color = new Color(0.5f * (time / fadeTime), 0.5f * (time / fadeTime), 0.5f * (time / fadeTime));
             yield return null;
         }
         //yield return new WaitForSeconds(2.0f);
@@ -296,60 +310,81 @@ public class Battle : MonoBehaviour
 
     private void DiceShake()
     {
-        if (!diceBool) return;
 
-        if (doOnce)
+
+        float timeEnd = 0.5f;
+
+        if (!dice.diceEnd)
         {
-            doOnce = false;
-        }        
-        diceText.text = Random.Range(1, 6).ToString();
+            time = 0;
+        }
 
-        //本実装用(ifのなかにサイコロ終わった判定を入れると動くはず)
-        //if ()
+        if (timeEnd < time)
+        {
+            diceNumber=dice.Ans;
+            dice.IsDice = false;
+            diceObj.SetActive(false);
+            dice.DiceSet();
+            if(beforeProcess == BattleProcess.FirstDice)
+            {
+                FirstShake();
+            }
+            else
+            {
+                SecondShake();
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+        //if (!diceBool) return;
+
+        //if (doOnce)
         //{
-        //    diceBool = false;
-        //    switch (nowProcess)
-        //    {
-        //        case BattleProcess.FirstDice:
-        //            FirstShake();
-        //            break;
-        //        case BattleProcess.SecondDice:
-        //            SecondShake();
-        //            break;
-        //    }
-        //}
+        //    doOnce = false;
+        //}        
+        //diceText.text = Random.Range(1, 6).ToString();
+
+
     }
     //仮実装用
     public void DiceButton()
     {
-        diceBool = false;
-        diceNumber = Random.Range(1, 6);
-        diceText.text = diceNumber.ToString();
-        switch (nowProcess)
-        {
-            case BattleProcess.FirstDice:
-                if (witchAttackBool)
-                {
-                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
-                if (!witchAttackBool)
-                {
-                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
-                }
-                FirstShake();
-                break;
-            case BattleProcess.SecondDice:
-                if (witchAttackBool)
-                {
-                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
-                }
-                if (!witchAttackBool)
-                {
-                    rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
-                }
-                SecondShake();
-                break;
-        }
+        //diceBool = false;
+        //diceNumber = Random.Range(1, 6);
+        //diceText.text = diceNumber.ToString();
+        //switch (nowProcess)
+        //{
+        //    case BattleProcess.FirstDice:
+        //        if (witchAttackBool)
+        //        {
+        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
+        //        }
+        //        if (!witchAttackBool)
+        //        {
+        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
+        //        }
+        //        FirstShake();
+        //        break;
+        //    case BattleProcess.SecondDice:
+        //        if (witchAttackBool)
+        //        {
+        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
+        //        }
+        //        if (!witchAttackBool)
+        //        {
+        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
+        //        }
+        //        SecondShake();
+        //        break;
+        //}
     }
 
     private void ReRoll()
@@ -360,8 +395,8 @@ public class Battle : MonoBehaviour
             reRollImage.gameObject.SetActive(true);
             yesButton.gameObject.SetActive(true);
             noButton.gameObject.SetActive(true);
-            diceText.gameObject.SetActive(false);
-            diceButton.gameObject.SetActive(false);
+            //diceText.gameObject.SetActive(false);
+            //diceButton.gameObject.SetActive(false);
         }
 
         if (Input.GetMouseButtonDown(0) && !doOnce)
@@ -374,8 +409,8 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
-                diceText.gameObject.SetActive(true);
-                diceButton.gameObject.SetActive(true);
+                //diceText.gameObject.SetActive(true);
+                //diceButton.gameObject.SetActive(true);
                 if(beforeProcess == BattleProcess.FirstDice)
                 {
                     ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
@@ -409,6 +444,7 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
+                Debug.Log(beforeProcess);
                 ChagngeGameMode(beforeProcess == BattleProcess.FirstDice ? BattleProcess.FirstAttack : BattleProcess.SecondAttack, 0.25f);
             }
         }
@@ -434,7 +470,7 @@ public class Battle : MonoBehaviour
                 while (diceNumber > 0)
                 {
                     AttackAnim();
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
                         upperChar.HP--;
@@ -474,7 +510,7 @@ public class Battle : MonoBehaviour
                 while (diceNumber > 0)
                 {
                     AttackAnim();
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
                         lowerChar.HP--;
@@ -543,7 +579,7 @@ public class Battle : MonoBehaviour
         anim_CutInMask.gameObject.SetActive(true);
 
         anim_Icon.SetBool("End", true);
-
+        EndPass = true;
         Init();
         doOnce = false;
         ChagngeGameMode(BattleProcess.Start, 0.25f);
@@ -574,22 +610,33 @@ public class Battle : MonoBehaviour
                     anim_Text.gameObject.SetActive(false);
 
                     //仮実装用
-                    diceText.gameObject.SetActive(true);
-                    diceButton.gameObject.SetActive(true);
+                    //diceText.gameObject.SetActive(true);
+                    //diceButton.gameObject.SetActive(true);
                     //本実装用
-                    //rollTheDice.gameObject.SetActive(true);
-                    //diceArrow.gameObject.SetActive(true);
+                    rollTheDice.gameObject.SetActive(true);
+                    diceArrow.gameObject.SetActive(true);
+
+
+                    beforeProcess = BattleProcess.FirstDice;
+                    dice.IsDice = true;
+                    diceObj.SetActive(true);
+                    dice.DiceSet();
+
                     break;
                 case BattleProcess.FirstAttack:
+                    upperText.text = upperChar.HP.ToString();
+                    lowerText.text = lowerChar.HP.ToString();
                     doOnce = true;
                     diceBool = true;
 
+
+
                     //仮実装用
-                    diceText.gameObject.SetActive(false);
-                    diceButton.gameObject.SetActive(false);
+                    //diceText.gameObject.SetActive(false);
+                    //diceButton.gameObject.SetActive(false);
                     //本実装用
-                    //rollTheDice.gameObject.SetActive(false);
-                    //diceArrow.gameObject.SetActive(false);
+                    rollTheDice.gameObject.SetActive(false);
+                    diceArrow.gameObject.SetActive(false);
 
                     upperImage.gameObject.SetActive(true);
                     lowerImage.gameObject.SetActive(true);
@@ -603,30 +650,50 @@ public class Battle : MonoBehaviour
                 case BattleProcess.SecondDice:
                     doOnce = true;
                     CutInImage.gameObject.SetActive(false);
-                    diceText.gameObject.SetActive(true);
-                    diceButton.gameObject.SetActive(true);
+                    //diceText.gameObject.SetActive(true);
+                    //diceButton.gameObject.SetActive(true);
+
+                    rollTheDice.gameObject.SetActive(true);
+                    diceArrow.gameObject.SetActive(true);
+
+                    beforeProcess = BattleProcess.SecondDice;
+                    dice.IsDice = true;
+                    diceObj.SetActive(true);
+                    dice.DiceSet();
                     break;
                 case BattleProcess.SecondAttack:
+                    upperText.text = upperChar.HP.ToString();
+                    lowerText.text = lowerChar.HP.ToString();
                     doOnce = true;
                     diceBool = true;
 
                     //仮実装用
-                    diceText.gameObject.SetActive(false);
-                    diceButton.gameObject.SetActive(false);
+                    //diceText.gameObject.SetActive(false);
+                    //diceButton.gameObject.SetActive(false);
                     //本実装用
-                    //rollTheDice.gameObject.SetActive(false);
-                    //diceArrow.gameObject.SetActive(false);
+                    rollTheDice.gameObject.SetActive(false);
+                    diceArrow.gameObject.SetActive(false);
 
                     upperImage.gameObject.SetActive(true);
                     lowerImage.gameObject.SetActive(true);
+
+
+
+
+
                     break;
                 case BattleProcess.ReRollChance:
                     doOnce = true;
+                    battleManager.Resetb();
+                    rollTheDice.gameObject.SetActive(false);
+                    diceArrow.gameObject.SetActive(false);
                     break;
                 case BattleProcess.End:
                     //beta用
                     CutInImage.gameObject.SetActive(false);
                     break;
+
+
                 case BattleProcess.Interval:
                     break;
             }
@@ -673,7 +740,7 @@ public class Battle : MonoBehaviour
         {
             if (GameManager.Instance.HaveCoins_1P > 1)
             {
-                beforeProcess = BattleProcess.FirstDice;
+                //beforeProcess = BattleProcess.FirstDice;
                 ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
@@ -685,7 +752,7 @@ public class Battle : MonoBehaviour
         {
             if (GameManager.Instance.HaveCoins_2P > 1)
             {
-                beforeProcess = BattleProcess.FirstDice;
+                //beforeProcess = BattleProcess.FirstDice;
                 ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
@@ -700,7 +767,7 @@ public class Battle : MonoBehaviour
         {
             if (GameManager.Instance.HaveCoins_2P > 1)
             {
-                beforeProcess = BattleProcess.SecondDice;
+                //beforeProcess = BattleProcess.SecondDice;
                 ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
@@ -712,7 +779,7 @@ public class Battle : MonoBehaviour
         {
             if (GameManager.Instance.HaveCoins_1P > 1)
             {
-                beforeProcess = BattleProcess.SecondDice;
+                //beforeProcess = BattleProcess.SecondDice;
                 ChagngeGameMode(BattleProcess.ReRollChance, 0.25f);
             }
             else
