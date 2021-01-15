@@ -25,8 +25,13 @@ public class Dice : MonoBehaviour
     public bool IsDice=false ;
     bool lastAc = false;
 
+
+
+    public bool diceEnd=false ;
+    public int Ans = 0;
     public void DiceSet()
     {
+        diceEnd = false;
         IsDice = true;
         transform.localPosition = Vector3.zero;
         wall.SetActive(true);
@@ -44,47 +49,14 @@ public class Dice : MonoBehaviour
         {
 
 
-            if (Input.GetMouseButtonDown(0))
-            {
 
-                clickedGameObject = null;
-
-                Ray ray = diceCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit = new RaycastHit();
-
-                if (Physics.Raycast(ray, out hit))
-                {
-                    clickedGameObject = hit.collider.gameObject;
-                }
-
-                if (this.gameObject == clickedGameObject)
-                {
-
-
-                    Catch = true;
-                    vector = Input.mousePosition;
-                }
-            }
-
-
-
-            if (Input.GetMouseButtonUp(0) && Catch)
-            {
-
-                Vector2 nevec = Input.mousePosition;
-                lastAc = false;
-                Catch = false;
-                Push((vector - nevec).normalized);
-                IsMove = true;
-                timer = 0;
-            }
 
             if (IsMove)
             {
                 timer += Time.deltaTime;
 
 
-                if (rigidbody.velocity.magnitude < 0.01f && timer > 0.5f)
+                if (rigidbody.velocity.magnitude < 0.001f && timer > 1f)
                 {
                    
                     
@@ -100,11 +72,51 @@ public class Dice : MonoBehaviour
                     }
                     else
                     {
+                        Ans = ret;
                         IsMove = false;
                         UnityEngine.Debug.Log(ret);
+                        diceEnd = true;
+                        IsDice = false;
                     }
 
                     
+                }
+            }
+            else
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+
+                    clickedGameObject = null;
+
+                    Ray ray = diceCamera.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit = new RaycastHit();
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        clickedGameObject = hit.collider.gameObject;
+                    }
+
+                    if (this.gameObject == clickedGameObject)
+                    {
+
+
+                        Catch = true;
+                        vector = Input.mousePosition;
+                    }
+                }
+
+
+
+                if (Input.GetMouseButtonUp(0) && Catch)
+                {
+
+                    Vector2 nevec = Input.mousePosition;
+                    lastAc = false;
+                    Catch = false;
+                    Push((vector - nevec).normalized);
+                    IsMove = true;
+                    timer = 0;
                 }
             }
 

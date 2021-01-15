@@ -5,7 +5,19 @@ TagManager:
   serializedVersion: 2
   tags:
   - Character1
-  - C1NDecision
+  - UpperImage
+  - LowerImage
+  - PlateAnim
+  - IconAnim
+  - TextAnim
+  - PlateImageLeft
+  - PlateImageRight
+  - LeftPlate
+  - RightPlate
+  - AttackAnim
+  - CutInMask
+  - YesButton
+  - NoButton
   layers:
   - Default
   - TransparentFX

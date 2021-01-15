@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class Result : MonoBehaviour
+public class Result : SingletonMonoBehaviour<Result>
 {
     private Text redPointText;
     private Text bluePointText;
@@ -14,8 +14,10 @@ public class Result : MonoBehaviour
     private GameObject redResultText;
     [SerializeField]
     private GameObject drowText;
-    private int bluePoint = 3;
-    private int redPoint = 2;
+    [HideInInspector]
+    public int bluePoint;
+    [HideInInspector]
+    public int redPoint;
 
     private bool toTitleBool;
     [SerializeField]
