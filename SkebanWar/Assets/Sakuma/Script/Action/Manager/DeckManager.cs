@@ -33,7 +33,7 @@ public class DeckManager : MonoBehaviour
             P1onHands[i].pieceData = P1deckData.pieceDatas[deckSet[i]];
         }
 
-        P1cont = 3;
+        P1cont = 2;
     }
 
     public void Draw()

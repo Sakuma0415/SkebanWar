@@ -242,7 +242,7 @@ public class FieldManager : MonoBehaviour
 
             }
         }
-        Debug.Log("d");
+        //Debug.Log("d");
     }
 
 

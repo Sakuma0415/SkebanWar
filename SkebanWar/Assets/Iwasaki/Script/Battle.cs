@@ -59,6 +59,8 @@ public class Battle : MonoBehaviour
     private CharDataBase charData;
     public  CharacterData lowerChar;
     public  CharacterData upperChar;
+    public int lowerCharHP;
+    public int upperCharHP;
 
     //スプライトデータ
     [SerializeField]
@@ -188,9 +190,9 @@ public class Battle : MonoBehaviour
 
         //ImageとHPを表示
         upperImage.sprite = upperChar.Image;
-        upperText.text = upperChar.HP.ToString();
+        upperText.text = upperCharHP.ToString();
         lowerImage.sprite = lowerChar.Image;
-        lowerText.text = lowerChar.HP.ToString();
+        lowerText.text = lowerCharHP.ToString();
         //Debug.Log(upperChar.HP.ToString()+"   "+ lowerChar.HP.ToString());
 
         //先攻後攻で画像を分ける
@@ -448,7 +450,7 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
-                Debug.Log(beforeProcess);
+                //Debug.Log(beforeProcess);
                 ChagngeGameMode(beforeProcess == BattleProcess.FirstDice ? BattleProcess.FirstAttack : BattleProcess.SecondAttack, 0.25f);
             }
         }
@@ -477,18 +479,18 @@ public class Battle : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
-                        upperChar.HP--;
-                        upperText.text = upperChar.HP.ToString();
+                        upperCharHP--;
+                        upperText.text = upperCharHP.ToString();
                     }
                     if(!witchAttackBool)
                     {
-                        lowerChar.HP--;
-                        lowerText.text = lowerChar.HP.ToString();
+                        lowerCharHP--;
+                        lowerText.text = lowerCharHP.ToString();
                     }                    
                     diceNumber--;
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
 
-                    if (upperChar.HP == 0 || lowerChar.HP == 0)
+                    if (upperCharHP == 0 || lowerCharHP == 0)
                     {                        
                         if (witchAttackBool)
                         {
@@ -517,17 +519,17 @@ public class Battle : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
-                        lowerChar.HP--;
-                        lowerText.text = lowerChar.HP.ToString();
+                        lowerCharHP--;
+                        lowerText.text = lowerCharHP.ToString();
                     }
                     if (!witchAttackBool)
                     {
-                        upperChar.HP--;
-                        upperText.text = upperChar.HP.ToString();
+                        upperCharHP--;
+                        upperText.text = upperCharHP.ToString();
                     }                    
                     diceNumber--;
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
-                    if (upperChar.HP == 0 || lowerChar.HP == 0)
+                    if (upperCharHP == 0 || lowerCharHP == 0)
                     {
                         if (witchAttackBool)
                         {
@@ -628,8 +630,8 @@ public class Battle : MonoBehaviour
 
                     break;
                 case BattleProcess.FirstAttack:
-                    upperText.text = upperChar.HP.ToString();
-                    lowerText.text = lowerChar.HP.ToString();
+                    upperText.text = upperCharHP.ToString();
+                    lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
                     diceBool = true;
 
@@ -666,8 +668,8 @@ public class Battle : MonoBehaviour
                     dice.DiceSet();
                     break;
                 case BattleProcess.SecondAttack:
-                    upperText.text = upperChar.HP.ToString();
-                    lowerText.text = lowerChar.HP.ToString();
+                    upperText.text = upperCharHP.ToString();
+                    lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
                     diceBool = true;
 
@@ -688,7 +690,6 @@ public class Battle : MonoBehaviour
                     break;
                 case BattleProcess.ReRollChance:
                     doOnce = true;
-                    battleManager.Resetb();
                     rollTheDice.gameObject.SetActive(false);
                     diceArrow.gameObject.SetActive(false);
                     break;

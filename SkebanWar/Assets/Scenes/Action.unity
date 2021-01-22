@@ -674,6 +674,7 @@ MonoBehaviour:
   battle: {fileID: 8497711184812316128}
   attack: 0
   defense: 0
+  trunP: 0
 --- !u!4 &289554343
 Transform:
   m_ObjectHideFlags: 0
@@ -3089,7 +3090,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1251423160
 Transform:
   m_ObjectHideFlags: 0
@@ -3865,7 +3866,6 @@ MonoBehaviour:
   P1onHands:
   - {fileID: 2084954467}
   - {fileID: 1510295711}
-  - {fileID: 1509251129}
   P1cont: 0
 --- !u!1 &1488825004
 GameObject:
@@ -4049,7 +4049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1509251128
 Transform:
   m_ObjectHideFlags: 0
@@ -4898,7 +4898,6 @@ MonoBehaviour:
   P1onHands:
   - {fileID: 930860131}
   - {fileID: 1902296407}
-  - {fileID: 1251423161}
   P1cont: 0
 --- !u!4 &1734913136
 Transform:
@@ -7907,6 +7906,8 @@ MonoBehaviour:
   charData: {fileID: 11400000, guid: 9716986832f415e4899799569d8f4cca, type: 2}
   lowerChar: {fileID: 11400000, guid: 253c02f199085184e987417092962719, type: 2}
   upperChar: {fileID: 11400000, guid: 18617ea0306ec8745ae1c33be2aed36b, type: 2}
+  lowerCharHP: 0
+  upperCharHP: 0
   spriteData: {fileID: 11400000, guid: 98e146aefdebba74cb5281367e7e4d91, type: 2}
   upperText: {fileID: 8497711185350120805}
   lowerText: {fileID: 8497711184405971541}

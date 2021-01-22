@@ -74,7 +74,7 @@ public class Dice : MonoBehaviour
                     {
                         Ans = ret;
                         IsMove = false;
-                        UnityEngine.Debug.Log(ret);
+                        //UnityEngine.Debug.Log(ret);
                         diceEnd = true;
                         IsDice = false;
                     }

@@ -218,9 +218,11 @@ public class TouchManager : MonoBehaviour
                     }
                     if (attack != -1)
                     {
-                        battleManager.BattleStart();
+                        battleManager.BattleStart(Progress.Instance.gameMode == Progress.GameMode.P2Select ?1:2);
                         battleManager.defense = attack;
+
                         CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P2Select ? P2CharacterManager : P1CharacterManager);
+                        //Debug.Log(character);
                         for(int c=0;c< character.CharacterBench.Length; c++)
                         {
                             if (character.CharacterBench[c].HP == -1)
@@ -488,10 +490,10 @@ public class TouchManager : MonoBehaviour
 
                 if (IsAttackSelect)
                 {
-                    Debug.Log("喧嘩上等");
+                    //Debug.Log("喧嘩上等");
                     for(int i=0;i< AttackNum.Length; i++)
                     {
-                        Debug.Log("攻撃対象　"+ AttackNum[i]);
+                        //Debug.Log("攻撃対象　"+ AttackNum[i]);
                     }
 
                     fieldManager.AttackSelect(AttackNum, playernum);
