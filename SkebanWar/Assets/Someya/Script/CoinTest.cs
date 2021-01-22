@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class CoinTest : MonoBehaviour
 {
     [SerializeField]
-    int douka = 0;
+    int douka = 2;
 
     [SerializeField]
     GameObject[] Coin;
@@ -19,6 +19,8 @@ public class CoinTest : MonoBehaviour
     {
         douka = Random.Range(0, Coin.Length);
         Instantiate(Coin[douka], transform.position, transform.rotation);
+        senkouImage.SetActive(false);
+        koukouImage.SetActive(false);
     }
 
     void Update()
