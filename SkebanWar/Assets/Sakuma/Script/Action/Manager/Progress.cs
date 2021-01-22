@@ -33,6 +33,19 @@ public class Progress : MonoBehaviour
     //入力街を持つゲームモードの終了フラグ
     public bool endGameMode=false ;
 
+    //バトルに分岐するかどうかのフラグ
+    public bool battleFlg = false;
+
+    //バトル終了後のターンプレイヤーの保存
+    public int afterBattleTrnePlayer = 0;
+
+    ///外部マネージャー
+    [SerializeField]
+    DeckManager P1deckManager;
+    [SerializeField]
+    DeckManager P2deckManager;
+
+
     void Start()
     {
         Instance = this;
@@ -53,6 +66,7 @@ public class Progress : MonoBehaviour
                 Instance.P2SelectUpdate();
                 break;
             case GameMode.Battle:
+                BattleUpdate();
                 break;
             case GameMode.End:
                 break;
@@ -60,7 +74,16 @@ public class Progress : MonoBehaviour
                 Instance.IntervalUpdate();
                 break;
         }
-        Debug.Log(gameMode);
+        //Debug.Log(gameMode);
+    }
+
+
+    void BattleUpdate()
+    {
+        if (endGameMode)
+        {
+            ChagngeGameMode(afterBattleTrnePlayer ==1? GameMode.P1Select: GameMode.P2Select, 1f);
+        }
     }
 
     void StartUpdate()
@@ -75,7 +98,16 @@ public class Progress : MonoBehaviour
     {
         if(endGameMode)
         {
-            ChagngeGameMode(GameMode.P2Select, 1f);
+            if (!battleFlg)
+            {
+                ChagngeGameMode(GameMode.P2Select, 1f);
+            }
+            else
+            {
+                afterBattleTrnePlayer = 2;
+                ChagngeGameMode(GameMode.Battle , 0.5f);
+            }
+            
         }
     }
 
@@ -83,7 +115,15 @@ public class Progress : MonoBehaviour
     {
         if (endGameMode)
         {
-            ChagngeGameMode(GameMode.P1Select, 1f);
+            if (!battleFlg)
+            {
+                ChagngeGameMode(GameMode.P1Select, 1f);
+            }
+            else
+            {
+                afterBattleTrnePlayer = 1;
+                ChagngeGameMode(GameMode.Battle, 0.5f);
+            }
         }
     }
 
@@ -96,6 +136,43 @@ public class Progress : MonoBehaviour
         time = 0;
     }
 
+    void P1SelectStart()
+    {
+        battleFlg = false;
+        P1deckManager.Draw();
+
+        if (P1deckManager.OnHandLess())
+        {
+            if (P2deckManager.OnHandLess())
+            {
+                ChagngeGameMode(GameMode.End , 0f);
+            }
+            else
+            {
+                ChagngeGameMode(GameMode.P2Select , 0f);
+            }
+        }
+
+    }
+    void P2SelectStart()
+    {
+        battleFlg = false;
+        P2deckManager.Draw();
+
+        if (P2deckManager.OnHandLess())
+        {
+            if (P1deckManager.OnHandLess())
+            {
+                ChagngeGameMode(GameMode.End, 0f);
+            }
+            else
+            {
+                ChagngeGameMode(GameMode.P1Select, 0f);
+            }
+        }
+
+    }
+
     void IntervalUpdate()
     {
         if(time >= intervalTime)
@@ -106,8 +183,10 @@ public class Progress : MonoBehaviour
             switch (gameMode)
             {
                 case GameMode.P1Select:
+                    P1SelectStart();
                     break;
                 case GameMode.P2Select:
+                    P2SelectStart();
                     break;
                 case GameMode.Battle:
                     break;
