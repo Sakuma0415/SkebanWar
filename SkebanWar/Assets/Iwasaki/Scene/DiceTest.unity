@@ -527,3 +527,4 @@ MonoBehaviour:
     m_Bits: 0
   IsDice: 0
   diceEnd: 0
+  Ans: 0

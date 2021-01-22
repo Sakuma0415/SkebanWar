@@ -18,6 +18,8 @@ TagManager:
   - CutInMask
   - YesButton
   - NoButton
+  - SenkouText
+  - KoukouText
   layers:
   - Default
   - TransparentFX
