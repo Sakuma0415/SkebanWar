@@ -30,8 +30,8 @@ public class test : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SceneManager.LoadScene("test2");
-            SoundManager.Instans.FadeInBGM("Ataku");
+            //SceneManager.LoadScene("test2");
+            SoundManager.Instans.PlaySeName("TestSE");
         }
 
     }

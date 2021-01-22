@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/Kimura/Scenes/SaundoManagerTest.unity
     guid: 6e844b757d6ea164c830245b5516b90e
   - enabled: 1
-    path: Assets/Kimura/Scenes/test2.unity
+    path: Assets/Kimura/Scenes/SenkouKime.unity
     guid: 21425da7eb094bd4c9f0ee424248a2c6
   - enabled: 1
     path: Assets/Someya/Scene/CharacterSelect.unity
