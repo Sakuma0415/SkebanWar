@@ -8,7 +8,9 @@ public class test : MonoBehaviour
 
     void Start()
     {
-        
+        //フェードインしてBGMが流れる
+        SoundManager.Instans.FadeInBGM("Ataku");
+
     }
 
     void Update()
@@ -20,6 +22,7 @@ public class test : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
+            //BGMがフェードアウトする
             SoundManager.Instans.FadeOutBGM();
 
         }
