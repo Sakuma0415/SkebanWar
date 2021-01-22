@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class PcSelect : MonoBehaviour
 {
     [SerializeField]
@@ -20,6 +20,12 @@ public class PcSelect : MonoBehaviour
     [SerializeField]
     GameObject[] MassMask;
 
+    public int HP=-1;
+    [SerializeField]
+    Text text;
+
+    public bool IsBrock = false;
+
     private void Start()
     {
         for(int i=0;i< massOverlaps.Length; i++)
@@ -31,12 +37,34 @@ public class PcSelect : MonoBehaviour
 
     void Update()
     {
-        if(massOverlaps[0].BenchNum == -1)
+        if (IsBrock)
         {
-            for (int i = 0; i < games.Length; i++)
-            {
-                games[i].SetActive(false);
-            }
+            gameObject.SetActive(false);
+        }
+
+
+
+        if(HP != -1)
+        {
+            text.text = "HP:" + HP.ToString();
+        }
+        else
+        {
+            text.text = "";
+        }
+
+
+
+        for (int i = 0; i < games.Length; i++)
+        {
+            games[i].SetActive(false);
+        }
+        if (massOverlaps[0].BenchNum == -1)
+        {
+            //for (int i = 0; i < games.Length; i++)
+            //{
+            //    games[i].SetActive(false);
+            //}
         }
         else
         {

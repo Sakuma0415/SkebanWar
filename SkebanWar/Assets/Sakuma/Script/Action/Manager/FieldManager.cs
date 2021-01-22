@@ -72,6 +72,12 @@ public class FieldManager : MonoBehaviour
     [SerializeField]
     CharacterManager P2CharacterManager;
 
+    [SerializeField]
+    public  StageData stageData;
+
+    [SerializeField]
+    SpriteRenderer spriteRenderer;
+
     //開始時処理
     private void Start()
     {
@@ -81,12 +87,24 @@ public class FieldManager : MonoBehaviour
     //盤面の初期化処理
     void FieldInit()
     {
+        spriteRenderer.sprite = stageData.StageSprite;
+        stageSize= stageData.StageSize ;
         massDatas = new MassData[stageSize, stageSize];
         for(int i=0;i< stageSize; i++)
         {
             for(int j = 0; j < stageSize; j++)
             {
                 massDatas[i, j].Init();
+
+                for(int a=0;a< stageData.NG.Length; a++)
+                {
+                    if(i== stageData.NG[a].x&& j == stageData.NG[a].y)
+                    {
+                        massDatas[i, j].massState = FieldManager.MassState.Block;
+                    }
+                }
+
+
                 GameObject MassObj= Instantiate(massPrefab);
                 Vector3 size = new Vector3(fieldSpace.x / stageSize, fieldSpace.y / stageSize);
                 MassObj.transform.localScale = size * MassObj.transform.localScale.x;
@@ -96,6 +114,7 @@ public class FieldManager : MonoBehaviour
                 massDatas[i, j].MassPre = MassObj;
             }
         }
+        VisualUpdate();
     }
 
 
@@ -103,10 +122,10 @@ public class FieldManager : MonoBehaviour
     private void Update()
     {
         ////テスト用
-        //if(Input.GetKeyDown (KeyCode.A ))
-        //{
-        //    VisualUpdate();
-        //}
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            VisualUpdate();
+        }
         //if (Input.GetKeyDown(KeyCode.S))
         //{
         //    MassSet(1, testSet.x, testSet.y);
@@ -303,8 +322,8 @@ public class FieldManager : MonoBehaviour
                     {
                         int CleanSet = 0;
                         int leng = massDatas[i, j].Overlap.Length;
-                        MassOverlap[] count = new MassOverlap[0];
-                        count[1].Init();
+                        MassOverlap[] count = new MassOverlap[1];
+                        count[0].Init();
                         for (int ii = 0; ii < massDatas[i, j].Overlap.Length; ii++)
                         {
                             if (massDatas[i, j].Overlap[ii].PlayerNum == 1 || massDatas[i, j].Overlap[ii].BenchNum != a)
@@ -358,6 +377,20 @@ public class FieldManager : MonoBehaviour
             for (int j = 0; j < stageSize; j++)
             {
                 massDatas[j, i].pcSelect.massOverlaps = massDatas[j, i].Overlap;
+                if(massDatas[j, i].Overlap.Length > 0)
+                {
+                    CharacterManager character = (massDatas[j, i].Overlap[0].PlayerNum == 1 ? P1CharacterManager : P2CharacterManager);
+                    if (massDatas[j, i].Overlap[0].BenchNum != -1)
+                    {
+                        massDatas[j, i].pcSelect.HP = character.CharacterBench[massDatas[j, i].Overlap[0].BenchNum].HP;
+                    }
+                }
+                if(massDatas[j, i].massState==MassState.Block)
+                {
+                    massDatas[j, i].pcSelect.IsBrock = true;
+                }
+
+
                 //switch (massDatas[j, i].massState)
                 //{
                 //    case MassState.None:

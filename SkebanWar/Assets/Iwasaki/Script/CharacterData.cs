@@ -19,4 +19,6 @@ public class CharacterData : ScriptableObject
     public int HP;
 
     public Sprite IconImage;
+
+    public Sprite CutInImage;
 }

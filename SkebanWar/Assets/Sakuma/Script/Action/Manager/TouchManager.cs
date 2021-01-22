@@ -91,7 +91,7 @@ public class TouchManager : MonoBehaviour
             
             notice[i] = Instantiate(noticeObj);
             notice[i].SetActive(false);
-            MassScale = fieldManager.fieldSpace / fieldManager.stageSize ;
+            MassScale = fieldManager.fieldSpace / fieldManager.stageData .StageSize  ;
             notice[i].transform.localScale = MassScale * notice[i].transform.localScale;
             notice[i].transform.parent = transform;
             noticeColor[i]=notice[i].GetComponent<SpriteRenderer>();
@@ -185,10 +185,16 @@ public class TouchManager : MonoBehaviour
                     }
                 }
 
-                //if (Input.GetKeyDown(KeyCode.Mouse1))
-                //{
+                if (Input.GetKeyDown(KeyCode.Mouse1))
+                {
+                    Vector2Int inField = MousePosInField();
+                    for(int i=0;i<fieldManager .massDatas [inField.x, inField.y].Overlap.Length; i++)
+                    {
+                        Debug.Log(fieldManager.massDatas[inField.x, inField.y].Overlap[i].BenchNum + " :: " + fieldManager.massDatas[inField.x, inField.y].Overlap[i].PlayerNum);
+                    }
 
-                //}
+
+                }
             }
             //攻撃対象選択の処理
             else
@@ -213,6 +219,17 @@ public class TouchManager : MonoBehaviour
                     if (attack != -1)
                     {
                         battleManager.BattleStart();
+                        battleManager.defense = attack;
+                        CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P2Select ? P2CharacterManager : P1CharacterManager);
+                        for(int c=0;c< character.CharacterBench.Length; c++)
+                        {
+                            if (character.CharacterBench[c].HP == -1)
+                            {
+                                battleManager.attack = c-1;
+                                break;
+                            }
+                        }
+                        
                         fieldManager.AttackSelectEnd();
                         IsAttackSelect = false;
                         Progress.Instance.endGameMode = true;
@@ -289,10 +306,20 @@ public class TouchManager : MonoBehaviour
             int data = MassPos[i].x + check.x;
             int data2 = MassPos[i].y + check.y;
 
-            if(data<0||data>= fieldManager.stageSize|| data2 < 0 || data2 >= fieldManager.stageSize)
+            if (data < 0 || data >= fieldManager.stageSize || data2 < 0 || data2 >= fieldManager.stageSize)
             {
                 massCheck = false;
             }
+            else
+            {
+
+
+                if (fieldManager.massDatas[data, data2].massState == FieldManager.MassState.Block)
+                {
+                    massCheck = false;
+                }
+            }
+
         }
 
         return massCheck;
@@ -456,6 +483,7 @@ public class TouchManager : MonoBehaviour
 
                     fieldManager.MassSet(Progress.Instance.gameMode == Progress.GameMode.P1Select ? 1 : 2, pos.x, pos.y);
                     
+
                 }
 
                 if (IsAttackSelect)
