@@ -432,7 +432,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &226803300
 GameObject:
@@ -1111,7 +1111,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &593669504
 GameObject:
@@ -4453,7 +4453,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1652048279
 GameObject:
@@ -5806,14 +5806,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6952533634621787770}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.83984375, z: -0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 2668933683236697268}
   - {fileID: 8497711184604090615}
   - {fileID: 4472313529822047424}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &8497711183873769448
 RectTransform:
@@ -7832,6 +7832,7 @@ MonoBehaviour:
   CutInImage: {fileID: 8497711184309305522}
   reRollImage: {fileID: 8497711184036817613}
   grayScale: {fileID: 2100000, guid: 181787d4e6d509e44a97355636260def, type: 2}
+  normalMaterial: {fileID: 2100000, guid: 0bb2d2982849e894287a1643d87957a3, type: 2}
   rerollButtons: {fileID: 8497711184746719130}
   dice: {fileID: 1489760794}
   diceObj: {fileID: 456134123}

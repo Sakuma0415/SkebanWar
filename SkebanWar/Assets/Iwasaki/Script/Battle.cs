@@ -111,6 +111,8 @@ public class Battle : MonoBehaviour
     [SerializeField]
     private Material grayScale;
     [SerializeField]
+    private Material normalMaterial;
+    [SerializeField]
     private GameObject rerollButtons;
 
 
@@ -164,6 +166,8 @@ public class Battle : MonoBehaviour
         
         fadeCanvas.alpha = 0;
         kenkaImage_Right.color = new Color(0, 0, 0);
+        upperImage.material = normalMaterial;
+        lowerImage.material = normalMaterial;
 
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
