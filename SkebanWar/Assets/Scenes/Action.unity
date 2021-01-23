@@ -2232,7 +2232,7 @@ MonoBehaviour:
   P2Score: 0
   P1CharacterManager: {fileID: 152314172}
   P2CharacterManager: {fileID: 726970307}
-  stageData: {fileID: 11400000, guid: fb4408cccee98a142a67786d3d20d56d, type: 2}
+  stageData: {fileID: 11400000, guid: bb52fe9989bfdb54da63d9bd8695f7c4, type: 2}
   spriteRenderer: {fileID: 1201060120}
 --- !u!4 &921652164
 Transform:

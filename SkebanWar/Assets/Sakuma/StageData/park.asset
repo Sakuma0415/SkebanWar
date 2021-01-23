@@ -12,6 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99d440b03788d54da795dd9bc06beb8, type: 3}
   m_Name: park
   m_EditorClassIdentifier: 
-  NG: []
+  NG:
+  - {x: 0, y: 1}
+  - {x: 0, y: 2}
+  - {x: 0, y: 3}
+  - {x: 0, y: 4}
+  - {x: 0, y: 6}
+  - {x: 1, y: 6}
+  - {x: 2, y: 6}
+  - {x: 3, y: 6}
+  - {x: 4, y: 6}
+  - {x: 5, y: 6}
+  - {x: 6, y: 6}
+  - {x: 5, y: 2}
+  - {x: 6, y: 2}
+  - {x: 5, y: 3}
+  - {x: 6, y: 3}
   StageSprite: {fileID: 21300000, guid: a952fdc577764344db0b1da54f62a220, type: 3}
-  StageSize: 6
+  StageSize: 7
