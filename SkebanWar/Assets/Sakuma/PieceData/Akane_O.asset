@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
-  m_Name: P
+  m_Name: Akane_O
   m_EditorClassIdentifier: 
-  element: 1
-  name: P
+  element: 0
+  name: O
   posSet: []
-  HP: 4
+  HP: 6
   T0: 0
-  T1: 1
+  T1: 0
   T2: 0
   T3: 0
   T4: 1
   T5: 1
   T6: 0
-  T7: 0
-  T8: 0
+  T7: 1
+  T8: 1

@@ -9,15 +9,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e1884686383b474c96653ba9b3862b5, type: 3}
-  m_Name: test
+  m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
+  m_Name: Nana_LongZ
   m_EditorClassIdentifier: 
-  name: 
-  pieceDatas:
-  - {fileID: 11400000, guid: 672c190aafd7c7a47a8f745773179e52, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  character: 2
+  element: 0
+  name: LongZ
+  posSet: []
+  HP: 7
+  T0: 1
+  T1: 1
+  T2: 0
+  T3: 0
+  T4: 1
+  T5: 0
+  T6: 0
+  T7: 1
+  T8: 1

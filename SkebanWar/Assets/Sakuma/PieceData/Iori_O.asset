@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
-  m_Name: O
+  m_Name: Iori_O
   m_EditorClassIdentifier: 
+  element: 0
   name: O
   posSet: []
   HP: 6

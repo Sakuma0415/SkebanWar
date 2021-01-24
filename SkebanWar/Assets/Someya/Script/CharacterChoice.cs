@@ -52,12 +52,18 @@ public class CharacterChoice : MonoBehaviour
     public void AkaneOK()
     {
         choice = 2;
+        /*
+         * 1Pが選んだキャラをGameManager.Instance.ChoiseChar_1Pに、
+         * 2Pが選んだキャラをGameManager.Instance.ChoiseChar_2Pに入れてほしい。
+         * 1 = Akane, 2 = Nana, 3 = Ioriでお願いします。
+        */
+
         //StartCoroutine(DelayMethod(1.5f, () =>
         //{
         //    SceneManager.LoadScene("Action");
         //}));
     }
-    
+
     public void IoriCancel()
     {
         choice = 3;

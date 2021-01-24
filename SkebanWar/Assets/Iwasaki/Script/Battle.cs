@@ -112,7 +112,6 @@ public class Battle : MonoBehaviour
     private bool rerollDiceBool = true;
     [SerializeField]
     private Material grayScale;
-    [SerializeField]
     private Material normalMaterial;
     [SerializeField]
     private GameObject rerollButtons;
@@ -168,8 +167,8 @@ public class Battle : MonoBehaviour
         
         fadeCanvas.alpha = 0;
         kenkaImage_Right.color = new Color(0, 0, 0);
-        upperImage.material = normalMaterial;
-        lowerImage.material = normalMaterial;
+        upperImage.material = null;
+        lowerImage.material = null;
 
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
@@ -614,11 +613,6 @@ public class Battle : MonoBehaviour
                     anim_Icon.gameObject.SetActive(false);
                     anim_Plate.gameObject.SetActive(false);
                     anim_Text.gameObject.SetActive(false);
-
-                    //仮実装用
-                    //diceText.gameObject.SetActive(true);
-                    //diceButton.gameObject.SetActive(true);
-                    //本実装用
                     rollTheDice.gameObject.SetActive(true);
                     diceArrow.gameObject.SetActive(true);
 
@@ -633,14 +627,7 @@ public class Battle : MonoBehaviour
                     upperText.text = upperCharHP.ToString();
                     lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
-                    diceBool = true;
-
-
-
-                    //仮実装用
-                    //diceText.gameObject.SetActive(false);
-                    //diceButton.gameObject.SetActive(false);
-                    //本実装用
+                    diceBool = true;                    
                     rollTheDice.gameObject.SetActive(false);
                     diceArrow.gameObject.SetActive(false);
 
@@ -656,9 +643,6 @@ public class Battle : MonoBehaviour
                 case BattleProcess.SecondDice:
                     doOnce = true;
                     CutInImage.gameObject.SetActive(false);
-                    //diceText.gameObject.SetActive(true);
-                    //diceButton.gameObject.SetActive(true);
-
                     rollTheDice.gameObject.SetActive(true);
                     diceArrow.gameObject.SetActive(true);
 

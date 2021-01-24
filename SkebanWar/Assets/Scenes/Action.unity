@@ -528,7 +528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fieldManager: {fileID: 921652163}
   IsSelect: 1
-  pieceData: {fileID: 11400000, guid: e66359968126eb542b54f6d62301dc19, type: 2}
+  pieceData: {fileID: 0}
   rotState: 0
   noticeObj: {fileID: 303267144371422191, guid: 5d1aa584998547044ad7a9078a0bb6cd,
     type: 3}
@@ -2342,7 +2342,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc7bc2805e34a40b423e3af6d2b870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: e66359968126eb542b54f6d62301dc19, type: 2}
+  pieceData: {fileID: 0}
   text: {fileID: 1318565064}
   akane:
   - {fileID: 21300000, guid: 2fa3c2a91b3d8bd45b86351007fe4dc1, type: 3}
@@ -3118,7 +3118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc7bc2805e34a40b423e3af6d2b870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: e6f7543270b8014499cf2dbe984034cc, type: 2}
+  pieceData: {fileID: 0}
   text: {fileID: 1637636565}
   akane:
   - {fileID: 21300000, guid: 2fa3c2a91b3d8bd45b86351007fe4dc1, type: 3}
@@ -3861,7 +3861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f182354ec24cedc46956326cca924c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  P1deckData: {fileID: 11400000, guid: c6521623d75ae804ebbdd9182fde414d, type: 2}
+  P1deckData: {fileID: 11400000, guid: 02ea73c9484b3314f82c788efd00ecc3, type: 2}
   deckSet: 
   P1onHands:
   - {fileID: 2084954467}
@@ -4077,7 +4077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc7bc2805e34a40b423e3af6d2b870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: e6f7543270b8014499cf2dbe984034cc, type: 2}
+  pieceData: {fileID: 0}
   text: {fileID: 306615519}
   akane:
   - {fileID: 21300000, guid: 2fa3c2a91b3d8bd45b86351007fe4dc1, type: 3}
@@ -4187,7 +4187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc7bc2805e34a40b423e3af6d2b870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: ae276f37b616d3f4f9ff8a32bfe6d988, type: 2}
+  pieceData: {fileID: 0}
   text: {fileID: 1659350142}
   akane:
   - {fileID: 21300000, guid: 2fa3c2a91b3d8bd45b86351007fe4dc1, type: 3}
@@ -4893,7 +4893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f182354ec24cedc46956326cca924c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  P1deckData: {fileID: 11400000, guid: 6c079ea3d3f53e34c84c10b9c2b58b96, type: 2}
+  P1deckData: {fileID: 11400000, guid: e557c1c89a20d5348b61b189cf58d115, type: 2}
   deckSet: 
   P1onHands:
   - {fileID: 930860131}
@@ -5297,7 +5297,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc7bc2805e34a40b423e3af6d2b870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: ae276f37b616d3f4f9ff8a32bfe6d988, type: 2}
+  pieceData: {fileID: 0}
   text: {fileID: 1178906463}
   akane:
   - {fileID: 21300000, guid: 2fa3c2a91b3d8bd45b86351007fe4dc1, type: 3}
@@ -5743,7 +5743,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dc7bc2805e34a40b423e3af6d2b870, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceData: {fileID: 11400000, guid: e66359968126eb542b54f6d62301dc19, type: 2}
+  pieceData: {fileID: 0}
   text: {fileID: 247818343}
   akane:
   - {fileID: 21300000, guid: 2fa3c2a91b3d8bd45b86351007fe4dc1, type: 3}
@@ -7917,7 +7917,6 @@ MonoBehaviour:
   CutInImage: {fileID: 8497711184309305522}
   reRollImage: {fileID: 8497711184036817613}
   grayScale: {fileID: 2100000, guid: 181787d4e6d509e44a97355636260def, type: 2}
-  normalMaterial: {fileID: 2100000, guid: 0bb2d2982849e894287a1643d87957a3, type: 2}
   rerollButtons: {fileID: 8497711184746719130}
   dice: {fileID: 1489760794}
   diceObj: {fileID: 456134123}

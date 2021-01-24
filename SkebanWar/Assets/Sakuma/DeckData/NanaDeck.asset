@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e1884686383b474c96653ba9b3862b5, type: 3}
+  m_Name: NanaDeck
+  m_EditorClassIdentifier: 
+  name: NanaDeck
+  pieceDatas:
+  - {fileID: 11400000, guid: f5e05c3f361264e489ee04653dda2453, type: 2}
+  - {fileID: 11400000, guid: 27ea460405aa6224c9bb6d2b6c15448b, type: 2}
+  - {fileID: 11400000, guid: 09b1843f1a0409a44a699bf32d9abc7b, type: 2}
+  - {fileID: 11400000, guid: e9bfe30beeb602744b3aa2e05a17e137, type: 2}
+  - {fileID: 11400000, guid: f5ec307a1c9f6e441814e9514eabb3c8, type: 2}
+  - {fileID: 11400000, guid: 7aeed5061ae3f2d4da84a7ed25309b9e, type: 2}
+  character: 2

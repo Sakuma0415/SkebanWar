@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
-  m_Name: SU
+  m_Name: Nana_7
   m_EditorClassIdentifier: 
-  element: 1
-  name: "\u30B9"
+  element: 2
+  name: 7
   posSet: []
   HP: 7
   T0: 1
@@ -21,7 +21,7 @@ MonoBehaviour:
   T2: 0
   T3: 0
   T4: 1
-  T5: 1
+  T5: 0
   T6: 0
   T7: 1
   T8: 0
