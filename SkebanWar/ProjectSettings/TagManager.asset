@@ -20,6 +20,8 @@ TagManager:
   - NoButton
   - SenkouText
   - KoukouText
+  - P2Deck
+  - P1Deck
   layers:
   - Default
   - TransparentFX
