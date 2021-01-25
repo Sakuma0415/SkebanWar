@@ -16,22 +16,22 @@ public class test : MonoBehaviour
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            SoundManager.Instans.FadeInBGM("TestBGM");
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            //BGMがフェードアウトする
-            SoundManager.Instans.FadeOutBGM();
+        //if (Input.GetKeyDown(KeyCode.I))
+        //{
+        //    SoundManager.Instans.FadeInBGM("TestBGM");
+        //}
+        //if (Input.GetKeyDown(KeyCode.O))
+        //{
+        //    //BGMがフェードアウトする
+        //    SoundManager.Instans.FadeOutBGM();
 
-        }
+        //}
 
 
         if (Input.GetKeyDown(KeyCode.S))
         {
-            //SceneManager.LoadScene("test2");
-            SoundManager.Instans.PlaySeName("TestSE");
+            SceneManager.LoadScene("SenkouKime");
+            //SoundManager.Instans.PlaySeName("TestSE");
         }
 
     }
