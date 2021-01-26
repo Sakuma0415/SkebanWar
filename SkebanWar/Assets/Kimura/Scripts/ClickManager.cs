@@ -17,6 +17,7 @@ public class ClickManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            SceneManager.LoadScene("test");
             Debug.Log("clickされました。");
         }
     }

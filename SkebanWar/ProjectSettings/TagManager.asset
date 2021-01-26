@@ -18,11 +18,8 @@ TagManager:
   - CutInMask
   - YesButton
   - NoButton
-  - SenkouText
-  - KoukouText
-  - P2Deck
-  - P1Deck
-  - MainSpriteMask
+  - Koins
+  - stage
   layers:
   - Default
   - TransparentFX
