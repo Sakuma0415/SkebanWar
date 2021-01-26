@@ -38,7 +38,7 @@ public class Koinmanager : MonoBehaviour
 
                 Invoke("Koin_", 1.0f);
 
-                clickcheck = false;
+                //clickcheck = false;
                 SousaText.SetActive(false);
 
                 GameObject obj = GameObject.Find("TouchText");
@@ -47,24 +47,13 @@ public class Koinmanager : MonoBehaviour
                 rb.simulated = true;
             }
         }
-        if (transform.position.y > 1000)
+        if (transform.position.y > 900)
         {
             this.idou_Speed = 0;
 
         }
-        //else if (transform.position.y < -1)
-        //{
-        //    this.idou_Speed = 0;
-        //    this.rotSpeed = 0;
-        //    transform.eulerAngles = new Vector2(0, 0);
-        //    transform.position = new Vector2(0, 0);
-        //    SousaText.SetActive(true);
-        //    NextText.SetActive(true);
-        //}
-
         this.transform.position += new Vector3(0, this.idou_Speed, 0);
         transform.Rotate(this.rotSpeed, 0, 0);
-
     }
     void Koin_()
     {
@@ -72,12 +61,12 @@ public class Koinmanager : MonoBehaviour
         if (a == 0)
         {
             sampleImage.sprite = Koin1;
-            _text.text = "1Pが<size=100>先攻</size>です";
+            _text.text = "<size=90>1Pが<size=110>先攻</size>です</size>";
         }
         else
         {
             sampleImage.sprite = Koin2;
-            _text.text = "1Pが<size=100>後攻</size>です";
+            _text.text = "<size=90>1Pが<size=110>後攻</size>です</size>";
         }
     }
     void OnCollisionEnter2D(Collision2D other)
