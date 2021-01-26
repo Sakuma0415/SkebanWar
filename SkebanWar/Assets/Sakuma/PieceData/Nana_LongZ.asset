@@ -25,3 +25,5 @@ MonoBehaviour:
   T6: 0
   T7: 1
   T8: 1
+  charDetails: {fileID: 21300000, guid: 3b6e7c83048a22445b5d7132fc39d962, type: 3}
+  pieceForm: {fileID: 21300000, guid: 42f6ebabc40b261459b2c0cc4642c084, type: 3}

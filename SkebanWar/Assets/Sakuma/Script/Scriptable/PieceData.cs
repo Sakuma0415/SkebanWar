@@ -37,6 +37,9 @@ public class PieceData : ScriptableObject
     public bool T7;
     public bool T8;
 
+    public Sprite charDetails;
+
+    public Sprite pieceForm;
 }
 
 

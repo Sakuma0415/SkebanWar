@@ -22,6 +22,7 @@ TagManager:
   - KoukouText
   - P2Deck
   - P1Deck
+  - MainSpriteMask
   layers:
   - Default
   - TransparentFX

@@ -82,10 +82,19 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     BattleManager battleManager;
 
+    private float time;
+    [SerializeField]
+    private float detailsTime = 0;
+    [SerializeField]
+    private GameObject charDetails;
+    [SerializeField]
+    private GameObject detailsRotate;
+
  
 
     void Start()
     {
+        charDetails.SetActive(false);
         for(int i = 0; i < 9;i++)
         {
             
@@ -106,7 +115,7 @@ public class TouchManager : MonoBehaviour
     {
         IsSelect = Progress.Instance.gameMode == Progress.GameMode.P1Select || Progress.Instance.gameMode == Progress.GameMode.P2Select;
 
-        touchPro.SetActive(holdProgress == 2);
+        //touchPro.SetActive(holdProgress == 2);
 
 
 
@@ -119,7 +128,7 @@ public class TouchManager : MonoBehaviour
 
                 //最初のクリック
                 if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
-                {
+                {                    
                     OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
                     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     for (int i = 0; i < onHands.Length; i++)
@@ -139,6 +148,56 @@ public class TouchManager : MonoBehaviour
                             break;
                         }
                     }
+                }
+
+                //実験。押し続けたら詳細が出るようにしたい。
+                if (Input.GetKey(KeyCode.Mouse0) && holdProgress == 1)
+                {
+                    OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
+                    Vector2 pivotPos = (Vector2)fieldManager.gameObject.transform.position + new Vector2(-fieldManager.fieldSpace.x / 2, fieldManager.fieldSpace.y / 2);
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    for (int i = 0; i < onHands.Length; i++)
+                    {
+                        if (onHands[i].pieceData != null &&
+                            onHands[i].gameObject.transform.position.x + onHandS > mousePos.x &&
+                            onHands[i].gameObject.transform.position.x - onHandS < mousePos.x &&
+                            onHands[i].gameObject.transform.position.y + onHandS > mousePos.y &&
+                            onHands[i].gameObject.transform.position.y - onHandS < mousePos.y
+                            )
+                        {
+                            time += Time.deltaTime;
+                            if (time > detailsTime)
+                            {
+                                
+                                
+                                if (Progress.Instance.gameMode == Progress.GameMode.P1Select)
+                                {
+                                    detailsRotate.transform.rotation = Quaternion.Euler(0, 0, 0);
+                                    charDetails.GetComponent<SpriteRenderer>().sprite = pieceData.charDetails;
+                                    charDetails.SetActive(true);
+                                }
+
+                                if (Progress.Instance.gameMode == Progress.GameMode.P2Select)
+                                {
+                                    detailsRotate.transform.rotation = Quaternion.Euler(0, 0, 180);
+                                    charDetails.GetComponent<SpriteRenderer>().sprite = pieceData.charDetails;
+                                    charDetails.SetActive(true);
+                                }
+                            }
+                        }
+
+                        if (mousePos.x > pivotPos.x && mousePos.y < pivotPos.y && mousePos.x < pivotPos.x + fieldManager.fieldSpace.x && mousePos.y > pivotPos.y - fieldManager.fieldSpace.y)
+                        {
+                            time = 0;
+                            charDetails.SetActive(false);
+                        }
+                    }                    
+                }
+
+                if (Input.GetKeyUp(KeyCode.Mouse0) && holdProgress == 1)
+                {
+                    time = 0;
+                    charDetails.SetActive(false);
                 }
 
                 if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 2)
@@ -171,7 +230,7 @@ public class TouchManager : MonoBehaviour
                 if (Input.GetKeyUp(KeyCode.Mouse0) && holdProgress == 1)
                 {
                     Vector2 pivotPos = (Vector2)fieldManager.gameObject.transform.position + new Vector2(-fieldManager.fieldSpace.x / 2, fieldManager.fieldSpace.y / 2);
-                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);                    
 
                     if (mousePos.x > pivotPos.x && mousePos.y < pivotPos.y && mousePos.x < pivotPos.x + fieldManager.fieldSpace.x && mousePos.y > pivotPos.y - fieldManager.fieldSpace.y)
                     {
