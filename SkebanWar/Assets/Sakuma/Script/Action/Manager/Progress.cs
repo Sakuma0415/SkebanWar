@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// ゲームの進行状態を管理するクラス
 /// </summary>
@@ -65,6 +66,7 @@ public class Progress : MonoBehaviour
 
     void Start()
     {
+        cutInImage.SetActive(false);
         anim_CutInMask = GameObject.FindGameObjectWithTag("MainSpriteMask").GetComponent<Animator>();
         Instance = this;
         button2P.interactable = false;
@@ -166,9 +168,17 @@ public class Progress : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
-            cutInImage.GetComponent<SpriteRenderer>().sprite = sokomadeImage;
-            anim_CutInMask.SetTrigger("MainSpriteMask");
+            StartCoroutine(EndCor());            
         }        
+    }
+
+    private IEnumerator EndCor()
+    {
+        cutInImage.GetComponent<SpriteRenderer>().sprite = sokomadeImage;
+        anim_CutInMask.SetTrigger("MainSpriteMask");
+        yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 2.0f);
+        SceneManager.LoadScene("Result");
+        yield break;
     }
 
     public void ChagngeGameMode(GameMode changeGameMode,float intervalSet=0)

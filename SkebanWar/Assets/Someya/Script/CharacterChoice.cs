@@ -58,10 +58,12 @@ public class CharacterChoice : MonoBehaviour
          * 1 = Akane, 2 = Nana, 3 = Ioriでお願いします。
         */
 
-        //StartCoroutine(DelayMethod(1.5f, () =>
-        //{
-        //    SceneManager.LoadScene("Action");
-        //}));
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_1P = 1;
+            GameManager.Instance.ChoiseChar_2P = 2;
+            SceneManager.LoadScene("SenkouKime");
+        }));
     }
 
     public void IoriCancel()
@@ -77,10 +79,12 @@ public class CharacterChoice : MonoBehaviour
     public void IoriOK()
     {
         choice = 4;
-        //StartCoroutine(DelayMethod(1.5f, () =>
-        //{
-        //    SceneManager.LoadScene("Action");
-        //}));
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_1P = 2;
+            GameManager.Instance.ChoiseChar_2P = 3;
+            SceneManager.LoadScene("SenkouKime");
+        }));
     }
 
     public void NanaCancel()
@@ -96,10 +100,12 @@ public class CharacterChoice : MonoBehaviour
     public void NanaOK()
     {
         choice = 6;
-        //StartCoroutine(DelayMethod(1.5f, () =>
-        //{
-        //    SceneManager.LoadScene("Action");
-        //}));
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_1P = 3;
+            GameManager.Instance.ChoiseChar_2P = 1;
+            SceneManager.LoadScene("SenkouKime");
+        }));
     }
 
     /// <summary>

@@ -201,6 +201,8 @@ public class FieldManager : MonoBehaviour
 
         P1Score = P1count;
         P2Score = P2count;
+        GameManager.Instance.HavePoint_2P = P2count;
+        GameManager.Instance.HavePoint_1P = P1count;
 
     }
 

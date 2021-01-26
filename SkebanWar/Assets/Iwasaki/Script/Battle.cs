@@ -126,8 +126,10 @@ public class Battle : MonoBehaviour
     public bool EndPass = false;
     [SerializeField]
     BattleManager battleManager;
-
-
+    [SerializeField]
+    private GameObject P1Deck;
+    [SerializeField]
+    private GameObject P2Deck;
 
     void Start()
     {
@@ -163,8 +165,7 @@ public class Battle : MonoBehaviour
 
 
     void Init()
-    {
-        
+    {        
         fadeCanvas.alpha = 0;
         kenkaImage_Right.color = new Color(0, 0, 0);
         upperImage.material = null;
@@ -207,7 +208,7 @@ public class Battle : MonoBehaviour
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
             rollTheDice.transform.rotation = Quaternion.Euler(0, 0, 0);
             diceArrow.transform.rotation = Quaternion.Euler(0, 0, 0);
-            CutInImage.GetComponent<SpriteRenderer>().sprite = upperChar.CutInImage;
+            CutInImage.GetComponent<SpriteRenderer>().sprite = upperChar.CutInImage;            
         }
 
         if (!witchAttackBool)
@@ -224,6 +225,7 @@ public class Battle : MonoBehaviour
             diceArrow.transform.rotation = Quaternion.Euler(0, 0, 180);
             CutInImage.GetComponent<SpriteRenderer>().sprite = lowerChar.CutInImage;
         }
+        CutInImage.SetActive(false);
     }
 
 
@@ -277,6 +279,11 @@ public class Battle : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
+
+            //デッキ内のキャラを一時的に消す
+            P1Deck.SetActive(false);
+            P2Deck.SetActive(false);
+
             StartCoroutine(FadeOut(1.0f));
             EndPass = false ;
         }        
@@ -308,15 +315,13 @@ public class Battle : MonoBehaviour
         }
         //yield return new WaitForSeconds(2.0f);
 
-        ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
+        ChagngeGameMode(BattleProcess.FirstDice, 2f);
 
         yield break;
     }
 
     private void DiceShake()
     {
-
-
         float timeEnd = 0.5f;
 
         if (!dice.diceEnd)
@@ -339,57 +344,6 @@ public class Battle : MonoBehaviour
                 SecondShake();
             }
         }
-
-
-
-
-
-
-
-
-
-
-        //if (!diceBool) return;
-
-        //if (doOnce)
-        //{
-        //    doOnce = false;
-        //}        
-        //diceText.text = Random.Range(1, 6).ToString();
-
-
-    }
-    //仮実装用
-    public void DiceButton()
-    {
-        //diceBool = false;
-        //diceNumber = Random.Range(1, 6);
-        //diceText.text = diceNumber.ToString();
-        //switch (nowProcess)
-        //{
-        //    case BattleProcess.FirstDice:
-        //        if (witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //        }
-        //        if (!witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
-        //        }
-        //        FirstShake();
-        //        break;
-        //    case BattleProcess.SecondDice:
-        //        if (witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
-        //        }
-        //        if (!witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //        }
-        //        SecondShake();
-        //        break;
-        //}
     }
 
     private void ReRoll()
@@ -400,8 +354,6 @@ public class Battle : MonoBehaviour
             reRollImage.gameObject.SetActive(true);
             yesButton.gameObject.SetActive(true);
             noButton.gameObject.SetActive(true);
-            //diceText.gameObject.SetActive(false);
-            //diceButton.gameObject.SetActive(false);
         }
 
         if (Input.GetMouseButtonDown(0) && !doOnce)
@@ -559,16 +511,16 @@ public class Battle : MonoBehaviour
             if (doOnce)
             {
                 doOnce = false;
-                StartCoroutine(CutInCor(0.5f));
+                StartCoroutine(CutInCor(2f));
             }
         }     
         
     }
 
     private IEnumerator CutInCor(float waitTime)
-    {        
+    {
         anim_CutInMask.SetTrigger("CutInMask");
-        yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + waitTime);
+        yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + waitTime);        
         ChagngeGameMode(BattleProcess.SecondDice, 0.25f);
         yield break;
     }
@@ -587,6 +539,8 @@ public class Battle : MonoBehaviour
         EndPass = true;
         Init();
         doOnce = false;
+        P1Deck.SetActive(true);
+        P2Deck.SetActive(true);
         ChagngeGameMode(BattleProcess.Start, 0.25f);
 
     }

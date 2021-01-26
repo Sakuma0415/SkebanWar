@@ -26,37 +26,37 @@ public class DeckManager : MonoBehaviour
     {
         int[] data = new int[] {0,1,2,3,4,5 };
         deckSet = data.OrderBy(i => Guid.NewGuid()).ToArray();
-        //if (this.gameObject.tag == "P1Deck")
-        //{
-        //    switch (GameManager.Instance.ChoiseChar_1P)
-        //    {
-        //        case 1:
-        //            P1deckData = akaneDeck;
-        //            break;
-        //        case 2:
-        //            P1deckData = nanaDeck;
-        //            break;
-        //        case 3:
-        //            P1deckData = ioriDeck;
-        //            break;
-        //    }
-        //}
+        if (this.gameObject.tag == "P1Deck")
+        {
+            switch (GameManager.Instance.ChoiseChar_1P)
+            {
+                case 1:
+                    P1deckData = akaneDeck;
+                    break;
+                case 2:
+                    P1deckData = nanaDeck;
+                    break;
+                case 3:
+                    P1deckData = ioriDeck;
+                    break;
+            }
+        }
 
-        //if (this.gameObject.tag == "P2Deck")
-        //{
-        //    switch (GameManager.Instance.ChoiseChar_2P)
-        //    {
-        //        case 1:
-        //            P1deckData = akaneDeck;
-        //            break;
-        //        case 2:
-        //            P1deckData = nanaDeck;
-        //            break;
-        //        case 3:
-        //            P1deckData = ioriDeck;
-        //            break;
-        //    }
-        //}
+        if (this.gameObject.tag == "P2Deck")
+        {
+            switch (GameManager.Instance.ChoiseChar_2P)
+            {
+                case 1:
+                    P1deckData = akaneDeck;
+                    break;
+                case 2:
+                    P1deckData = nanaDeck;
+                    break;
+                case 3:
+                    P1deckData = ioriDeck;
+                    break;
+            }
+        }
         HandSet();
     }
 

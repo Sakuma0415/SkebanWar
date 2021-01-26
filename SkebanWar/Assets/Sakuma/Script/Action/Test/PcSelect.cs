@@ -45,8 +45,10 @@ public class PcSelect : MonoBehaviour
 
 
         if(HP != -1)
-        {
-            text.text = "HP:" + HP.ToString();
+        {            
+            //text.text = "HP:" + HP.ToString();
+            //実験用
+            text.text = HP.ToString();
         }
         else
         {

@@ -24,6 +24,8 @@ public class Result : SingletonMonoBehaviour<Result>
     private CanvasGroup fadeCanvas;
     void Start()
     {
+        redPoint = GameManager.Instance.HavePoint_1P;
+        bluePoint = GameManager.Instance.HavePoint_2P;
         toTitleBool = false;
         bluePointText = GameObject.FindGameObjectWithTag("BlueText").GetComponent<Text>();
         redPointText = GameObject.FindGameObjectWithTag("RedText").GetComponent<Text>();        
@@ -32,9 +34,10 @@ public class Result : SingletonMonoBehaviour<Result>
 
     void Update()
     {
-        if(toTitleBool)
+        if(Input.GetMouseButtonDown(0) && toTitleBool)
         {
-            //画面をタッチしたらタイトルへ戻る                
+            //画面をタッチしたらタイトルへ戻る
+            StartCoroutine(FadeOut(1.5f));
         }
     }
     private IEnumerator Roulette()
@@ -58,19 +61,19 @@ public class Result : SingletonMonoBehaviour<Result>
     private IEnumerator WinOrLose(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
-        if(bluePoint > redPoint)
+        if(GameManager.Instance.HavePoint_2P > GameManager.Instance.HavePoint_1P)
         {
             redResultText.GetComponent<Text>().text = "負け…";
             blueResultText.GetComponent<Text>().text = "勝ち!!";
         }
 
-        if(bluePoint < redPoint)
+        if(GameManager.Instance.HavePoint_2P < GameManager.Instance.HavePoint_1P)
         {
             redResultText.GetComponent<Text>().text = "勝ち!!";
             blueResultText.GetComponent<Text>().text = "負け…";
         }
 
-        if(bluePoint == redPoint)
+        if(GameManager.Instance.HavePoint_2P == GameManager.Instance.HavePoint_1P)
         {
             drowText.GetComponent<Text>().text = "引き分け";
             drowText.SetActive(true);
@@ -81,14 +84,14 @@ public class Result : SingletonMonoBehaviour<Result>
         toTitleBool = true;
         yield break;
     }
-    public void Event()
-    {
-        if (toTitleBool)
-        {
-            //()内秒かけてFadeOutする
-            StartCoroutine(FadeOut(1.5f));
-        }
-    }
+    //public void Event()
+    //{
+    //    if (toTitleBool)
+    //    {
+    //        //()内秒かけてFadeOutする
+    //        StartCoroutine(FadeOut(1.5f));
+    //    }
+    //}
     private IEnumerator FadeOut(float fadeTime)
     {
         float time = 0f;
