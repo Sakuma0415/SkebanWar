@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,34 +16,108 @@ public class CharacterChoice : MonoBehaviour
     int choice = 0;
 
     [SerializeField]
-    GameObject[] Decsion;
+    GameObject[] Decision;
 
     // ボタンを押したら選んだキャラクターを描画
-    public void C1Change()
+    public void AkaneChange()
     {
+        choice = 0;
         select = 1;
     }
 
-    public void C2Change()
+    public void IoriChange()
     {
+        choice = 0;
         select = 2;
     }
 
-    public void C3Change()
+    public void NanaChange()
     {
+        choice = 0;
         select = 3;
     }
 
-    // いいえを押したら選択に戻る
-    public void Cancel()
+    // いいえを押したらキャラクター選択に戻る
+    public void AkaneCancel()
     {
         choice = 1;
-        select = 0;
+        // 1.5秒後にシーン(画像)に移行
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            select = 0;
+        }));
     }
 
-    public void OK()
+    // はいを押したらゲームシーンに移行
+    public void AkaneOK()
     {
         choice = 2;
+        /*
+         * 1Pが選んだキャラをGameManager.Instance.ChoiseChar_1Pに、
+         * 2Pが選んだキャラをGameManager.Instance.ChoiseChar_2Pに入れてほしい。
+         * 1 = Akane, 2 = Nana, 3 = Ioriでお願いします。
+        */
+
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_1P = 1;
+            GameManager.Instance.ChoiseChar_2P = 2;
+            SceneManager.LoadScene("SenkouKime");
+        }));
+    }
+
+    public void IoriCancel()
+    {
+        choice = 3;
+        // 1.5秒後にシーン(画像)に移行
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            select = 0;
+        }));
+    }
+
+    public void IoriOK()
+    {
+        choice = 4;
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_1P = 2;
+            GameManager.Instance.ChoiseChar_2P = 3;
+            SceneManager.LoadScene("SenkouKime");
+        }));
+    }
+
+    public void NanaCancel()
+    {
+        choice = 5;
+        // 1.5秒後にシーン(画像)に移行
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            select = 0;
+        }));
+    }
+
+    public void NanaOK()
+    {
+        choice = 6;
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_1P = 3;
+            GameManager.Instance.ChoiseChar_2P = 1;
+            SceneManager.LoadScene("SenkouKime");
+        }));
+    }
+
+    /// <summary>
+    /// 渡された処理を指定時間後に実行する
+    /// </summary>
+    /// <param name="waitTime">遅延時間[ミリ秒]</param>
+    /// <param name="action">実行したい処理</param>
+    /// <returns></returns>
+    private IEnumerator DelayMethod(float waitTime, Action action)
+    {
+        yield return new WaitForSeconds(waitTime);
+        action();
     }
 
     void Update()
@@ -51,9 +126,9 @@ public class CharacterChoice : MonoBehaviour
         {
             Character[i].SetActive(i == select); 
         }
-        for (int j = 0; j < Decsion.Length; j++)
+        for (int j = 0; j < Decision.Length; j++)
         {
-            Decsion[j].SetActive(j == choice);
+            Decision[j].SetActive(j == choice);
         }
     }
 }

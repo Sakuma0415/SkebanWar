@@ -14,9 +14,18 @@ public class TapToStart : MonoBehaviour
     {
 
     }
-    public void Event()
+    //public void Event()
+    //{
+    //    audioSource.PlayOneShot(sound);
+    //    anim.SetTrigger("FadeOut");
+    //}
+
+    private void Update()
     {
-        audioSource.PlayOneShot(sound);
-        anim.SetTrigger("FadeOut");
-    }    
+        if (Input.GetMouseButtonDown(0))
+        {
+            audioSource.PlayOneShot(sound);
+            anim.SetTrigger("FadeOut");
+        }
+    }
 }

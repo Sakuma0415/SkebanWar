@@ -18,6 +18,8 @@ TagManager:
   - CutInMask
   - YesButton
   - NoButton
+  - Koins
+  - stage
   layers:
   - Default
   - TransparentFX
