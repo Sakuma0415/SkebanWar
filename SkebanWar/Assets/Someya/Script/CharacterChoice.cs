@@ -18,23 +18,34 @@ public class CharacterChoice : MonoBehaviour
     [SerializeField]
     GameObject[] Decision;
 
+    bool intaractable = true;
+
     // ボタンを押したら選んだキャラクターを描画
     public void AkaneChange()
     {
-        choice = 0;
-        select = 1;
+        if(intaractable == true)
+        {
+            choice = 0;
+            select = 1;
+        }
     }
 
     public void IoriChange()
     {
-        choice = 0;
-        select = 2;
+        if(intaractable == true)
+        {
+            choice = 0;
+            select = 2;
+        }
     }
 
     public void NanaChange()
     {
-        choice = 0;
-        select = 3;
+        if(intaractable == true)
+        {
+            choice = 0;
+            select = 3;
+        }
     }
 
     // いいえを押したらキャラクター選択に戻る
@@ -52,6 +63,7 @@ public class CharacterChoice : MonoBehaviour
     public void AkaneOK()
     {
         choice = 2;
+        intaractable = false;
         /*
          * 1Pが選んだキャラをGameManager.Instance.ChoiseChar_1Pに、
          * 2Pが選んだキャラをGameManager.Instance.ChoiseChar_2Pに入れてほしい。
@@ -61,8 +73,9 @@ public class CharacterChoice : MonoBehaviour
         StartCoroutine(DelayMethod(1.5f, () =>
         {
             GameManager.Instance.ChoiseChar_1P = 1;
-            GameManager.Instance.ChoiseChar_2P = 2;
-            SceneManager.LoadScene("SenkouKime");
+            select = 0;
+            //GameManager.Instance.ChoiseChar_2P = 2;
+            //SceneManager.LoadScene("SenkouKime");
         }));
     }
 
@@ -79,11 +92,13 @@ public class CharacterChoice : MonoBehaviour
     public void IoriOK()
     {
         choice = 4;
+        intaractable = false;
         StartCoroutine(DelayMethod(1.5f, () =>
         {
             GameManager.Instance.ChoiseChar_1P = 2;
-            GameManager.Instance.ChoiseChar_2P = 3;
-            SceneManager.LoadScene("SenkouKime");
+            select = 0;
+            //GameManager.Instance.ChoiseChar_2P = 3;
+            //SceneManager.LoadScene("SenkouKime");
         }));
     }
 
@@ -100,11 +115,13 @@ public class CharacterChoice : MonoBehaviour
     public void NanaOK()
     {
         choice = 6;
+        intaractable = false;
         StartCoroutine(DelayMethod(1.5f, () =>
         {
             GameManager.Instance.ChoiseChar_1P = 3;
-            GameManager.Instance.ChoiseChar_2P = 1;
-            SceneManager.LoadScene("SenkouKime");
+            select = 0;
+            //GameManager.Instance.ChoiseChar_2P = 1;
+            //SceneManager.LoadScene("SenkouKime");
         }));
     }
 
