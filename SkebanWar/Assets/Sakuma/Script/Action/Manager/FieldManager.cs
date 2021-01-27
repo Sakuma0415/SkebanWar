@@ -124,7 +124,7 @@ public class FieldManager : MonoBehaviour
         ////テスト用
         if (Input.GetKeyDown(KeyCode.A))
         {
-            VisualUpdate();
+            Debug.Log(GameManager.Instance.HaveCoins_1P +" "+ GameManager.Instance.HaveCoins_2P);
         }
         //if (Input.GetKeyDown(KeyCode.S))
         //{
@@ -282,13 +282,14 @@ public class FieldManager : MonoBehaviour
                                 }
                                 count[CleanSet].BenchNum = massDatas[i, j].Overlap[ii].BenchNum;
                                 count[CleanSet].PlayerNum  = massDatas[i, j].Overlap[ii].PlayerNum;
-
+                                
                                 CleanSet++;
                             }
                         }
 
                         if (CleanSet>0)
                         {
+                            GameManager.Instance.HaveCoins_2P += leng - CleanSet;
                             P1CharacterManager.getChar += leng - CleanSet;
                             massDatas[i, j].Overlap = count;
                             switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length -1].PlayerNum)
@@ -336,13 +337,14 @@ public class FieldManager : MonoBehaviour
                                 }
                                 count[CleanSet].BenchNum = massDatas[i, j].Overlap[ii].BenchNum;
                                 count[CleanSet].PlayerNum = massDatas[i, j].Overlap[ii].PlayerNum;
-
+                                 
                                 CleanSet++;
                             }
                         }
 
                         if (CleanSet > 0)
                         {
+                            GameManager.Instance.HaveCoins_1P += leng - CleanSet;
                             P2CharacterManager.getChar += leng - CleanSet;
                             massDatas[i, j].Overlap = count;
                             switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length - 1].PlayerNum)

@@ -185,8 +185,8 @@ public class Battle : MonoBehaviour
         //デバッグ用
         //upperChar.HP = 6;
         //lowerChar.HP = 6;
-        GameManager.Instance.HaveCoins_1P += 4;
-        GameManager.Instance.HaveCoins_2P += 4;
+        //GameManager.Instance.HaveCoins_1P += 4;
+        //GameManager.Instance.HaveCoins_2P += 4;
 
         //ImageとHPを表示
         upperImage.sprite = upperChar.Image;

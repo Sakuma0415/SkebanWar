@@ -20,6 +20,10 @@ TagManager:
   - NoButton
   - Koins
   - stage
+  - MainSpriteMask
+  - P1Deck
+  - P2Deck
+  - PAD
   layers:
   - Default
   - TransparentFX
@@ -30,7 +34,7 @@ TagManager:
   - 
   - 
   - YUKA
-  - 
+  - TAP
   - 
   - 
   - 

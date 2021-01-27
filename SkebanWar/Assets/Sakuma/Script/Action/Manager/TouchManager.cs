@@ -111,6 +111,11 @@ public class TouchManager : MonoBehaviour
     }
 
 
+
+    bool rotFG = false;
+    Vector2 Ptvect = Vector2.zero;
+
+
     void Update()
     {
         IsSelect = Progress.Instance.gameMode == Progress.GameMode.P1Select || Progress.Instance.gameMode == Progress.GameMode.P2Select;
@@ -125,6 +130,43 @@ public class TouchManager : MonoBehaviour
             //ピース選択、配置の処理
             if (!IsAttackSelect)
             {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+
+
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    RaycastHit hit = new RaycastHit();
+
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        Debug.Log(hit.collider.tag);
+                        if (hit.collider.tag == "PAD")
+                        {
+                            Ptvect=Input.mousePosition;
+                            rotFG = true;
+                        }
+                    }
+                }
+                if (rotFG)
+                {
+
+
+                    if(Vector2.Distance (Ptvect, Input.mousePosition) > 5)
+                    {
+                        rotFG = false;
+                        //Debug.Log(Vector2.Distance(Ptvect, Input.mousePosition));
+                    }
+
+
+                    if (Input.GetKeyUp (KeyCode.Mouse0))
+                    {
+
+                        ROT();
+
+                    }
+                }
+
+
 
                 //最初のクリック
                 if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
