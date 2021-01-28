@@ -21,6 +21,7 @@ public class Koinmanager : MonoBehaviour
 
     public int count = 3;
     Rigidbody2D rb;
+    public Progress progress;
 
     void Start()
     {
@@ -63,15 +64,13 @@ public class Koinmanager : MonoBehaviour
         {
             sampleImage.sprite = Koin1;
             _text.text = "<size=90>1Pが<size=110>先攻</size>です</size>";
-            GameManager.Instance.order = true;
-            Progress.Instance.P1start = true;
+            GameManager.order = true;
         }
         else
         {
             sampleImage.sprite = Koin2;
             _text.text = "<size=90>1Pが<size=110>後攻</size>です</size>";
-            GameManager.Instance.order = false;
-            Progress.Instance.P1start = false;
+            GameManager.order = false;
         }        
     }
 

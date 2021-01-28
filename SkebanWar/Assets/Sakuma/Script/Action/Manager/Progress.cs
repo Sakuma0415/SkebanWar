@@ -70,6 +70,7 @@ public class Progress : MonoBehaviour
     {
         cutInImage.SetActive(false);
         anim_CutInMask = GameObject.FindGameObjectWithTag("MainSpriteMask").GetComponent<Animator>();
+        P1start = GameManager.order;
         Instance = this;
         button2P.interactable = false;
     }
@@ -131,7 +132,14 @@ public class Progress : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
-            cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
+            if (GameManager.order)
+            {
+                cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
+            }
+            if (!GameManager.order)
+            {
+                cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
+            }
             anim_CutInMask.SetTrigger("MainSpriteMask");
         }
 
@@ -155,7 +163,14 @@ public class Progress : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
-            cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
+            if (GameManager.order)
+            {
+                cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
+            }
+            if (!GameManager.order)
+            {
+                cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
+            }
             anim_CutInMask.SetTrigger("MainSpriteMask");
         }
 

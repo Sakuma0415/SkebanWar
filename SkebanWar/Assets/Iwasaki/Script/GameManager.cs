@@ -78,8 +78,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         {
             return havePoint_2P;
         }
-    }
-    public bool order;
+    }    
+    public static bool order;
 
 
     public void Awake()

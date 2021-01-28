@@ -94,7 +94,7 @@ public class CharacterChoice : MonoBehaviour
             {
                 moveCan1P = true;
                 buttonA.interactable = false;
-                GameManager.Instance.ChoiseChar_1P = 1;
+                GameManager.Instance.ChoiseChar_1P = 0;
                 text1P.SetActive(false);
                 text2P.SetActive(true);
                 select = 0;
@@ -105,7 +105,7 @@ public class CharacterChoice : MonoBehaviour
             StartCoroutine(DelayMethod(1.5f, () =>
             {
                 moveCan2P = true;
-                GameManager.Instance.ChoiseChar_2P = 1;
+                GameManager.Instance.ChoiseChar_2P = 0;
                 SceneManager.LoadScene("SenkouKime");
             }));
         }
@@ -135,7 +135,7 @@ public class CharacterChoice : MonoBehaviour
             {
                 moveCan1P = true;
                 buttonI.interactable = false;
-                GameManager.Instance.ChoiseChar_1P = 3;
+                GameManager.Instance.ChoiseChar_1P = 2;
                 text1P.SetActive(false);
                 text2P.SetActive(true);
                 select = 0;
@@ -146,7 +146,7 @@ public class CharacterChoice : MonoBehaviour
             StartCoroutine(DelayMethod(1.5f, () =>
             {
                 moveCan2P = true;
-                GameManager.Instance.ChoiseChar_2P = 3;
+                GameManager.Instance.ChoiseChar_2P = 2;
                 SceneManager.LoadScene("SenkouKime");
             }));
         }
@@ -172,7 +172,7 @@ public class CharacterChoice : MonoBehaviour
             {
                 moveCan1P = true;
                 buttonN.interactable = false;
-                GameManager.Instance.ChoiseChar_1P = 2;
+                GameManager.Instance.ChoiseChar_1P = 1;
                 text1P.SetActive(false);
                 text2P.SetActive(true);
                 select = 0;
@@ -183,7 +183,7 @@ public class CharacterChoice : MonoBehaviour
             StartCoroutine(DelayMethod(1.5f, () =>
             {
                 moveCan2P = true;
-                GameManager.Instance.ChoiseChar_2P = 2;
+                GameManager.Instance.ChoiseChar_2P = 1;
                 SceneManager.LoadScene("SenkouKime");
             }));
         }
