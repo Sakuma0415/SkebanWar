@@ -337,6 +337,7 @@ public class TouchManager : MonoBehaviour
 
                         battle.AtkAT = character.CharacterBench[battleManager.attack].attribute;
                         battle.DefAT = character2.CharacterBench[battleManager.defense].attribute;
+                        battle.witchAttackBool = Progress.Instance.gameMode == Progress.GameMode.P1Select;
                         fieldManager.AttackSelectEnd();
                         IsAttackSelect = false;
                         Progress.Instance.endGameMode = true;
