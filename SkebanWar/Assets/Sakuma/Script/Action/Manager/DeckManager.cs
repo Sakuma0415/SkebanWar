@@ -30,13 +30,13 @@ public class DeckManager : MonoBehaviour
         {
             switch (GameManager.Instance.ChoiseChar_1P)
             {
-                case 1:
+                case 0:
                     P1deckData = akaneDeck;
                     break;
-                case 2:
+                case 1:
                     P1deckData = nanaDeck;
                     break;
-                case 3:
+                case 2:
                     P1deckData = ioriDeck;
                     break;
             }
@@ -46,13 +46,13 @@ public class DeckManager : MonoBehaviour
         {
             switch (GameManager.Instance.ChoiseChar_2P)
             {
-                case 1:
+                case 0:
                     P1deckData = akaneDeck;
                     break;
-                case 2:
+                case 1:
                     P1deckData = nanaDeck;
                     break;
-                case 3:
+                case 2:
                     P1deckData = ioriDeck;
                     break;
             }

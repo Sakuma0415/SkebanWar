@@ -2102,7 +2102,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614000255}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: 32, z: 0}
+  m_LocalPosition: {x: -1836, y: 32, z: 0}
   m_LocalScale: {x: 36.4, y: 9.71, z: 1}
   m_Children: []
   m_Father: {fileID: 536433657}
@@ -8822,7 +8822,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: f6aa59660d35f4a439ec8dbbf67eac8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -8830,7 +8830,7 @@ SpriteRenderer:
   m_Size: {x: 4, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!224 &8497711184309305521
@@ -9645,8 +9645,7 @@ MonoBehaviour:
   diceArrow: {fileID: 8497711184023307215}
   doOnce: 0
   charData: {fileID: 11400000, guid: 9716986832f415e4899799569d8f4cca, type: 2}
-  lowerChar: {fileID: 11400000, guid: 253c02f199085184e987417092962719, type: 2}
-  upperChar: {fileID: 11400000, guid: 18617ea0306ec8745ae1c33be2aed36b, type: 2}
+  battleImage: {fileID: 11400000, guid: e166484270ff07048bed1190848d3067, type: 2}
   lowerCharHP: 0
   upperCharHP: 0
   spriteData: {fileID: 11400000, guid: 98e146aefdebba74cb5281367e7e4d91, type: 2}
@@ -9665,6 +9664,18 @@ MonoBehaviour:
   battleManager: {fileID: 289554342}
   P1Deck: {fileID: 2010384791}
   P2Deck: {fileID: 1764073747}
+  akane:
+  - {fileID: 21300000, guid: 1d165bf73f866fb468f575720589920a, type: 3}
+  - {fileID: 21300000, guid: f399c199a677d9a4082b3536057b17d1, type: 3}
+  - {fileID: 21300000, guid: 023ec54db979bee4b90d1e2ff498f8c5, type: 3}
+  iori:
+  - {fileID: 21300000, guid: c7870ed85e18e7349883e97a7cfa151f, type: 3}
+  - {fileID: 21300000, guid: dbdcdcee374b052419d01dc1e71ef413, type: 3}
+  - {fileID: 21300000, guid: d28bd77af84977041b897dfa6fb430a9, type: 3}
+  nana:
+  - {fileID: 21300000, guid: f5a61c7b3251d7240b1795cfa618292c, type: 3}
+  - {fileID: 21300000, guid: 4ed4e209c07a61e4ab6636cddb96ba10, type: 3}
+  - {fileID: 21300000, guid: 4d41aa6ad3c6e534da2b8ef8ccfa0d22, type: 3}
   AtkAT: 3
   DefAT: 3
 --- !u!1 &8497711184812316129

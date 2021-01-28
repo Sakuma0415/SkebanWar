@@ -55,13 +55,13 @@ public class CharacterChoice : MonoBehaviour
         /*
          * 1Pが選んだキャラをGameManager.Instance.ChoiseChar_1Pに、
          * 2Pが選んだキャラをGameManager.Instance.ChoiseChar_2Pに入れてほしい。
-         * 1 = Akane, 2 = Nana, 3 = Ioriでお願いします。
+         * 0 = Akane, 1 = Nana, 2 = Ioriでお願いします。
         */
 
         StartCoroutine(DelayMethod(1.5f, () =>
         {
-            GameManager.Instance.ChoiseChar_1P = 1;
-            GameManager.Instance.ChoiseChar_2P = 2;
+            GameManager.Instance.ChoiseChar_1P = 0;
+            GameManager.Instance.ChoiseChar_2P = 1;
             SceneManager.LoadScene("SenkouKime");
         }));
     }
@@ -82,7 +82,7 @@ public class CharacterChoice : MonoBehaviour
         StartCoroutine(DelayMethod(1.5f, () =>
         {
             GameManager.Instance.ChoiseChar_1P = 2;
-            GameManager.Instance.ChoiseChar_2P = 3;
+            GameManager.Instance.ChoiseChar_2P = 0;
             SceneManager.LoadScene("SenkouKime");
         }));
     }
@@ -102,8 +102,8 @@ public class CharacterChoice : MonoBehaviour
         choice = 6;
         StartCoroutine(DelayMethod(1.5f, () =>
         {
-            GameManager.Instance.ChoiseChar_1P = 3;
-            GameManager.Instance.ChoiseChar_2P = 1;
+            GameManager.Instance.ChoiseChar_1P = 1;
+            GameManager.Instance.ChoiseChar_2P = 2;
             SceneManager.LoadScene("SenkouKime");
         }));
     }
