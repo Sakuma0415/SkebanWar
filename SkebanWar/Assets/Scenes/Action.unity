@@ -327,7 +327,7 @@ MonoBehaviour:
   time: 0
   endGameMode: 0
   battleFlg: 0
-  afterBattleTrnePlayer: 0
+  afterBattleTrnePlayer: 2
   P1deckManager: {fileID: 1454218745}
   P2deckManager: {fileID: 1734913135}
   button1P: {fileID: 457313355}
@@ -336,6 +336,7 @@ MonoBehaviour:
   senkouImage: {fileID: 21300000, guid: f1cb18ff6d8df214f85c72db0072ebe6, type: 3}
   koukouImage: {fileID: 21300000, guid: 0d3949a0881cc2a4c8c54094e851b3e0, type: 3}
   sokomadeImage: {fileID: 21300000, guid: c923e7424c7bccb44a7cd69579ed1e0a, type: 3}
+  P1start: 0
 --- !u!4 &11757453
 Transform:
   m_ObjectHideFlags: 0
@@ -922,6 +923,7 @@ MonoBehaviour:
   detailsTime: 1.5
   charDetails: {fileID: 56358855}
   detailsRotate: {fileID: 1410095088}
+  battle: {fileID: 8497711184812316128}
 --- !u!1 &247818341
 GameObject:
   m_ObjectHideFlags: 0
@@ -9663,6 +9665,8 @@ MonoBehaviour:
   battleManager: {fileID: 289554342}
   P1Deck: {fileID: 2010384791}
   P2Deck: {fileID: 1764073747}
+  AtkAT: 3
+  DefAT: 3
 --- !u!1 &8497711184812316129
 GameObject:
   m_ObjectHideFlags: 0
