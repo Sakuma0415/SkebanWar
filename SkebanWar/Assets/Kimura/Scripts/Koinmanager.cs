@@ -64,12 +64,14 @@ public class Koinmanager : MonoBehaviour
             sampleImage.sprite = Koin1;
             _text.text = "<size=90>1Pが<size=110>先攻</size>です</size>";
             GameManager.Instance.order = true;
+            Progress.Instance.P1start = true;
         }
         else
         {
             sampleImage.sprite = Koin2;
             _text.text = "<size=90>1Pが<size=110>後攻</size>です</size>";
             GameManager.Instance.order = false;
+            Progress.Instance.P1start = false;
         }        
     }
 
@@ -78,7 +80,6 @@ public class Koinmanager : MonoBehaviour
         yield return new WaitForSeconds(WaitTime);
         //最終的にステージセレクトをする。
         //SceneManager.LoadScene("StageSelect");
-        GameManager.Instance.HavePoint_2P = 10;
         SceneManager.LoadScene("Action");
         yield break;
     }
