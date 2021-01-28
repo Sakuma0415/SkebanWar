@@ -90,7 +90,8 @@ public class TouchManager : MonoBehaviour
     [SerializeField]
     private GameObject detailsRotate;
 
- 
+    [SerializeField]
+    Battle battle;
 
     void Start()
     {
@@ -323,8 +324,9 @@ public class TouchManager : MonoBehaviour
                         battleManager.defense = attack;
 
                         CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P2Select ? P2CharacterManager : P1CharacterManager);
+                        CharacterManager character2 = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? P2CharacterManager : P1CharacterManager);
                         //Debug.Log(character);
-                        for(int c=0;c< character.CharacterBench.Length; c++)
+                        for (int c=0;c< character.CharacterBench.Length; c++)
                         {
                             if (character.CharacterBench[c].HP == -1)
                             {
@@ -332,7 +334,9 @@ public class TouchManager : MonoBehaviour
                                 break;
                             }
                         }
-                        
+
+                        battle.AtkAT = character.CharacterBench[battleManager.attack].attribute;
+                        battle.DefAT = character2.CharacterBench[battleManager.defense].attribute;
                         fieldManager.AttackSelectEnd();
                         IsAttackSelect = false;
                         Progress.Instance.endGameMode = true;

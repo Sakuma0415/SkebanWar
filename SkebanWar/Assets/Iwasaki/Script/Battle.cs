@@ -131,6 +131,12 @@ public class Battle : MonoBehaviour
     [SerializeField]
     private GameObject P2Deck;
 
+    //攻撃側の属性
+    public CharacterManager.Attribute AtkAT = CharacterManager.Attribute.None;
+
+    //守備側の属性
+    public CharacterManager.Attribute DefAT = CharacterManager.Attribute.None;
+
     void Start()
     {
         Instance = this;
