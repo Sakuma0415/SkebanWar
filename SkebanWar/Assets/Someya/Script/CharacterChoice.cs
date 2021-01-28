@@ -41,6 +41,12 @@ public class CharacterChoice : MonoBehaviour
     [SerializeField]
     GameObject[] Decision;
 
+    [SerializeField]
+    GameObject text1P;
+
+    [SerializeField]
+    GameObject text2P;
+
     Button buttonA;
     Button buttonI;
     Button buttonN;
@@ -89,6 +95,8 @@ public class CharacterChoice : MonoBehaviour
                 moveCan1P = true;
                 buttonA.interactable = false;
                 GameManager.Instance.ChoiseChar_1P = 1;
+                text1P.SetActive(false);
+                text2P.SetActive(true);
                 select = 0;
             }));
         }
@@ -128,7 +136,9 @@ public class CharacterChoice : MonoBehaviour
                 moveCan1P = true;
                 buttonI.interactable = false;
                 GameManager.Instance.ChoiseChar_1P = 3;
-                choice = 0;
+                text1P.SetActive(false);
+                text2P.SetActive(true);
+                select = 0;
             }));
         }
         if (gameMode == GameMode.P2Select)
@@ -163,7 +173,9 @@ public class CharacterChoice : MonoBehaviour
                 moveCan1P = true;
                 buttonN.interactable = false;
                 GameManager.Instance.ChoiseChar_1P = 2;
-                SceneManager.LoadScene("SenkouKime");
+                text1P.SetActive(false);
+                text2P.SetActive(true);
+                select = 0;
             }));
         }
         if (gameMode == GameMode.P2Select)
@@ -195,6 +207,8 @@ public class CharacterChoice : MonoBehaviour
         buttonA = GameObject.Find("Select/CharacterSelect/ButtonA").GetComponent<Button>();
         buttonI = GameObject.Find("Select/CharacterSelect/ButtonI").GetComponent<Button>();
         buttonN = GameObject.Find("Select/CharacterSelect/ButtonN").GetComponent<Button>();
+        text1P.SetActive(true);
+        text2P.SetActive(false);
     }
 
     void Update()
@@ -228,6 +242,7 @@ public class CharacterChoice : MonoBehaviour
         {
             Decision[j].SetActive(j == choice);
         }
+        
     }
 
     private void StartUpdate()
