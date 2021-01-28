@@ -633,7 +633,7 @@ GameObject:
   - component: {fileID: 250533765}
   - component: {fileID: 250533764}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ButtonI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -907,7 +907,7 @@ GameObject:
   - component: {fileID: 382566483}
   - component: {fileID: 382566482}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: ButtonN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3319,8 +3319,8 @@ GameObject:
   - component: {fileID: 1911818040}
   - component: {fileID: 1911818039}
   m_Layer: 5
-  m_Name: Button
-  m_TagString: Untagged
+  m_Name: ButtonA
+  m_TagString: ButtonA
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3615,6 +3615,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061dabcec65aa6f4c8b2bfba3540a68e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMode: 0
+  time: 0
   select: 0
   Character:
   - {fileID: 1458384758}
