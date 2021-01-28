@@ -64,6 +64,8 @@ public class Progress : MonoBehaviour
     [SerializeField]
     private Sprite sokomadeImage;
 
+    public bool P1start = true;
+
     void Start()
     {
         cutInImage.SetActive(false);
@@ -112,7 +114,15 @@ public class Progress : MonoBehaviour
     {
         if (time > 1)
         {
-            ChagngeGameMode(GameMode.P1Select,1f);
+            if (P1start)
+            {
+                ChagngeGameMode(GameMode.P1Select, 1f);
+            }
+            else
+            {
+                ChagngeGameMode(GameMode.P2Select, 1f);
+            }
+            
         }
     }
 

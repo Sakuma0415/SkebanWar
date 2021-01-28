@@ -56,6 +56,21 @@ public class CharacterManager : MonoBehaviour
         CharacterBench[count].HP = pieceData.HP;
         CharacterBench[count].IsStand = true;
 
+        switch (pieceData.element)
+        {
+            case PieceData.Element.P:
+                CharacterBench[count].attribute = Attribute.Paper;
+                break;
+            case PieceData.Element.R:
+                CharacterBench[count].attribute = Attribute.Rock;
+                break;
+            case PieceData.Element.S:
+                CharacterBench[count].attribute = Attribute.Scissors;
+                break;
+        }
+
+
+
         count++;
     }
 
