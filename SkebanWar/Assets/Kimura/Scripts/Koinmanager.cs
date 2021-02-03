@@ -44,11 +44,11 @@ public class Koinmanager : MonoBehaviour
                 GameObject obj = GameObject.Find("TouchText");
                 Destroy(obj);
 
-                rb.simulated = true;
             }
         }
-        if (transform.position.y > 900)
+        if (transform.position.y > 500)
         {
+            rb.simulated = true;
             this.idou_Speed = 0;
 
         }
