@@ -20,6 +20,7 @@ TagManager:
   - NoButton
   - Koins
   - stage
+  - ButtonA
   layers:
   - Default
   - TransparentFX

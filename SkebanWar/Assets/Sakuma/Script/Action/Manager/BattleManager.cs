@@ -36,8 +36,11 @@ public class BattleManager : MonoBehaviour
     public int attack=0;
     public int defense=0;
 
-    public void BattleStart()
+    public int trunP = 0;
+
+    public void BattleStart(int trunP2)
     {
+        trunP = trunP2;
         IsBattle = true;
         battleProgress = 0;
         Darkening.gameObject.SetActive(true);
@@ -87,11 +90,13 @@ public class BattleManager : MonoBehaviour
         if (timeEnd < time)
         {
             NextProgress();
-            CharacterManager character = (Progress.Instance.afterBattleTrnePlayer == 1 ? P1CharacterManager : P2CharacterManager);
-            CharacterManager character2 = (Progress.Instance.afterBattleTrnePlayer == 2? P1CharacterManager : P2CharacterManager);
-            battle.upperChar.HP =   character.CharacterBench[defense ].HP;
-            battle.lowerChar .HP = character2.CharacterBench[attack].HP;
-            Debug.Log(attack);
+            CharacterManager character = (trunP == 1 ? P1CharacterManager : P2CharacterManager);
+            CharacterManager character2 = (trunP == 2? P1CharacterManager : P2CharacterManager);
+            battle.upperCharHP =   character.CharacterBench[defense].HP;
+            battle.lowerCharHP = character2.CharacterBench[attack].HP;
+            //Debug.Log("先攻:" + attack + " " + character2.CharacterBench[attack].HP);
+            //Debug.Log("後攻:" + defense + " " + character.CharacterBench[defense].HP);
+            Debug.Log(Progress.Instance.afterBattleTrnePlayer);
             battle.doOnce = true;
             //battle.witchAttackBool = Progress.Instance.afterBattleTrnePlayer == 2;
         }
@@ -117,8 +122,8 @@ public class BattleManager : MonoBehaviour
     {
         CharacterManager character = (Progress.Instance.afterBattleTrnePlayer == 1 ? P1CharacterManager : P2CharacterManager);
         CharacterManager character2 = (Progress.Instance.afterBattleTrnePlayer == 2 ? P1CharacterManager : P2CharacterManager);
-        character.CharacterBench[defense].HP = battle.upperChar.HP;
-        character2.CharacterBench[attack].HP = battle.lowerChar.HP;
+        character.CharacterBench[defense].HP = battle.upperCharHP;
+        character2.CharacterBench[attack].HP = battle.lowerCharHP;
     }
 
 }

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6e5f5f6e4e4714b9185277b285a33c, type: 3}
+  m_Name: Nana_sideTO
+  m_EditorClassIdentifier: 
+  element: 2
+  name: sideTO
+  posSet: []
+  HP: 6
+  T0: 0
+  T1: 0
+  T2: 0
+  T3: 0
+  T4: 1
+  T5: 0
+  T6: 1
+  T7: 1
+  T8: 1
+  charDetails: {fileID: 21300000, guid: 49ed01abe4a1d534da40283aa73e34ff, type: 3}
+  pieceForm: {fileID: 21300000, guid: bf7938e97ea10c14497583d9c785f9fa, type: 3}

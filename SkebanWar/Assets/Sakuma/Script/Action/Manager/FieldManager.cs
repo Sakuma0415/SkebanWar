@@ -124,7 +124,7 @@ public class FieldManager : MonoBehaviour
         ////テスト用
         if (Input.GetKeyDown(KeyCode.A))
         {
-            VisualUpdate();
+            Debug.Log(GameManager.Instance.HaveCoins_1P +" "+ GameManager.Instance.HaveCoins_2P);
         }
         //if (Input.GetKeyDown(KeyCode.S))
         //{
@@ -201,6 +201,8 @@ public class FieldManager : MonoBehaviour
 
         P1Score = P1count;
         P2Score = P2count;
+        GameManager.Instance.HavePoint_2P = P2count;
+        GameManager.Instance.HavePoint_1P = P1count;
 
     }
 
@@ -242,7 +244,7 @@ public class FieldManager : MonoBehaviour
 
             }
         }
-        Debug.Log("d");
+        //Debug.Log("d");
     }
 
 
@@ -280,13 +282,14 @@ public class FieldManager : MonoBehaviour
                                 }
                                 count[CleanSet].BenchNum = massDatas[i, j].Overlap[ii].BenchNum;
                                 count[CleanSet].PlayerNum  = massDatas[i, j].Overlap[ii].PlayerNum;
-
+                                
                                 CleanSet++;
                             }
                         }
 
                         if (CleanSet>0)
                         {
+                            GameManager.Instance.HaveCoins_2P += leng - CleanSet;
                             P1CharacterManager.getChar += leng - CleanSet;
                             massDatas[i, j].Overlap = count;
                             switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length -1].PlayerNum)
@@ -334,13 +337,14 @@ public class FieldManager : MonoBehaviour
                                 }
                                 count[CleanSet].BenchNum = massDatas[i, j].Overlap[ii].BenchNum;
                                 count[CleanSet].PlayerNum = massDatas[i, j].Overlap[ii].PlayerNum;
-
+                                 
                                 CleanSet++;
                             }
                         }
 
                         if (CleanSet > 0)
                         {
+                            GameManager.Instance.HaveCoins_1P += leng - CleanSet;
                             P2CharacterManager.getChar += leng - CleanSet;
                             massDatas[i, j].Overlap = count;
                             switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length - 1].PlayerNum)

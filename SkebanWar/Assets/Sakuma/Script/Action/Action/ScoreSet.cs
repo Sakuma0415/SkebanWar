@@ -12,6 +12,6 @@ public class ScoreSet : MonoBehaviour
     Text text;
     void Update()
     {
-        text.text = PlayerNum==1? fieldManager.P1Score.ToString(): fieldManager.P2Score.ToString();
+        text.text = PlayerNum == 1 ? fieldManager.P1Score.ToString(): fieldManager.P2Score.ToString();
     }
 }

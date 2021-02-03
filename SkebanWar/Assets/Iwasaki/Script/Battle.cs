@@ -39,12 +39,6 @@ public class Battle : MonoBehaviour
     public bool endGameMode = false;
     private bool diceBool = true;
 
-    //仮実装用
-    [SerializeField]
-    private Text diceText;
-    [SerializeField]
-    private GameObject diceButton;
-
     //本実装用
     [SerializeField]
     private Image rollTheDice;
@@ -57,8 +51,9 @@ public class Battle : MonoBehaviour
     //キャラクターデータ
     [SerializeField]
     private CharDataBase charData;
-    public  CharacterData lowerChar;
-    public  CharacterData upperChar;
+    public CharDataBaseBattle battleImage;
+    public int lowerCharHP;
+    public int upperCharHP;
 
     //スプライトデータ
     [SerializeField]
@@ -110,6 +105,7 @@ public class Battle : MonoBehaviour
     private bool rerollDiceBool = true;
     [SerializeField]
     private Material grayScale;
+    private Material normalMaterial;
     [SerializeField]
     private GameObject rerollButtons;
 
@@ -123,8 +119,23 @@ public class Battle : MonoBehaviour
     public bool EndPass = false;
     [SerializeField]
     BattleManager battleManager;
+    [SerializeField]
+    private GameObject P1Deck;
+    [SerializeField]
+    private GameObject P2Deck;
 
+    [SerializeField]
+    Sprite[] akane;
+    [SerializeField]
+    Sprite[] iori;
+    [SerializeField]
+    Sprite[] nana;
 
+    //攻撃側の属性
+    public CharacterManager.Attribute AtkAT = CharacterManager.Attribute.None;
+
+    //守備側の属性
+    public CharacterManager.Attribute DefAT = CharacterManager.Attribute.None;
 
     void Start()
     {
@@ -161,70 +172,50 @@ public class Battle : MonoBehaviour
 
     void Init()
     {
-        
+        other();
+
         fadeCanvas.alpha = 0;
         kenkaImage_Right.color = new Color(0, 0, 0);
+        upperImage.material = null;
+        lowerImage.material = null;
 
         yesButton.gameObject.SetActive(false);
         noButton.gameObject.SetActive(false);
 
-
         upperImage.gameObject.SetActive(false);
-        lowerImage.gameObject.SetActive(false);
+        lowerImage.gameObject.SetActive(false);        
 
-        //キャラクター情報追加
-        //upperChar = charData.characterDatas[0];
-        //lowerChar = charData.characterDatas[8];
-
-        //デバッグ用
-        //upperChar.HP = 6;
-        //lowerChar.HP = 6;
-        GameManager.Instance.HaveCoins_1P += 4;
-        GameManager.Instance.HaveCoins_2P += 4;
-
-        //ImageとHPを表示
-        upperImage.sprite = upperChar.Image;
-        upperText.text = upperChar.HP.ToString();
-        lowerImage.sprite = lowerChar.Image;
-        lowerText.text = lowerChar.HP.ToString();
-        //Debug.Log(upperChar.HP.ToString()+"   "+ lowerChar.HP.ToString());
+        //HPを表示
+        upperText.text = upperCharHP.ToString();
+        lowerText.text = lowerCharHP.ToString();
 
         //先攻後攻で画像を分ける
         if (witchAttackBool)
         {
             plateLeft.sprite = spriteData.Sprites[2];
             plateRight.sprite = spriteData.Sprites[1];
-            kenkaImage_Left.sprite = lowerChar.IconImage;
-            kenkaImage_Right.sprite = upperChar.IconImage;
             //1P側に向けて表示
             anim_Icon.transform.rotation = Quaternion.Euler(0, 0, 0);
             anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 0);
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
             rollTheDice.transform.rotation = Quaternion.Euler(0, 0, 0);
-            diceArrow.transform.rotation = Quaternion.Euler(0, 0, 0);
-            CutInImage.GetComponent<SpriteRenderer>().sprite = upperChar.CutInImage;
+            diceArrow.transform.rotation = Quaternion.Euler(0, 0, 0);           
         }
 
         if (!witchAttackBool)
         {
             plateLeft.sprite = spriteData.Sprites[0];
             plateRight.sprite = spriteData.Sprites[3];
-            kenkaImage_Left.sprite = upperChar.IconImage;
-            kenkaImage_Right.sprite = lowerChar.IconImage;
             //2P側に向けて表示
             anim_Icon.transform.rotation = Quaternion.Euler(0, 0, 180);
             anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 180);
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 180);
             rollTheDice.transform.rotation = Quaternion.Euler(0, 0, 180);
             diceArrow.transform.rotation = Quaternion.Euler(0, 0, 180);
-            CutInImage.GetComponent<SpriteRenderer>().sprite = lowerChar.CutInImage;
         }
+        CutInImage.SetActive(false);
     }
 
-
-
-
-    // Update is called once per frame
     void Update()
     {        
         Instance.time += Time.deltaTime;
@@ -272,6 +263,11 @@ public class Battle : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
+
+            //デッキ内のキャラを一時的に消す
+            P1Deck.SetActive(false);
+            P2Deck.SetActive(false);
+
             StartCoroutine(FadeOut(1.0f));
             EndPass = false ;
         }        
@@ -303,15 +299,13 @@ public class Battle : MonoBehaviour
         }
         //yield return new WaitForSeconds(2.0f);
 
-        ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
+        ChagngeGameMode(BattleProcess.FirstDice, 2f);
 
         yield break;
     }
 
     private void DiceShake()
     {
-
-
         float timeEnd = 0.5f;
 
         if (!dice.diceEnd)
@@ -334,57 +328,6 @@ public class Battle : MonoBehaviour
                 SecondShake();
             }
         }
-
-
-
-
-
-
-
-
-
-
-        //if (!diceBool) return;
-
-        //if (doOnce)
-        //{
-        //    doOnce = false;
-        //}        
-        //diceText.text = Random.Range(1, 6).ToString();
-
-
-    }
-    //仮実装用
-    public void DiceButton()
-    {
-        //diceBool = false;
-        //diceNumber = Random.Range(1, 6);
-        //diceText.text = diceNumber.ToString();
-        //switch (nowProcess)
-        //{
-        //    case BattleProcess.FirstDice:
-        //        if (witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //        }
-        //        if (!witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
-        //        }
-        //        FirstShake();
-        //        break;
-        //    case BattleProcess.SecondDice:
-        //        if (witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 180);
-        //        }
-        //        if (!witchAttackBool)
-        //        {
-        //            rerollButtons.transform.rotation = Quaternion.Euler(0, 0, 0);
-        //        }
-        //        SecondShake();
-        //        break;
-        //}
     }
 
     private void ReRoll()
@@ -395,8 +338,6 @@ public class Battle : MonoBehaviour
             reRollImage.gameObject.SetActive(true);
             yesButton.gameObject.SetActive(true);
             noButton.gameObject.SetActive(true);
-            //diceText.gameObject.SetActive(false);
-            //diceButton.gameObject.SetActive(false);
         }
 
         if (Input.GetMouseButtonDown(0) && !doOnce)
@@ -444,7 +385,7 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
-                Debug.Log(beforeProcess);
+                //Debug.Log(beforeProcess);
                 ChagngeGameMode(beforeProcess == BattleProcess.FirstDice ? BattleProcess.FirstAttack : BattleProcess.SecondAttack, 0.25f);
             }
         }
@@ -465,7 +406,7 @@ public class Battle : MonoBehaviour
         switch (nowProcess)
         {
             case BattleProcess.FirstAttack:
-                TypeMatchLower();
+                //TypeMatchLower();
                 AttackAnimPos();
                 while (diceNumber > 0)
                 {
@@ -473,18 +414,18 @@ public class Battle : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
-                        upperChar.HP--;
-                        upperText.text = upperChar.HP.ToString();
+                        upperCharHP--;
+                        upperText.text = upperCharHP.ToString();
                     }
                     if(!witchAttackBool)
                     {
-                        lowerChar.HP--;
-                        lowerText.text = lowerChar.HP.ToString();
+                        lowerCharHP--;
+                        lowerText.text = lowerCharHP.ToString();
                     }                    
                     diceNumber--;
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
 
-                    if (upperChar.HP == 0 || lowerChar.HP == 0)
+                    if (upperCharHP == 0 || lowerCharHP == 0)
                     {                        
                         if (witchAttackBool)
                         {
@@ -505,7 +446,7 @@ public class Battle : MonoBehaviour
                 break;
 
             case BattleProcess.SecondAttack:
-                TypeMatchUpper();
+                //TypeMatchUpper();
                 AttackAnimPos();
                 while (diceNumber > 0)
                 {
@@ -513,17 +454,17 @@ public class Battle : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
-                        lowerChar.HP--;
-                        lowerText.text = lowerChar.HP.ToString();
+                        lowerCharHP--;
+                        lowerText.text = lowerCharHP.ToString();
                     }
                     if (!witchAttackBool)
                     {
-                        upperChar.HP--;
-                        upperText.text = upperChar.HP.ToString();
+                        upperCharHP--;
+                        upperText.text = upperCharHP.ToString();
                     }                    
                     diceNumber--;
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
-                    if (upperChar.HP == 0 || lowerChar.HP == 0)
+                    if (upperCharHP == 0 || lowerCharHP == 0)
                     {
                         if (witchAttackBool)
                         {
@@ -554,16 +495,16 @@ public class Battle : MonoBehaviour
             if (doOnce)
             {
                 doOnce = false;
-                StartCoroutine(CutInCor(0.5f));
+                StartCoroutine(CutInCor(2f));
             }
         }     
         
     }
 
     private IEnumerator CutInCor(float waitTime)
-    {        
+    {
         anim_CutInMask.SetTrigger("CutInMask");
-        yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + waitTime);
+        yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + waitTime);        
         ChagngeGameMode(BattleProcess.SecondDice, 0.25f);
         yield break;
     }
@@ -582,6 +523,8 @@ public class Battle : MonoBehaviour
         EndPass = true;
         Init();
         doOnce = false;
+        P1Deck.SetActive(true);
+        P2Deck.SetActive(true);
         ChagngeGameMode(BattleProcess.Start, 0.25f);
 
     }
@@ -608,11 +551,6 @@ public class Battle : MonoBehaviour
                     anim_Icon.gameObject.SetActive(false);
                     anim_Plate.gameObject.SetActive(false);
                     anim_Text.gameObject.SetActive(false);
-
-                    //仮実装用
-                    //diceText.gameObject.SetActive(true);
-                    //diceButton.gameObject.SetActive(true);
-                    //本実装用
                     rollTheDice.gameObject.SetActive(true);
                     diceArrow.gameObject.SetActive(true);
 
@@ -624,17 +562,10 @@ public class Battle : MonoBehaviour
 
                     break;
                 case BattleProcess.FirstAttack:
-                    upperText.text = upperChar.HP.ToString();
-                    lowerText.text = lowerChar.HP.ToString();
+                    upperText.text = upperCharHP.ToString();
+                    lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
-                    diceBool = true;
-
-
-
-                    //仮実装用
-                    //diceText.gameObject.SetActive(false);
-                    //diceButton.gameObject.SetActive(false);
-                    //本実装用
+                    diceBool = true;                    
                     rollTheDice.gameObject.SetActive(false);
                     diceArrow.gameObject.SetActive(false);
 
@@ -650,9 +581,6 @@ public class Battle : MonoBehaviour
                 case BattleProcess.SecondDice:
                     doOnce = true;
                     CutInImage.gameObject.SetActive(false);
-                    //diceText.gameObject.SetActive(true);
-                    //diceButton.gameObject.SetActive(true);
-
                     rollTheDice.gameObject.SetActive(true);
                     diceArrow.gameObject.SetActive(true);
 
@@ -662,8 +590,8 @@ public class Battle : MonoBehaviour
                     dice.DiceSet();
                     break;
                 case BattleProcess.SecondAttack:
-                    upperText.text = upperChar.HP.ToString();
-                    lowerText.text = lowerChar.HP.ToString();
+                    upperText.text = upperCharHP.ToString();
+                    lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
                     diceBool = true;
 
@@ -684,7 +612,6 @@ public class Battle : MonoBehaviour
                     break;
                 case BattleProcess.ReRollChance:
                     doOnce = true;
-                    battleManager.Resetb();
                     rollTheDice.gameObject.SetActive(false);
                     diceArrow.gameObject.SetActive(false);
                     break;
@@ -699,40 +626,40 @@ public class Battle : MonoBehaviour
             }
         }
     }
-    private void TypeMatchLower()
-    {
-        if(lowerChar.Color == CharacterData.CharColor.Yellow && upperChar.Color == CharacterData.CharColor.Blue)
-        {
-            diceNumber += 1;
-        }
+    //private void TypeMatchLower()
+    //{
+    //    if(lowerChar.Color == CharacterData.CharColor.Yellow && upperChar.Color == CharacterData.CharColor.Blue)
+    //    {
+    //        diceNumber += 1;
+    //    }
 
-        if (lowerChar.Color == CharacterData.CharColor.Blue && upperChar.Color == CharacterData.CharColor.Red)
-        {
-            diceNumber += 1;
-        }
+    //    if (lowerChar.Color == CharacterData.CharColor.Blue && upperChar.Color == CharacterData.CharColor.Red)
+    //    {
+    //        diceNumber += 1;
+    //    }
 
-        if (lowerChar.Color == CharacterData.CharColor.Red && upperChar.Color == CharacterData.CharColor.Yellow)
-        {
-            diceNumber += 1;
-        }
-    }
-    private void TypeMatchUpper()
-    {
-        if (upperChar.Color == CharacterData.CharColor.Yellow && lowerChar.Color == CharacterData.CharColor.Blue)
-        {
-            diceNumber += 1;
-        }
+    //    if (lowerChar.Color == CharacterData.CharColor.Red && upperChar.Color == CharacterData.CharColor.Yellow)
+    //    {
+    //        diceNumber += 1;
+    //    }
+    //}
+    //private void TypeMatchUpper()
+    //{
+    //    if (upperChar.Color == CharacterData.CharColor.Yellow && lowerChar.Color == CharacterData.CharColor.Blue)
+    //    {
+    //        diceNumber += 1;
+    //    }
 
-        if (upperChar.Color == CharacterData.CharColor.Blue && lowerChar.Color == CharacterData.CharColor.Red)
-        {
-            diceNumber += 1;
-        }
+    //    if (upperChar.Color == CharacterData.CharColor.Blue && lowerChar.Color == CharacterData.CharColor.Red)
+    //    {
+    //        diceNumber += 1;
+    //    }
 
-        if (upperChar.Color == CharacterData.CharColor.Red && lowerChar.Color == CharacterData.CharColor.Yellow)
-        {
-            diceNumber += 1;
-        }
-    }
+    //    if (upperChar.Color == CharacterData.CharColor.Red && lowerChar.Color == CharacterData.CharColor.Yellow)
+    //    {
+    //        diceNumber += 1;
+    //    }
+    //}
 
     private void FirstShake()
     {
@@ -838,6 +765,259 @@ public class Battle : MonoBehaviour
         {
             anim_Attack.SetTrigger("Attack");
             anim_FlashUpper.SetTrigger("Flash");
+        }
+    }
+
+    private void other()
+    {
+        switch (GameManager.Instance.ChoiseChar_1P)
+        {
+            case 0:
+                if (witchAttackBool)
+                {
+                    kenkaImage_Left.sprite = battleImage.characterDatas[0].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
+                    CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].CutInImage;
+                    switch (AtkAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            lowerImage.sprite = akane[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            lowerImage.sprite = akane[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            lowerImage.sprite = akane[2];
+                            break;
+                    }
+                }
+
+                if (!witchAttackBool)
+                {
+                    kenkaImage_Left.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[0].IconImage;
+                    CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_1P].CutInImage;
+                    switch (DefAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            lowerImage.sprite = akane[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            lowerImage.sprite = akane[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            lowerImage.sprite = akane[2];
+                            break;
+                    }
+                }
+                break;
+
+            case 1:
+                if (witchAttackBool)
+                {
+                    kenkaImage_Left.sprite = battleImage.characterDatas[1].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
+                    CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].CutInImage;
+                    switch (AtkAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            lowerImage.sprite = nana[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            lowerImage.sprite = nana[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            lowerImage.sprite = nana[2];
+                            break;
+                    }
+                }
+
+                if (!witchAttackBool)
+                {
+                    kenkaImage_Left.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[1].IconImage;
+                    CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_1P].CutInImage;
+                    switch (DefAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            lowerImage.sprite = nana[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            lowerImage.sprite = nana[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            lowerImage.sprite = nana[2];
+                            break;
+                    }
+                }
+                break;
+
+            case 2:
+                if (witchAttackBool)
+                {
+                    kenkaImage_Left.sprite = battleImage.characterDatas[2].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
+                    CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].CutInImage;
+                    switch (AtkAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            lowerImage.sprite = iori[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            lowerImage.sprite = iori[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            lowerImage.sprite = iori[2];
+                            break;
+                    }
+                }
+
+                if (!witchAttackBool)
+                {
+                    kenkaImage_Left.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[2].IconImage;
+                    CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_1P].CutInImage;
+                    switch (DefAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            lowerImage.sprite = iori[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            lowerImage.sprite = iori[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            lowerImage.sprite = iori[2];
+                            break;
+                    }
+                }
+                break;
+        }
+
+        switch (GameManager.Instance.ChoiseChar_2P)
+        {
+            case 0:
+                if (witchAttackBool)
+                {                    
+                    switch (AtkAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            upperImage.sprite = akane[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            upperImage.sprite = akane[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            upperImage.sprite = akane[2];
+                            break;
+                    }
+                }
+
+                if (!witchAttackBool)
+                {
+                    switch (DefAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            upperImage.sprite = akane[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            upperImage.sprite = akane[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            upperImage.sprite = akane[2];
+                            break;
+                    }
+                }
+                break;
+            case 1:
+                if (witchAttackBool)
+                {
+                    switch (AtkAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            upperImage.sprite = nana[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            upperImage.sprite = nana[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            upperImage.sprite = nana[2];
+                            break;
+                    }
+                }
+
+                if (!witchAttackBool)
+                {
+                    switch (DefAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            upperImage.sprite = nana[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            upperImage.sprite = nana[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            upperImage.sprite = nana[2];
+                            break;
+                    }
+                }
+                break;
+            case 2:
+                if (witchAttackBool)
+                {
+                    switch (AtkAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            upperImage.sprite = iori[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            upperImage.sprite = iori[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            upperImage.sprite = iori[2];
+                            break;
+                    }
+                }
+
+                if (!witchAttackBool)
+                {                    
+                    switch (DefAT)
+                    {
+                        case CharacterManager.Attribute.Rock:
+                            upperImage.sprite = iori[0];
+                            break;
+
+                        case CharacterManager.Attribute.Paper:
+                            upperImage.sprite = iori[1];
+                            break;
+
+                        case CharacterManager.Attribute.Scissors:
+                            upperImage.sprite = iori[2];
+                            break;
+                    }
+                }
+                break;
         }
     }
 }
