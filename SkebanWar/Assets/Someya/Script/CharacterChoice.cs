@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// キャラクター選択画面を管理するクラス
+/// </summary>
 public class CharacterChoice : MonoBehaviour
 {
     public enum GameMode
@@ -100,6 +103,7 @@ public class CharacterChoice : MonoBehaviour
                 select = 0;
             }));
         }
+        // 1Pから2Pに変更する
         if (gameMode == GameMode.P2Select)
         {
             StartCoroutine(DelayMethod(1.5f, () =>
@@ -109,11 +113,6 @@ public class CharacterChoice : MonoBehaviour
                 SceneManager.LoadScene("SenkouKime");
             }));
         }
-        /*
-         * 1Pが選んだキャラをGameManager.Instance.ChoiseChar_1Pに、
-         * 2Pが選んだキャラをGameManager.Instance.ChoiseChar_2Pに入れてほしい。
-         * 1 = Akane, 2 = Nana, 3 = Ioriでお願いします。
-        */
     }
 
     public void IoriCancel()

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// タブレット動作を管理するクラス
+/// </summary>
 public class InputManager: MonoBehaviour
 {
     GameObject particle;
@@ -20,7 +23,7 @@ public class InputManager: MonoBehaviour
                     // ヒットしたらパーティクルを作ります
                     Instantiate(particle, transform.position, transform.rotation);
                 }
-                Debug.Log("押した");
+                //Debug.Log("押した");
             }
             // タブレットを離した時
             if(touch.phase == TouchPhase.Ended)
@@ -30,7 +33,7 @@ public class InputManager: MonoBehaviour
                 {
                     Instantiate(particle, transform.position, transform.rotation);
                 }
-                Debug.Log("離した");
+                //Debug.Log("離した");
             }
             // タブレットを押し続いている時
             if(touch.phase == TouchPhase.Moved)
@@ -40,7 +43,7 @@ public class InputManager: MonoBehaviour
                 {
                     Instantiate(particle, transform.position, transform.rotation);
                 }
-                Debug.Log("押し続いている");
+                //Debug.Log("押し続いている");
             }
         }
     }
