@@ -37,7 +37,7 @@ public class Koinmanager : MonoBehaviour
             {
                 this.rotSpeed = 10f;
 
-                this.rotSpeed -= Time.deltaTime;
+                //this.rotSpeed -= Time.deltaTime;
 
                 //1秒後にKoin_の実行する
                 Invoke("Koin_", 1.0f);
