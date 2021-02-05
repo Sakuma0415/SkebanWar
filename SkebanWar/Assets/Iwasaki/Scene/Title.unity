@@ -486,6 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3759fecdfa5d7d443b1d8d9ffa4e4918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cutInImage: {fileID: 0}
 --- !u!1 &1087294019
 GameObject:
   m_ObjectHideFlags: 0
