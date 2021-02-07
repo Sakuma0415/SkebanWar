@@ -135,6 +135,11 @@ public class Battle : MonoBehaviour
     //守備側の属性
     public CharacterManager.Attribute DefAT = CharacterManager.Attribute.None;
 
+    //現在のコインの数
+    [SerializeField]
+    private Text P1Coins;
+    [SerializeField]
+    private Text P2Coins;
     void Start()
     {
         Instance = this;
@@ -170,15 +175,6 @@ public class Battle : MonoBehaviour
 
     void Init()
     {
-        if (Progress.Instance.afterBattleTrnePlayer == 2)
-        {
-            witchAttackBool = true;
-        }
-        else
-        {
-            witchAttackBool = false;
-        }
-
         fadeCanvas.alpha = 0;
         kenkaImage_Right.color = new Color(0, 0, 0);
         upperImage.material = null;
@@ -193,29 +189,7 @@ public class Battle : MonoBehaviour
         //HPを表示
         upperText.text = upperCharHP.ToString();
         lowerText.text = lowerCharHP.ToString();
-
-        //先攻後攻で画像を分ける
-        if (witchAttackBool)
-        {
-            plateLeft.sprite = spriteData.Sprites[2];
-            plateRight.sprite = spriteData.Sprites[1];
-            //1P側に向けて表示
-            anim_Icon.transform.rotation = Quaternion.Euler(0, 0, 0);
-            anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 0);
-            anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
-            arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);          
-        }
-
-        if (!witchAttackBool)
-        {
-            plateLeft.sprite = spriteData.Sprites[0];
-            plateRight.sprite = spriteData.Sprites[3];
-            //2P側に向けて表示
-            anim_Icon.transform.rotation = Quaternion.Euler(0, 0, 180);
-            anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 180);
-            anim_Text.transform.rotation = Quaternion.Euler(0, 0, 180);
-            arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 180);
-        }
+        
         CutInImage.SetActive(false);
     }
 
@@ -267,6 +241,7 @@ public class Battle : MonoBehaviour
         {
             doOnce = false;
             other();
+            movieRotate();
             //デッキ内のキャラを一時的に消す
             P1Deck.SetActive(false);
             P2Deck.SetActive(false);
@@ -321,6 +296,17 @@ public class Battle : MonoBehaviour
             diceNumber=dice.Ans;
             dice.IsDice = false;
             diceObj.SetActive(false);
+            arrowsImage.gameObject.SetActive(false);
+
+            if (witchAttackBool)
+            {
+                arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 180);
+            }
+            else
+            {
+                arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+
             dice.DiceSet();
             if(beforeProcess == BattleProcess.FirstDice)
             {
@@ -353,8 +339,6 @@ public class Battle : MonoBehaviour
                 reRollImage.gameObject.SetActive(false);
                 yesButton.gameObject.SetActive(false);
                 noButton.gameObject.SetActive(false);
-                //diceText.gameObject.SetActive(true);
-                //diceButton.gameObject.SetActive(true);
                 if(beforeProcess == BattleProcess.FirstDice)
                 {
                     ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
@@ -381,6 +365,8 @@ public class Battle : MonoBehaviour
                         GameManager.Instance.HaveCoins_1P -= 2;
                     }
                 }
+                P2Coins.text = GameManager.Instance.HaveCoins_2P.ToString();
+                P1Coins.text = GameManager.Instance.HaveCoins_1P.ToString();
             }
 
             if (hit2d.collider.tag == "NoButton")
@@ -566,8 +552,7 @@ public class Battle : MonoBehaviour
                     upperText.text = upperCharHP.ToString();
                     lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
-                    diceBool = true;
-                    arrowsImage.gameObject.SetActive(false);
+                    diceBool = true;                    
                     upperImage.gameObject.SetActive(true);
                     lowerImage.gameObject.SetActive(true);
                     break;
@@ -975,6 +960,43 @@ public class Battle : MonoBehaviour
                     }
                 }
                 break;
+        }
+    }
+    private void movieRotate()
+    {
+        if (Progress.Instance.afterBattleTrnePlayer == 2)
+        {
+            Debug.Log("1P");
+            witchAttackBool = true;
+        }
+
+        if (Progress.Instance.afterBattleTrnePlayer == 1)
+        {
+            Debug.Log("2P");
+            witchAttackBool = false;
+        }
+
+        //先攻後攻で画像を分ける
+        if (witchAttackBool)
+        {
+            plateLeft.sprite = spriteData.Sprites[2];
+            plateRight.sprite = spriteData.Sprites[1];
+            //1P側に向けて表示
+            anim_Icon.transform.rotation = Quaternion.Euler(0, 0, 0);
+            anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 0);
+            anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
+            arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        if (!witchAttackBool)
+        {
+            plateLeft.sprite = spriteData.Sprites[0];
+            plateRight.sprite = spriteData.Sprites[3];
+            //2P側に向けて表示
+            anim_Icon.transform.rotation = Quaternion.Euler(0, 0, 180);
+            //anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 180);
+            anim_Text.transform.rotation = Quaternion.Euler(0, 0, 180);
+            arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 180);
         }
     }
 }

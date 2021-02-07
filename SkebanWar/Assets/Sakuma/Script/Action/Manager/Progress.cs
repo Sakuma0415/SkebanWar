@@ -63,6 +63,8 @@ public class Progress : MonoBehaviour
     private Sprite koukouImage;
     [SerializeField]
     private Sprite sokomadeImage;
+    [HideInInspector]
+    public bool touchBool;
 
     public bool P1start = true;
 
@@ -134,13 +136,17 @@ public class Progress : MonoBehaviour
             doOnce = false;
             if (GameManager.order)
             {
+                cutInImage.transform.rotation = Quaternion.Euler(0, 0, 0);
                 cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
             }
             if (!GameManager.order)
             {
+                cutInImage.transform.rotation = Quaternion.Euler(0, 0, 0);
                 cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
             }
+            touchBool = false;
             anim_CutInMask.SetTrigger("MainSpriteMask");
+            StartCoroutine(WaitTime(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 2.5f));
         }
 
         if (endGameMode)
@@ -165,13 +171,17 @@ public class Progress : MonoBehaviour
             doOnce = false;
             if (GameManager.order)
             {
+                cutInImage.transform.rotation = Quaternion.Euler(0, 0, 180);
                 cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
             }
             if (!GameManager.order)
             {
+                cutInImage.transform.rotation = Quaternion.Euler(0, 0, 180);
                 cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
             }
+            touchBool = false;
             anim_CutInMask.SetTrigger("MainSpriteMask");
+            StartCoroutine(WaitTime(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 2.5f));
         }
 
         if (endGameMode)
@@ -199,6 +209,7 @@ public class Progress : MonoBehaviour
 
     private IEnumerator EndCor()
     {
+        cutInImage.transform.rotation = Quaternion.Euler(0, 0, 0);
         cutInImage.GetComponent<SpriteRenderer>().sprite = sokomadeImage;
         anim_CutInMask.SetTrigger("MainSpriteMask");
         yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 2.0f);
@@ -284,7 +295,12 @@ public class Progress : MonoBehaviour
             }
         }
     }
-
+    private IEnumerator WaitTime(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        touchBool = true;
+        yield break;
+    }
 
 }
 
