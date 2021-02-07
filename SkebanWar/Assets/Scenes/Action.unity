@@ -7801,7 +7801,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39999e6623c472749adddf9f1ba7417a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order: 0
 --- !u!1 &6952533634621787770
 GameObject:
   m_ObjectHideFlags: 0
@@ -9639,8 +9638,6 @@ MonoBehaviour:
   nowProcess: 0
   time: 0
   endGameMode: 0
-  diceText: {fileID: 0}
-  diceButton: {fileID: 0}
   rollTheDice: {fileID: 8497711185216794439}
   diceArrow: {fileID: 8497711184023307215}
   doOnce: 0

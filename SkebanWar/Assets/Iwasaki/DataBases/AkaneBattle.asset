@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c456693c22800c41b7c4ce08c8eca45, type: 3}
   m_Name: AkaneBattle
   m_EditorClassIdentifier: 
-  IconImage: {fileID: 4319025038899010858, guid: 42ebfa0ef29a49146b484b93e8ebd3e9,
-    type: 3}
+  IconImage: {fileID: 21300000, guid: 1120e84491fc79948b3a69f76798fd76, type: 3}
   CutInImage: {fileID: 21300000, guid: f6aa59660d35f4a439ec8dbbf67eac8c, type: 3}

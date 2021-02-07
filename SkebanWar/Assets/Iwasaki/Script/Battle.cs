@@ -289,7 +289,7 @@ public class Battle : MonoBehaviour
         yield return new WaitForSeconds(anim_Icon.GetCurrentAnimatorStateInfo(0).length);
 
         anim_Text.SetTrigger("KenkaTexts");        
-        yield return new WaitForSeconds(anim_Text.GetCurrentAnimatorStateInfo(0).length + 0.7f);
+        yield return new WaitForSeconds(anim_Text.GetCurrentAnimatorStateInfo(0).length + 0.5f);
 
         while (kenkaImage_Right.color.r < 1)
         {
