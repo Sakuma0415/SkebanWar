@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpritesDataBase
   m_EditorClassIdentifier: 
   Sprites:
-  - {fileID: 21300000, guid: 54c86c705caffae4f8fbbd83005179ad, type: 3}
+  - {fileID: 21300000, guid: c61601ff5113ef14a9bc6aa31a2a67ad, type: 3}
   - {fileID: 21300000, guid: b41e2464a8a9fb244b234e526f97eb42, type: 3}
   - {fileID: 21300000, guid: ddd264dcec7561e458ea509a4e642b53, type: 3}
-  - {fileID: 21300000, guid: a31d732e3d91af34c8d6590bd5d97f8e, type: 3}
+  - {fileID: 21300000, guid: 9dd45d8551d97cc448b1afe3a3100437, type: 3}
