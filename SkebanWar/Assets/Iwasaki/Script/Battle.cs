@@ -267,7 +267,7 @@ public class Battle : MonoBehaviour
         yield return new WaitForSeconds(anim_Icon.GetCurrentAnimatorStateInfo(0).length);
 
         anim_Text.SetTrigger("KenkaTexts");        
-        yield return new WaitForSeconds(anim_Text.GetCurrentAnimatorStateInfo(0).length + 1.2f);
+        yield return new WaitForSeconds(anim_Text.GetCurrentAnimatorStateInfo(0).length + 0.5f);
 
         while (kenkaImage_Right.color.r < 1)
         {
@@ -277,7 +277,7 @@ public class Battle : MonoBehaviour
         }
         //yield return new WaitForSeconds(2.0f);
 
-        ChagngeGameMode(BattleProcess.FirstDice, 2f);
+        ChagngeGameMode(BattleProcess.FirstDice, 1f);
 
         yield break;
     }
