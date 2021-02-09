@@ -15,7 +15,7 @@ MonoBehaviour:
   element: 2
   name: +
   posSet: []
-  HP: 7
+  HP: 6
   T0: 0
   T1: 1
   T2: 0
@@ -25,5 +25,5 @@ MonoBehaviour:
   T6: 0
   T7: 1
   T8: 0
-  charDetails: {fileID: 21300000, guid: ee51f702e3bd05a46adfd754453e2979, type: 3}
+  charDetails: {fileID: 21300000, guid: 485c4b34f47ead84496578acba441d07, type: 3}
   pieceForm: {fileID: 21300000, guid: 6a2dbddadce7d6c408870ebab7df74db, type: 3}
