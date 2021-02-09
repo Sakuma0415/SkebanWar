@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -77,8 +78,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         {
             return havePoint_2P;
         }
-    }
-    public bool order;
+    }    
+    public static bool order;
 
 
     public void Awake()

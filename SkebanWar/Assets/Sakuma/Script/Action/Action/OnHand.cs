@@ -40,6 +40,19 @@ public class OnHand : MonoBehaviour
 
     void Update()
     {
+        switch (deckManager.P1deckData.character)
+        {
+            case DeckData.Character.akane:
+                get = akane;
+                break;
+            case DeckData.Character.iori:
+                get = iori;
+                break;
+            case DeckData.Character.nana:
+                get = nana;
+                break;
+        }
+
         if (pieceData != null)
         {
             image.color = new Color(1, 1, 1, 1);

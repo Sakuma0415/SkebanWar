@@ -21,6 +21,7 @@ public class Koinmanager : MonoBehaviour
 
     public int count = 3;
     Rigidbody2D rb;
+    public Progress progress;
 
     void Start()
     {
@@ -63,13 +64,13 @@ public class Koinmanager : MonoBehaviour
         {
             sampleImage.sprite = Koin1;
             _text.text = "<size=90>1Pが<size=110>先攻</size>です</size>";
-            GameManager.Instance.order = true;
+            GameManager.order = true;
         }
         else
         {
             sampleImage.sprite = Koin2;
             _text.text = "<size=90>1Pが<size=110>後攻</size>です</size>";
-            GameManager.Instance.order = false;
+            GameManager.order = false;
         }        
     }
 
@@ -78,7 +79,6 @@ public class Koinmanager : MonoBehaviour
         yield return new WaitForSeconds(WaitTime);
         //最終的にステージセレクトをする。
         //SceneManager.LoadScene("StageSelect");
-        GameManager.Instance.HavePoint_2P = 10;
         SceneManager.LoadScene("Action");
         yield break;
     }

@@ -9,6 +9,18 @@ public class Result : SingletonMonoBehaviour<Result>
     private Text redPointText;
     private Text bluePointText;
     [SerializeField]
+    GameObject Text1P_A;
+    [SerializeField]
+    GameObject Text1P_I;
+    [SerializeField]
+    GameObject Text1P_N;
+    [SerializeField]
+    GameObject Text2P_A;
+    [SerializeField]
+    GameObject Text2P_I;
+    [SerializeField]
+    GameObject Text2P_N;
+    [SerializeField]
     private GameObject blueResultText;
     [SerializeField]
     private GameObject redResultText;
@@ -28,13 +40,37 @@ public class Result : SingletonMonoBehaviour<Result>
         bluePoint = GameManager.Instance.HavePoint_2P;
         toTitleBool = false;
         bluePointText = GameObject.FindGameObjectWithTag("BlueText").GetComponent<Text>();
-        redPointText = GameObject.FindGameObjectWithTag("RedText").GetComponent<Text>();        
+        redPointText = GameObject.FindGameObjectWithTag("RedText").GetComponent<Text>();
         StartCoroutine(Roulette());
     }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0) && toTitleBool)
+        if(GameManager.Instance.ChoiseChar_1P == 0)
+        {
+            Text1P_A.SetActive(true);
+        }
+        else if(GameManager.Instance.ChoiseChar_1P == 2)
+        {
+            Text1P_I.SetActive(true);
+        }
+        else if(GameManager.Instance.ChoiseChar_1P == 1)
+        {
+            Text1P_N.SetActive(true);
+        }
+        if (GameManager.Instance.ChoiseChar_2P == 0)
+        {
+            Text2P_A.SetActive(true);
+        }
+        else if (GameManager.Instance.ChoiseChar_2P == 2)
+        {
+            Text2P_I.SetActive(true);
+        }
+        else if (GameManager.Instance.ChoiseChar_2P == 1)
+        {
+            Text2P_N.SetActive(true);
+        }
+        if (Input.GetMouseButtonDown(0) && toTitleBool)
         {
             //画面をタッチしたらタイトルへ戻る
             StartCoroutine(FadeOut(1.5f));

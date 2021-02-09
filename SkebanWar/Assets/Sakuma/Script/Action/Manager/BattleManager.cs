@@ -92,7 +92,7 @@ public class BattleManager : MonoBehaviour
             NextProgress();
             CharacterManager character = (trunP == 1 ? P1CharacterManager : P2CharacterManager);
             CharacterManager character2 = (trunP == 2? P1CharacterManager : P2CharacterManager);
-            battle.upperCharHP =   character.CharacterBench[defense ].HP;
+            battle.upperCharHP =   character.CharacterBench[defense].HP;
             battle.lowerCharHP = character2.CharacterBench[attack].HP;
             //Debug.Log("先攻:" + attack + " " + character2.CharacterBench[attack].HP);
             //Debug.Log("後攻:" + defense + " " + character.CharacterBench[defense].HP);

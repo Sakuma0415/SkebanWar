@@ -58,11 +58,15 @@ public class Progress : MonoBehaviour
     [SerializeField]
     private GameObject cutInImage;
     [SerializeField]
+    private GameObject turnImages;
+    [SerializeField]
     private Sprite senkouImage;
     [SerializeField]
     private Sprite koukouImage;
     [SerializeField]
     private Sprite sokomadeImage;
+    [HideInInspector]
+    public bool touchBool;
 
     public bool P1start = true;
 
@@ -70,6 +74,7 @@ public class Progress : MonoBehaviour
     {
         cutInImage.SetActive(false);
         anim_CutInMask = GameObject.FindGameObjectWithTag("MainSpriteMask").GetComponent<Animator>();
+        P1start = GameManager.order;
         Instance = this;
         button2P.interactable = false;
     }
@@ -131,8 +136,19 @@ public class Progress : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
-            cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
+            if (GameManager.order)
+            {
+                turnImages.transform.rotation = Quaternion.Euler(0, 0, 0);
+                cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
+            }
+            if (!GameManager.order)
+            {
+                turnImages.transform.rotation = Quaternion.Euler(0, 0, 0);
+                cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
+            }
+            touchBool = false;
             anim_CutInMask.SetTrigger("MainSpriteMask");
+            StartCoroutine(WaitTime(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 1.5f));
         }
 
         if (endGameMode)
@@ -155,8 +171,19 @@ public class Progress : MonoBehaviour
         if (doOnce)
         {
             doOnce = false;
-            cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
+            if (GameManager.order)
+            {
+                turnImages.transform.rotation = Quaternion.Euler(0, 0, 180);
+                cutInImage.GetComponent<SpriteRenderer>().sprite = koukouImage;
+            }
+            if (!GameManager.order)
+            {
+                turnImages.transform.rotation = Quaternion.Euler(0, 0, 180);
+                cutInImage.GetComponent<SpriteRenderer>().sprite = senkouImage;
+            }
+            touchBool = false;
             anim_CutInMask.SetTrigger("MainSpriteMask");
+            StartCoroutine(WaitTime(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 1.5f));
         }
 
         if (endGameMode)
@@ -184,6 +211,7 @@ public class Progress : MonoBehaviour
 
     private IEnumerator EndCor()
     {
+        turnImages.transform.rotation = Quaternion.Euler(0, 0, 0);
         cutInImage.GetComponent<SpriteRenderer>().sprite = sokomadeImage;
         anim_CutInMask.SetTrigger("MainSpriteMask");
         yield return new WaitForSeconds(anim_CutInMask.GetCurrentAnimatorStateInfo(0).length + 2.0f);
@@ -269,7 +297,12 @@ public class Progress : MonoBehaviour
             }
         }
     }
-
+    private IEnumerator WaitTime(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        touchBool = true;
+        yield break;
+    }
 
 }
 
