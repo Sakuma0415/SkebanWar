@@ -170,7 +170,7 @@ public class TouchManager : MonoBehaviour
 
 
                 //最初のクリック
-                if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0)
+                if (Input.GetKeyDown(KeyCode.Mouse0) && holdProgress == 0 && Progress.Instance.touchBool)
                 {                    
                     OnHand[] onHands = Progress.Instance.gameMode == Progress.GameMode.P1Select ? P1onHands : P2onHands;
                     Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -337,6 +337,7 @@ public class TouchManager : MonoBehaviour
 
                         battle.AtkAT = character.CharacterBench[battleManager.attack].attribute;
                         battle.DefAT = character2.CharacterBench[battleManager.defense].attribute;
+                        battle.witchAttackBool = Progress.Instance.gameMode == Progress.GameMode.P1Select;
                         fieldManager.AttackSelectEnd();
                         IsAttackSelect = false;
                         Progress.Instance.endGameMode = true;

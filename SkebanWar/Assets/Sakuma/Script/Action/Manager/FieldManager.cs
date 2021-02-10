@@ -78,6 +78,12 @@ public class FieldManager : MonoBehaviour
     [SerializeField]
     SpriteRenderer spriteRenderer;
 
+    //現在のコインの数
+    [SerializeField]
+    private Text P1Coins;
+    [SerializeField]
+    private Text P2Coins;
+
     //開始時処理
     private void Start()
     {
@@ -291,6 +297,7 @@ public class FieldManager : MonoBehaviour
                         {
                             GameManager.Instance.HaveCoins_2P += leng - CleanSet;
                             P1CharacterManager.getChar += leng - CleanSet;
+                            P2Coins.text = GameManager.Instance.HaveCoins_2P.ToString();
                             massDatas[i, j].Overlap = count;
                             switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length -1].PlayerNum)
                             {
@@ -346,6 +353,7 @@ public class FieldManager : MonoBehaviour
                         {
                             GameManager.Instance.HaveCoins_1P += leng - CleanSet;
                             P2CharacterManager.getChar += leng - CleanSet;
+                            P1Coins.text = GameManager.Instance.HaveCoins_1P.ToString();
                             massDatas[i, j].Overlap = count;
                             switch (massDatas[i, j].Overlap[massDatas[i, j].Overlap.Length - 1].PlayerNum)
                             {
