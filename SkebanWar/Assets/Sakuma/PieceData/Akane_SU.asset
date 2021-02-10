@@ -15,7 +15,7 @@ MonoBehaviour:
   element: 2
   name: SU
   posSet: []
-  HP: 6
+  HP: 7
   T0: 1
   T1: 1
   T2: 0
@@ -25,5 +25,5 @@ MonoBehaviour:
   T6: 0
   T7: 1
   T8: 0
-  charDetails: {fileID: 21300000, guid: 7221477c09f3d2541ac5c5cf333f530c, type: 3}
+  charDetails: {fileID: 21300000, guid: 3aa1435caab406245b25ce7f454a9b3b, type: 3}
   pieceForm: {fileID: 21300000, guid: c46eecc080419ef4d8419dc1b39927aa, type: 3}

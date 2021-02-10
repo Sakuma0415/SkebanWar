@@ -73,7 +73,7 @@ public class FieldManager : MonoBehaviour
     CharacterManager P2CharacterManager;
 
     [SerializeField]
-    public  StageData stageData;
+    public StageData stageData;
 
     [SerializeField]
     SpriteRenderer spriteRenderer;

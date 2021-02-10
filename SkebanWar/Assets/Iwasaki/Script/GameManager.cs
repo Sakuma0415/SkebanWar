@@ -13,6 +13,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     public static int havePoint_1P;
     [HideInInspector]
     public static int havePoint_2P;
+    private int choiseStage;
     public float HaveCoins_1P
     {
         set
@@ -55,6 +56,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         get
         {
             return choiseChar_2P;
+        }
+    }
+    public int ChoiseStage
+    {
+        set
+        {
+            choiseStage = Mathf.Clamp(value, 0, 5);
+        }
+        get
+        {
+            return choiseStage;
         }
     }
     public int HavePoint_1P
