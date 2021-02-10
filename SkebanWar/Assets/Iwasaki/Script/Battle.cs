@@ -121,6 +121,8 @@ public class Battle : MonoBehaviour
     private GameObject P1Deck;
     [SerializeField]
     private GameObject P2Deck;
+    public int trunP=0;
+
 
     [SerializeField]
     Sprite[] akane;
@@ -964,13 +966,13 @@ public class Battle : MonoBehaviour
     }
     private void movieRotate()
     {
-        if (Progress.Instance.afterBattleTrnePlayer == 2)
+        if (trunP == 2)
         {
             Debug.Log("1P");
             witchAttackBool = true;
         }
 
-        if (Progress.Instance.afterBattleTrnePlayer == 1)
+        if (trunP == 1)
         {
             Debug.Log("2P");
             witchAttackBool = false;

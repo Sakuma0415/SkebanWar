@@ -90,14 +90,17 @@ public class BattleManager : MonoBehaviour
         if (timeEnd < time)
         {
             NextProgress();
-            CharacterManager character = (trunP == 1 ? P1CharacterManager : P2CharacterManager);
-            CharacterManager character2 = (trunP == 2? P1CharacterManager : P2CharacterManager);
-            battle.upperCharHP =   character.CharacterBench[defense].HP;
-            battle.lowerCharHP = character2.CharacterBench[attack].HP;
+            //CharacterManager character = (trunP == 1 ? P1CharacterManager : P2CharacterManager);
+            //CharacterManager character2 = (trunP == 2? P1CharacterManager : P2CharacterManager);
+            CharacterManager character2 =  P1CharacterManager ;
+            CharacterManager character =  P2CharacterManager ;
+            battle.upperCharHP = character.CharacterBench[trunP == 1 ? attack : defense].HP;
+            battle.lowerCharHP = character2.CharacterBench[trunP == 2 ? attack : defense].HP;
             //Debug.Log("先攻:" + attack + " " + character2.CharacterBench[attack].HP);
             //Debug.Log("後攻:" + defense + " " + character.CharacterBench[defense].HP);
-            Debug.Log(Progress.Instance.afterBattleTrnePlayer);
+            Debug.Log("attack = "+ attack + " : defense = "+ defense + " : trunP = "+ trunP);
             battle.doOnce = true;
+            battle.trunP = trunP;
             //battle.witchAttackBool = Progress.Instance.afterBattleTrnePlayer == 2;
         }
     }
@@ -120,10 +123,12 @@ public class BattleManager : MonoBehaviour
 
     public void Resetb()
     {
-        CharacterManager character = (Progress.Instance.afterBattleTrnePlayer == 1 ? P1CharacterManager : P2CharacterManager);
-        CharacterManager character2 = (Progress.Instance.afterBattleTrnePlayer == 2 ? P1CharacterManager : P2CharacterManager);
-        character.CharacterBench[defense].HP = battle.upperCharHP;
-        character2.CharacterBench[attack].HP = battle.lowerCharHP;
+        //CharacterManager character = (Progress.Instance.afterBattleTrnePlayer == 1 ? P1CharacterManager : P2CharacterManager);
+        //CharacterManager character2 = (Progress.Instance.afterBattleTrnePlayer == 2 ? P1CharacterManager : P2CharacterManager);
+        CharacterManager character2 = P1CharacterManager;
+        CharacterManager character = P2CharacterManager;
+        character.CharacterBench[trunP == 1 ? attack : defense].HP = battle.upperCharHP;
+        character2.CharacterBench[trunP == 2 ? attack : defense].HP = battle.lowerCharHP;
     }
 
 }
