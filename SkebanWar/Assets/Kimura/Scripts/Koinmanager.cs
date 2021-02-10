@@ -17,7 +17,6 @@ public class Koinmanager : MonoBehaviour
 
     //ゲームオブジェクトの配列
     public GameObject SousaText;
-    public GameObject NextText;
 
     //クリックチェック
     bool clickcheck = true;
@@ -72,7 +71,6 @@ public class Koinmanager : MonoBehaviour
         this.rotSpeed = 0;
         transform.eulerAngles = new Vector2(0, 0);
         SousaText.SetActive(true);
-        NextText.SetActive(true);
         StartCoroutine(ToMain(1.5f));
 
     }
@@ -83,6 +81,7 @@ public class Koinmanager : MonoBehaviour
         //最終的にステージセレクトをする。
         //SceneManager.LoadScene("StageSelect");
         SceneManager.LoadScene("Action");
+        SoundManager.Instans.FadeInBGM("Heat_and_Thirst");
         yield break;
     }
 

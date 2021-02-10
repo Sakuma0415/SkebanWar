@@ -167,7 +167,7 @@ public class SoundManager : MonoBehaviour
             if (-1 == index)
                 return;
             BGM_audioSource.clip = BGMaudioClip[index];
-            //BGM_audioSource.volume = 0;
+            BGM_audioSource.volume = 0;
             BGM_audioSource.Play();
             StartCoroutine(SoundFadeIn());
         }

@@ -130,5 +130,4 @@ public class BattleManager : MonoBehaviour
         character.CharacterBench[trunP == 1 ? attack : defense].HP = battle.upperCharHP;
         character2.CharacterBench[trunP == 2 ? attack : defense].HP = battle.lowerCharHP;
     }
-
 }

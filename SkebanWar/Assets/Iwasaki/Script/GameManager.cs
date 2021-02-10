@@ -102,7 +102,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             return;
         }
         DontDestroyOnLoad(gameObject);
-    }    
+    }
 
     void Update()
     {
