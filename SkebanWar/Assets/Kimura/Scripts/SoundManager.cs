@@ -22,6 +22,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField, Range(0, 1), Tooltip("SE音量")]
     float SEvolume = 1;
 
+    //フェードイン・アウト時間設定
     [SerializeField] private float _FadeInTime = 3;
     [SerializeField] private float _FadeOutTime = 5;
 
@@ -37,7 +38,7 @@ public class SoundManager : MonoBehaviour
     private SoundFadeMode _soundFadeMode = SoundFadeMode.Idle;
 
     #region soundvolume関係
-    //全体ボリューム
+    //全体ボリューム調節
     public float _Volume
     {
         set
@@ -51,7 +52,7 @@ public class SoundManager : MonoBehaviour
             return volume;
         }
     }
-    //BGMボリューム
+    //BGMボリューム調節
     public float BGM_Volume
     {
         set
@@ -65,7 +66,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    //SEボリューム
+    //SEボリューム調節
     public float SE_Volume
     {
         set
@@ -82,20 +83,18 @@ public class SoundManager : MonoBehaviour
     #endregion
     public void Awake()
     {
-        //呼びだされる
         if (Instans == null)
         {
             Instans = this;
             DontDestroyOnLoad(this);
         }
-        //ゲームオブジェクトが消される
         else
         {
             Destroy(gameObject);
         }
 
 
-        //AudioClipの読み込み
+        //SEAudioClipの読み込み
         for (int i = 0; i < SEaudioClip.Length; i++)
         {
             seIndex.Add(SEaudioClip[i].name, i++);
@@ -103,6 +102,7 @@ public class SoundManager : MonoBehaviour
 
     }
 
+    //フェードイン処理
     private IEnumerator SoundFadeIn()
     {
         while (BGM_audioSource.volume < 1)
@@ -115,6 +115,7 @@ public class SoundManager : MonoBehaviour
         _soundFadeMode = SoundFadeMode.Idle;
     }
 
+    //フェードアウト処理
     private IEnumerator SoundFadeOut()
     {
         while (BGM_audioSource.volume > 0)
@@ -127,6 +128,7 @@ public class SoundManager : MonoBehaviour
         _soundFadeMode = SoundFadeMode.Idle;
     }
 
+    //BGMファイル確認処理
     public int GetBgmIndex(string name)
     {
         if (bgmIndex.ContainsKey(name))
@@ -140,6 +142,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    //SEファイル確認処理
     public int GetSeIndex(string name)
     {
         if (seIndex.ContainsKey(name))
@@ -164,7 +167,7 @@ public class SoundManager : MonoBehaviour
             if (-1 == index)
                 return;
             BGM_audioSource.clip = BGMaudioClip[index];
-            BGM_audioSource.volume = 0;
+            //BGM_audioSource.volume = 0;
             BGM_audioSource.Play();
             StartCoroutine(SoundFadeIn());
         }
