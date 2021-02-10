@@ -10,28 +10,6 @@ using UnityEngine.UI;
 /// </summary>
 public class CharacterChoice : MonoBehaviour
 {
-    public enum GameMode
-    {
-        Start,
-        P1Select,
-        P2Select,
-        End,
-        Interval,
-    }
-    static public CharacterChoice Instance;
-
-    //現在のゲームモード
-    public GameMode gameMode = GameMode.Start;
-
-    //インターバル中にゲームモードを保管しておく場所
-    GameMode nextGameMode = GameMode.Start;
-
-    //ゲームモード変更からの経過時間
-    [SerializeField]
-    float time = 0;
-
-    //インターバルの時間
-    float intervalTime = 0;
     [SerializeField]
     int select = 0;
 
@@ -54,30 +32,50 @@ public class CharacterChoice : MonoBehaviour
     Button buttonI;
     Button buttonN;
 
-    bool moveCan1P = false;
-    bool moveCan2P = false;
+    [SerializeField]
+    GameObject Image1P;
+
+    [SerializeField]
+    GameObject Image2P;
 
     // ボタンを押したら選んだキャラクターを描画
-    public void AkaneChange()
+    public void AkaneChange1P()
     {
         choice = 0;
         select = 1;
     }
 
-    public void IoriChange()
+    public void IoriChange1P()
     {
         choice = 0;
         select = 2;
     }
 
-    public void NanaChange()
+    public void NanaChange1P()
     {
         choice = 0;
         select = 3;
     }
+    public void AkaneChange2P()
+    {
+        choice = 0;
+        select = 5;
+    }
+
+    public void IoriChange2P()
+    {
+        choice = 0;
+        select = 6;
+    }
+
+    public void NanaChange2P()
+    {
+        choice = 0;
+        select = 7;
+    }
 
     // いいえを押したらキャラクター選択に戻る
-    public void AkaneCancel()
+    public void AkaneCancel1P()
     {
         choice = 1;
         // 1.5秒後にシーン(画像)に移行
@@ -86,36 +84,42 @@ public class CharacterChoice : MonoBehaviour
             select = 0;
         }));
     }
-
-    // はいを押したらゲームシーンに移行
-    public void AkaneOK()
+    public void AkaneCancel2P()
     {
-        choice = 2;
-        if(gameMode == GameMode.P1Select)
+        choice = 7;
+        // 1.5秒後にシーン(画像)に移行
+        StartCoroutine(DelayMethod(1.5f, () =>
         {
-            StartCoroutine(DelayMethod(1.5f, () =>
-            {
-                moveCan1P = true;
-                buttonA.interactable = false;
-                GameManager.Instance.ChoiseChar_1P = 0;
-                text1P.SetActive(false);
-                text2P.SetActive(true);
-                select = 0;
-            }));
-        }
-        // 1Pから2Pに変更する
-        if (gameMode == GameMode.P2Select)
-        {
-            StartCoroutine(DelayMethod(1.5f, () =>
-            {
-                moveCan2P = true;
-                GameManager.Instance.ChoiseChar_2P = 0;
-                SceneManager.LoadScene("SenkouKime");
-            }));
-        }
+            select = 4;
+        }));
     }
 
-    public void IoriCancel()
+    // はいを押したらゲームシーンに移行
+    public void AkaneOK1P()
+    {
+        choice = 2;
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            buttonA.interactable = false;
+            GameManager.Instance.ChoiseChar_1P = 0;
+            text1P.SetActive(false);
+            text2P.SetActive(true);
+            Image1P.SetActive(false);
+            Image2P.SetActive(true);
+            select = 4;
+        }));
+    }
+    public void AkaneOK2P()
+    {
+        choice = 8;
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_2P = 0;
+            SceneManager.LoadScene("SenkouKime");
+        }));
+    }
+
+    public void IoriCancel1P()
     {
         choice = 3;
         // 1.5秒後にシーン(画像)に移行
@@ -124,35 +128,41 @@ public class CharacterChoice : MonoBehaviour
             select = 0;
         }));
     }
-
-    public void IoriOK()
+    public void IoriCancel2P()
     {
-        choice = 4;
-        if (gameMode == GameMode.P1Select)
+        choice = 9;
+        // 1.5秒後にシーン(画像)に移行
+        StartCoroutine(DelayMethod(1.5f, () =>
         {
-            StartCoroutine(DelayMethod(1.5f, () =>
-            {
-                moveCan1P = true;
-                buttonI.interactable = false;
-                GameManager.Instance.ChoiseChar_1P = 2;
-                text1P.SetActive(false);
-                text2P.SetActive(true);
-                select = 0;
-            }));
-        }
-        if (gameMode == GameMode.P2Select)
-        {
-            StartCoroutine(DelayMethod(1.5f, () =>
-            {
-                moveCan2P = true;
-                GameManager.Instance.ChoiseChar_2P = 2;
-                SceneManager.LoadScene("SenkouKime");
-            }));
-        }
-
+            select = 4;
+        }));
     }
 
-    public void NanaCancel()
+    public void IoriOK1P()
+    {
+        choice = 4;
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            buttonI.interactable = false;
+            GameManager.Instance.ChoiseChar_1P = 2;
+            text1P.SetActive(false);
+            text2P.SetActive(true);
+            Image1P.SetActive(false);
+            Image2P.SetActive(true);
+            select = 4;
+        }));
+    }
+    public void IoriOK2P()
+    {
+        choice = 10;
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            GameManager.Instance.ChoiseChar_2P = 2;
+            SceneManager.LoadScene("SenkouKime");
+        }));
+    }
+
+    public void NanaCancel1P()
     {
         choice = 5;
         // 1.5秒後にシーン(画像)に移行
@@ -161,31 +171,39 @@ public class CharacterChoice : MonoBehaviour
             select = 0;
         }));
     }
+    public void NanaCancel2P()
+    {
+        choice = 11;
+        // 1.5秒後にシーン(画像)に移行
+        StartCoroutine(DelayMethod(1.5f, () =>
+        {
+            select = 4;
+        }));
+    }
 
-    public void NanaOK()
+    public void NanaOK1P()
     {
         choice = 6;
-        if (gameMode == GameMode.P1Select)
+        StartCoroutine(DelayMethod(1.5f, () =>
         {
-            StartCoroutine(DelayMethod(1.5f, () =>
-            {
-                moveCan1P = true;
-                buttonN.interactable = false;
-                GameManager.Instance.ChoiseChar_1P = 1;
-                text1P.SetActive(false);
-                text2P.SetActive(true);
-                select = 0;
-            }));
-        }
-        if (gameMode == GameMode.P2Select)
+            buttonN.interactable = false;
+            GameManager.Instance.ChoiseChar_1P = 1;
+            text1P.SetActive(false);
+            text2P.SetActive(true);
+            Image1P.SetActive(false);
+            Image2P.SetActive(true);
+            select = 4;
+        }));
+        
+    }
+    public void NanaOK2P()
+    {
+        choice = 12;
+        StartCoroutine(DelayMethod(1.5f, () =>
         {
-            StartCoroutine(DelayMethod(1.5f, () =>
-            {
-                moveCan2P = true;
-                GameManager.Instance.ChoiseChar_2P = 1;
-                SceneManager.LoadScene("SenkouKime");
-            }));
-        }
+            GameManager.Instance.ChoiseChar_2P = 1;
+            SceneManager.LoadScene("SenkouKime");
+        }));
     }
 
     /// <summary>
@@ -202,37 +220,17 @@ public class CharacterChoice : MonoBehaviour
 
     void Start()
     {
-        Instance = this;
-        buttonA = GameObject.Find("Select/CharacterSelect/ButtonA").GetComponent<Button>();
-        buttonI = GameObject.Find("Select/CharacterSelect/ButtonI").GetComponent<Button>();
-        buttonN = GameObject.Find("Select/CharacterSelect/ButtonN").GetComponent<Button>();
+        buttonA = GameObject.Find("Select/CharacterSelect2P/ButtonA").GetComponent<Button>();
+        buttonI = GameObject.Find("Select/CharacterSelect2P/ButtonI").GetComponent<Button>();
+        buttonN = GameObject.Find("Select/CharacterSelect2P/ButtonN").GetComponent<Button>();
         text1P.SetActive(true);
         text2P.SetActive(false);
+        Image1P.SetActive(true);
+        Image2P.SetActive(false);
     }
 
     void Update()
     {
-        Instance.time += Time.deltaTime;
-
-        switch (gameMode)
-        {
-            case GameMode.Start:
-                Instance.StartUpdate();
-                break;
-            case GameMode.P1Select:
-                Instance.P1SelectUpdate();
-                break;
-            case GameMode.P2Select:
-                Instance.P2SelectUpdate();
-                break;
-            case GameMode.End:
-                EndUpdate();
-                break;
-            case GameMode.Interval:
-                Instance.IntervalUpdate();
-                break;
-        }
-        Debug.Log(gameMode);
         for (int i = 0; i < Character.Length; i++)
         {
             Character[i].SetActive(i == select); 
@@ -240,64 +238,6 @@ public class CharacterChoice : MonoBehaviour
         for (int j = 0; j < Decision.Length; j++)
         {
             Decision[j].SetActive(j == choice);
-        }
-        
-    }
-
-    private void StartUpdate()
-    {
-        if (time > 1)
-        {
-            ChagngeGameMode(GameMode.P1Select, 1f);
-        }
-    }
-    private void P1SelectUpdate()
-    {
-        if(moveCan1P)
-        {
-            ChagngeGameMode(GameMode.P2Select, 1f);
-        }
-    }
-    private void P2SelectUpdate()
-    {
-        if (moveCan2P)
-        {
-            ChagngeGameMode(GameMode.End, 1f);
-        }
-    }
-    private void EndUpdate()
-    {
-        
-    }
-
-    public void ChagngeGameMode(GameMode changeGameMode, float intervalSet = 0)
-    {
-        moveCan1P = false;
-        moveCan2P = false;
-        nextGameMode = changeGameMode;
-        gameMode = GameMode.Interval;
-        intervalTime = intervalSet;
-        time = 0;
-    }
-
-    void IntervalUpdate()
-    {
-        if (time >= intervalTime)
-        {
-            gameMode = nextGameMode;
-            time = 0;
-
-            switch (gameMode)
-            {
-                case GameMode.P1Select:
-                    break;
-                case GameMode.P2Select:
-                    break;
-                case GameMode.End:
-                    break;
-                case GameMode.Interval:
-                    break;
-            }
         }
     }
 }
