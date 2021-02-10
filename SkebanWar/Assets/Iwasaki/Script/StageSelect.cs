@@ -137,7 +137,7 @@ public class StageSelect : MonoBehaviour
             rightSlideBool = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.J))
+        if (Input.GetKeyDown(KeyCode.J) || Input.GetMouseButtonDown(0))
         {
             leftSlideBool = true;
         }
