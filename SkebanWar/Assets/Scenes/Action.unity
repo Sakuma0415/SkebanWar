@@ -1008,8 +1008,7 @@ RectTransform:
   - {fileID: 8497711185441622818}
   - {fileID: 8497711185696632363}
   - {fileID: 8497711185747646596}
-  - {fileID: 8497711184309305521}
-  - {fileID: 8497711183970068983}
+  - {fileID: 2118049336}
   m_Father: {fileID: 8497711185530213214}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8631,6 +8630,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2118049335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2118049336}
+  m_Layer: 5
+  m_Name: CutInImages
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2118049336
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2118049335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 8497711184309305521}
+  - {fileID: 8497711183970068983}
+  m_Father: {fileID: 129982719}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &2668933683236697268
 Transform:
   m_ObjectHideFlags: 0
@@ -9051,8 +9087,8 @@ Transform:
   m_LocalPosition: {x: -1944, y: 9, z: 0}
   m_LocalScale: {x: 39.591534, y: 14.2402, z: 19.7011}
   m_Children: []
-  m_Father: {fileID: 129982719}
-  m_RootOrder: 8
+  m_Father: {fileID: 2118049336}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &8497711183974112864
 RectTransform:
@@ -9272,7 +9308,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8497711184095249152
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9731,8 +9767,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 432.06, y: 432.06, z: 1}
   m_Children: []
-  m_Father: {fileID: 129982719}
-  m_RootOrder: 7
+  m_Father: {fileID: 2118049336}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -10539,7 +10575,6 @@ MonoBehaviour:
   witchAttackBool: 1
   nextPlayerTexts: {fileID: 8497711184215438874}
   CutInImage: {fileID: 8497711184309305522}
-  reRollImage: {fileID: 8497711184036817613}
   grayScale: {fileID: 2100000, guid: 181787d4e6d509e44a97355636260def, type: 2}
   rerollButtons: {fileID: 8497711184746719130}
   dice: {fileID: 1489760794}
@@ -10565,6 +10600,8 @@ MonoBehaviour:
   DefAT: 3
   P1Coins: {fileID: 636175258}
   P2Coins: {fileID: 1791379469}
+  rerollImages: {fileID: 8497711184746719130}
+  cutInImages: {fileID: 2118049335}
 --- !u!1 &8497711184812316129
 GameObject:
   m_ObjectHideFlags: 0

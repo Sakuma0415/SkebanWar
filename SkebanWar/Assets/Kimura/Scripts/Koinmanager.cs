@@ -80,7 +80,7 @@ public class Koinmanager : MonoBehaviour
         yield return new WaitForSeconds(WaitTime);
         //最終的にステージセレクトをする。
         //SceneManager.LoadScene("StageSelect");
-        SceneManager.LoadScene("Action");
+        SceneManager.LoadScene("StageSelect");
         SoundManager.Instans.FadeInBGM("Heat_and_Thirst");
         yield break;
     }

@@ -96,10 +96,6 @@ public class Battle : MonoBehaviour
     private GameObject nextPlayerTexts;
     [SerializeField]
     private GameObject CutInImage;
-    [SerializeField]
-    private Image reRollImage;
-    private Button yesButton;
-    private Button noButton;
     private bool rerollDiceBool = true;
     [SerializeField]
     private Material grayScale;
@@ -142,6 +138,10 @@ public class Battle : MonoBehaviour
     private Text P1Coins;
     [SerializeField]
     private Text P2Coins;
+    [SerializeField]
+    private GameObject rerollImages;
+    [SerializeField]
+    private GameObject cutInImages;
     void Start()
     {
         Instance = this;
@@ -153,10 +153,6 @@ public class Battle : MonoBehaviour
         anim_FlashUpper = GameObject.FindGameObjectWithTag("UpperImage").GetComponent<Animator>();
         anim_FlashLower = GameObject.FindGameObjectWithTag("LowerImage").GetComponent<Animator>();
         anim_CutInMask = GameObject.FindGameObjectWithTag("CutInMask").GetComponent<Animator>();
-
-        //ボタン初期化
-        yesButton = GameObject.FindGameObjectWithTag("YesButton").GetComponent<Button>();
-        noButton = GameObject.FindGameObjectWithTag("NoButton").GetComponent<Button>();
 
         //キャラクターアイコン初期化
         upperImage = GameObject.FindGameObjectWithTag("UpperImage").GetComponent<Image>();
@@ -182,8 +178,7 @@ public class Battle : MonoBehaviour
         upperImage.material = null;
         lowerImage.material = null;
 
-        yesButton.gameObject.SetActive(false);
-        noButton.gameObject.SetActive(false);
+        rerollImages.gameObject.SetActive(false);
 
         upperImage.gameObject.SetActive(false);
         lowerImage.gameObject.SetActive(false);        
@@ -193,6 +188,9 @@ public class Battle : MonoBehaviour
         lowerText.text = lowerCharHP.ToString();
         
         CutInImage.SetActive(false);
+
+        GameManager.Instance.HaveCoins_1P = 4;
+        GameManager.Instance.HaveCoins_2P = 4;
     }
 
     void Update()
@@ -300,15 +298,6 @@ public class Battle : MonoBehaviour
             diceObj.SetActive(false);
             arrowsImage.gameObject.SetActive(false);
 
-            if (witchAttackBool)
-            {
-                arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 180);
-            }
-            else
-            {
-                arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
-
             dice.DiceSet();
             if(beforeProcess == BattleProcess.FirstDice)
             {
@@ -325,10 +314,8 @@ public class Battle : MonoBehaviour
     {
         if (doOnce)
         {
-            doOnce = false;
-            reRollImage.gameObject.SetActive(true);
-            yesButton.gameObject.SetActive(true);
-            noButton.gameObject.SetActive(true);
+            doOnce = false;            
+            rerollImages.gameObject.SetActive(true);
         }
 
         if (Input.GetMouseButtonDown(0) && !doOnce)
@@ -338,25 +325,23 @@ public class Battle : MonoBehaviour
             if (hit2d.collider.tag == "YesButton")
             {
                 diceBool = true;
-                reRollImage.gameObject.SetActive(false);
-                yesButton.gameObject.SetActive(false);
-                noButton.gameObject.SetActive(false);
+                rerollImages.gameObject.SetActive(false);
                 if(beforeProcess == BattleProcess.FirstDice)
-                {
+                {                    
+                    if (witchAttackBool)
+                    {
+                        GameManager.Instance.HaveCoins_1P -= 2;
+                    }
+
+                    if (!witchAttackBool)
+                    {
+                        GameManager.Instance.HaveCoins_2P -= 2;
+                    }
                     ChagngeGameMode(BattleProcess.FirstDice, 0.25f);
-                    if (witchAttackBool)
-                    {
-                        GameManager.Instance.HaveCoins_1P -= 2;
-                    }
-
-                    if (!witchAttackBool)
-                    {
-                        GameManager.Instance.HaveCoins_2P -= 2;
-                    }
                 }
+
                 if (beforeProcess == BattleProcess.SecondDice)
-                {
-                    ChagngeGameMode(BattleProcess.SecondDice, 0.25f);
+                {                    
                     if (witchAttackBool)
                     {
                         GameManager.Instance.HaveCoins_2P -= 2;
@@ -366,6 +351,7 @@ public class Battle : MonoBehaviour
                     {
                         GameManager.Instance.HaveCoins_1P -= 2;
                     }
+                    ChagngeGameMode(BattleProcess.SecondDice, 0.25f);
                 }
                 P2Coins.text = GameManager.Instance.HaveCoins_2P.ToString();
                 P1Coins.text = GameManager.Instance.HaveCoins_1P.ToString();
@@ -373,9 +359,7 @@ public class Battle : MonoBehaviour
 
             if (hit2d.collider.tag == "NoButton")
             {
-                reRollImage.gameObject.SetActive(false);
-                yesButton.gameObject.SetActive(false);
-                noButton.gameObject.SetActive(false);
+                rerollImages.gameObject.SetActive(false);
                 //Debug.Log(beforeProcess);
                 ChagngeGameMode(beforeProcess == BattleProcess.FirstDice ? BattleProcess.FirstAttack : BattleProcess.SecondAttack, 0.25f);
             }
@@ -551,6 +535,18 @@ public class Battle : MonoBehaviour
                     break;
 
                 case BattleProcess.FirstAttack:
+                    if (witchAttackBool)
+                    {
+                        arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 180);
+                        rerollImages.transform.rotation = Quaternion.Euler(0, 0, 180);
+                        cutInImages.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    }
+                    if (!witchAttackBool)
+                    {
+                        arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        rerollImages.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        cutInImages.transform.rotation = Quaternion.Euler(0, 0, 180);
+                    }
                     upperText.text = upperCharHP.ToString();
                     lowerText.text = lowerCharHP.ToString();
                     doOnce = true;
@@ -988,6 +984,8 @@ public class Battle : MonoBehaviour
             anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 0);
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
             arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);
+            rerollImages.transform.rotation = Quaternion.Euler(0, 0, 0);
+
         }
 
         if (!witchAttackBool)
@@ -999,6 +997,7 @@ public class Battle : MonoBehaviour
             //anim_Plate.transform.rotation = Quaternion.Euler(0, 0, 180);
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 180);
             arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 180);
+            rerollImages.transform.rotation = Quaternion.Euler(0, 0, 180);
         }
     }
 }
