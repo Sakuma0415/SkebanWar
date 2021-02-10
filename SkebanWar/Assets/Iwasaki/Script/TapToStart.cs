@@ -12,7 +12,7 @@ public class TapToStart : MonoBehaviour
     private Animator anim;
     void Start()
     {
-
+        SoundManager.Instans.FadeInBGM("Explosion");
     }
     //public void Event()
     //{
