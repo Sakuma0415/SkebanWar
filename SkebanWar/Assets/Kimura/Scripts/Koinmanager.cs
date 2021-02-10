@@ -35,7 +35,7 @@ public class Koinmanager : MonoBehaviour
 
             if (Input.GetMouseButtonDown(0))
             {
-                this.rotSpeed = 10f;
+                this.rotSpeed = 20f;
 
                 //this.rotSpeed -= Time.deltaTime;
 

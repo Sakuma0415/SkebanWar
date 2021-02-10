@@ -25,7 +25,10 @@ public class Result : SingletonMonoBehaviour<Result>
     [SerializeField]
     private GameObject redResultText;
     [SerializeField]
-    private GameObject drowText;
+    private GameObject R_drowText;
+    [SerializeField]
+    private GameObject B_drowText;
+
     [HideInInspector]
     public int bluePoint;
     [HideInInspector]
@@ -111,8 +114,11 @@ public class Result : SingletonMonoBehaviour<Result>
 
         if(GameManager.Instance.HavePoint_2P == GameManager.Instance.HavePoint_1P)
         {
-            drowText.GetComponent<Text>().text = "引き分け";
-            drowText.SetActive(true);
+            R_drowText.GetComponent<Text>().text = "引き分け";
+            R_drowText.SetActive(true);
+            B_drowText.GetComponent<Text>().text = "引き分け";
+            B_drowText.SetActive(true);
+
         }
         //勝敗のテキストを表示
         redResultText.SetActive(true);
