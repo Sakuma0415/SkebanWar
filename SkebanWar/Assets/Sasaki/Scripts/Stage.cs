@@ -20,25 +20,25 @@ public class Stage : MonoBehaviour
 
     void Update()
     {
-        if (transform.position.x <= -3000)
+        if (transform.position.x <= -5000)
         {
-            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(1500, 0, 0);
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(3000, 0, 0);
         }
 
-        if (transform.position.x >= 3235)
+        if (transform.position.x >= 5350)
         {
-            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-1500, 0, 0);
+            gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-3000, 0, 0);
         }
 
         if(Input.GetMouseButtonDown(2))
         {
             inputDetected = false;
-            if (x >= -10 && x <= 10)
+            if (x >= -1 && x <= 1)
             {
-                this.transform.position += new Vector3(1000, 1000, 0);
+                this.transform.position += new Vector3(1000, 2000, 0);
             }
 
-            if (transform.position.x >= 3235)
+            if (transform.position.x >= 5000)
             {
                 gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
             }
