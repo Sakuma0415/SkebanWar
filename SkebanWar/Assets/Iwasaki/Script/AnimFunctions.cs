@@ -21,4 +21,17 @@ public class AnimFunctions : MonoBehaviour
     {
         cutInImage.SetActive(false);
     }
+
+    public void TextSound()
+    {
+        SoundManager.Instans.PlaySE(3);
+    }
+    public void PlateSound()
+    {
+        SoundManager.Instans.PlaySE(6);
+    }
+    public void CharSound()
+    {
+        SoundManager.Instans.PlaySE(5);
+    }
 }

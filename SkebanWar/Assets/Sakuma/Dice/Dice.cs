@@ -110,13 +110,14 @@ public class Dice : MonoBehaviour
 
                 if (Input.GetMouseButtonUp(0) && Catch)
                 {
-
                     Vector2 nevec = Input.mousePosition;
                     lastAc = false;
                     Catch = false;
                     Push((vector - nevec).normalized);
                     IsMove = true;
                     timer = 0;
+
+                    SoundManager.Instans.PlaySE(4);
                 }
             }
 

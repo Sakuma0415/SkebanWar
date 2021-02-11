@@ -844,7 +844,18 @@ MonoBehaviour:
   BGMaudioClip:
   - {fileID: 8300000, guid: 8ed52e3ba51edf34eac100956c63ecec, type: 3}
   - {fileID: 8300000, guid: 275e6cbdfc4d12e4a9d58e8952796638, type: 3}
-  SEaudioClip: []
+  SEaudioClip:
+  - {fileID: 8300000, guid: 431fbafbac256ed43a9ee2537265ce32, type: 3}
+  - {fileID: 8300000, guid: fd734485f49aa9742a6d9b177cba770f, type: 3}
+  - {fileID: 8300000, guid: 2551d3ca366ad2b4d8a0e1b4ba2bbc57, type: 3}
+  - {fileID: 8300000, guid: 1f610a8c2889b3f49b02168333e37c4a, type: 3}
+  - {fileID: 8300000, guid: 7ba2f6830f439d64e83d01149fbe17ee, type: 3}
+  - {fileID: 8300000, guid: a03993aa541173842b666ed454065681, type: 3}
+  - {fileID: 8300000, guid: f6f38dce7d961804bab632f11c0f7f4b, type: 3}
+  - {fileID: 8300000, guid: 0748c46fad83c0a4c898ea2a5d315c41, type: 3}
+  - {fileID: 8300000, guid: ee6efd88f6f89cb46a8499165b357a11, type: 3}
+  - {fileID: 8300000, guid: 6ab9534d93a28064593381ee536d7bef, type: 3}
+  - {fileID: 8300000, guid: 5312b5240d527a64392157d11288ce0b, type: 3}
   BGM_audioSource: {fileID: 525873021}
   SE_audioSource: {fileID: 1315875446}
 --- !u!4 &1459561741

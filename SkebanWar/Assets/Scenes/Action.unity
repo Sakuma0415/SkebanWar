@@ -10905,6 +10905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8497711185441622818}
   - component: {fileID: 8497711185441622817}
+  - component: {fileID: 8497711185441622820}
   m_Layer: 0
   m_Name: PlateIcons
   m_TagString: IconAnim
@@ -10912,6 +10913,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8497711185441622820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497711185441622819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3759fecdfa5d7d443b1d8d9ffa4e4918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cutInImage: {fileID: 0}
 --- !u!114 &8497711185530213208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11061,6 +11075,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8497711185619859746}
   - component: {fileID: 8497711185619859745}
+  - component: {fileID: 8497711185619859748}
   m_Layer: 5
   m_Name: Plates
   m_TagString: PlateAnim
@@ -11068,6 +11083,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8497711185619859748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497711185619859747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3759fecdfa5d7d443b1d8d9ffa4e4918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cutInImage: {fileID: 0}
 --- !u!222 &8497711185641765212
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11250,6 +11278,7 @@ GameObject:
   - component: {fileID: 8497711185696632363}
   - component: {fileID: 8497711185696632362}
   - component: {fileID: 8497711185696632361}
+  - component: {fileID: 8497711185696632357}
   m_Layer: 5
   m_Name: KenkaZyoutouTexts
   m_TagString: TextAnim
@@ -11257,6 +11286,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8497711185696632357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8497711185696632356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3759fecdfa5d7d443b1d8d9ffa4e4918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cutInImage: {fileID: 0}
 --- !u!225 &8497711185696632361
 CanvasGroup:
   m_ObjectHideFlags: 0

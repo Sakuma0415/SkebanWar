@@ -552,7 +552,7 @@ public class TouchManager : MonoBehaviour
         {
             if (holdProgress == 2)
             {
-
+                SoundManager.Instans.PlaySE(9);
                 IsAttackSelect = false;
                 int playernum = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? 2:Progress.Instance.gameMode == Progress.GameMode.P2Select ? 1 : 0);
                 CharacterManager character = (Progress.Instance.gameMode == Progress.GameMode.P1Select ? P2CharacterManager  : P1CharacterManager);

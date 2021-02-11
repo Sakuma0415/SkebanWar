@@ -142,6 +142,7 @@ public class Battle : MonoBehaviour
     private GameObject rerollImages;
     [SerializeField]
     private GameObject cutInImages;
+    private bool mutchUpBool;
     void Start()
     {
         Instance = this;
@@ -189,8 +190,9 @@ public class Battle : MonoBehaviour
         
         CutInImage.SetActive(false);
 
-        GameManager.Instance.HaveCoins_1P = 4;
-        GameManager.Instance.HaveCoins_2P = 4;
+        //デバッグ用
+        //GameManager.Instance.HaveCoins_1P = 4;
+        //GameManager.Instance.HaveCoins_2P = 4;
     }
 
     void Update()
@@ -261,10 +263,10 @@ public class Battle : MonoBehaviour
         }
 
         anim_Plate.SetTrigger("Plates");
-        yield return new WaitForSeconds(anim_Plate.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(anim_Plate.GetCurrentAnimatorStateInfo(0).length);        
 
         anim_Icon.SetTrigger("Icons");
-        yield return new WaitForSeconds(anim_Icon.GetCurrentAnimatorStateInfo(0).length);
+        yield return new WaitForSeconds(anim_Icon.GetCurrentAnimatorStateInfo(0).length);        
 
         anim_Text.SetTrigger("KenkaTexts");        
         yield return new WaitForSeconds(anim_Text.GetCurrentAnimatorStateInfo(0).length + 0.5f);
@@ -316,6 +318,7 @@ public class Battle : MonoBehaviour
         {
             doOnce = false;            
             rerollImages.gameObject.SetActive(true);
+            SoundManager.Instans.PlaySE(0);
         }
 
         if (Input.GetMouseButtonDown(0) && !doOnce)
@@ -386,6 +389,14 @@ public class Battle : MonoBehaviour
                 while (diceNumber > 0)
                 {
                     AttackAnim();
+                    if (mutchUpBool)
+                    {
+                        SoundManager.Instans.PlaySE(2);
+                    }
+                    else
+                    {
+                        SoundManager.Instans.PlaySE(3);
+                    }
                     yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
@@ -401,7 +412,8 @@ public class Battle : MonoBehaviour
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
 
                     if (upperCharHP == 0 || lowerCharHP == 0)
-                    {                        
+                    {
+                        SoundManager.Instans.PlaySE(8);
                         if (witchAttackBool)
                         {
                             upperImage.material = grayScale;
@@ -426,6 +438,14 @@ public class Battle : MonoBehaviour
                 while (diceNumber > 0)
                 {
                     AttackAnim();
+                    if (mutchUpBool)
+                    {
+                        SoundManager.Instans.PlaySE(2);
+                    }
+                    else
+                    {
+                        SoundManager.Instans.PlaySE(3);
+                    }
                     yield return new WaitForSeconds(0.5f);
                     if (witchAttackBool)
                     {
@@ -441,6 +461,7 @@ public class Battle : MonoBehaviour
                     yield return new WaitForSeconds(anim_Attack.GetCurrentAnimatorStateInfo(0).length);
                     if (upperCharHP == 0 || lowerCharHP == 0)
                     {
+                        SoundManager.Instans.PlaySE(8);
                         if (witchAttackBool)
                         {
                             lowerImage.material = grayScale;
@@ -603,16 +624,22 @@ public class Battle : MonoBehaviour
         if (AtkAT == CharacterManager.Attribute.Paper && DefAT == CharacterManager.Attribute.Rock)
         {
             diceNumber += 1;
+            SoundManager.Instans.PlaySE(10);
+            mutchUpBool = true;
         }
 
         if (AtkAT == CharacterManager.Attribute.Rock && DefAT == CharacterManager.Attribute.Scissors)
         {
             diceNumber += 1;
+            SoundManager.Instans.PlaySE(10);
+            mutchUpBool = true;
         }
 
         if (AtkAT == CharacterManager.Attribute.Scissors && DefAT == CharacterManager.Attribute.Paper)
         {
             diceNumber += 1;
+            SoundManager.Instans.PlaySE(10);
+            mutchUpBool = true;
         }
     }
     private void TypeMatchUpper()
@@ -620,16 +647,22 @@ public class Battle : MonoBehaviour
         if (DefAT == CharacterManager.Attribute.Paper && AtkAT == CharacterManager.Attribute.Rock)
         {
             diceNumber += 1;
+            SoundManager.Instans.PlaySE(10);
+            mutchUpBool = true;
         }
 
         if (DefAT == CharacterManager.Attribute.Rock && AtkAT == CharacterManager.Attribute.Scissors)
         {
             diceNumber += 1;
+            SoundManager.Instans.PlaySE(10);
+            mutchUpBool = true;
         }
 
         if (DefAT == CharacterManager.Attribute.Scissors && AtkAT == CharacterManager.Attribute.Paper)
         {
             diceNumber += 1;
+            SoundManager.Instans.PlaySE(10);
+            mutchUpBool = true;
         }
     }
 
@@ -840,7 +873,7 @@ public class Battle : MonoBehaviour
                 else
                 {
                     kenkaImage_Left.sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_2P].IconImage;
-                    kenkaImage_Right.sprite = battleImage.characterDatas[1].IconImage;
+                    kenkaImage_Right.sprite = battleImage.characterDatas[2].IconImage;
                     CutInImage.GetComponent<SpriteRenderer>().sprite = battleImage.characterDatas[GameManager.Instance.ChoiseChar_1P].CutInImage;
                     if (DefAT == CharacterManager.Attribute.Rock)
                     {
@@ -962,6 +995,7 @@ public class Battle : MonoBehaviour
     }
     private void movieRotate()
     {
+        mutchUpBool = false;
         if (trunP == 2)
         {
             Debug.Log("1P");
@@ -985,7 +1019,6 @@ public class Battle : MonoBehaviour
             anim_Text.transform.rotation = Quaternion.Euler(0, 0, 0);
             arrowsImage.transform.rotation = Quaternion.Euler(0, 0, 0);
             rerollImages.transform.rotation = Quaternion.Euler(0, 0, 0);
-
         }
 
         if (!witchAttackBool)
