@@ -25,10 +25,8 @@ public class SceneManger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        fade.FadeIn(1, () =>
-        {
-            fade.FadeOut(1);
-        });
+        
+
     }
 
     // Update is called once per frame
@@ -36,12 +34,23 @@ public class SceneManger : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            SceneManager.LoadScene("SampleScene2");
+            fade.FadeIn(1, () =>
+            {
+                fade.FadeOut(1, () =>
+                {
+                    SceneManager.LoadScene("SampleScene2");
+                });
+            });
         }
         if (Input.GetKeyDown(KeyCode.S))
         {
-            SceneManager.LoadScene("SampleScene");
+            fade.FadeIn(1, () =>
+            {
+                fade.FadeOut(1, () =>
+                {
+                    SceneManager.LoadScene("SampleScene");
+                });
+            });
         }
-
     }
 }
