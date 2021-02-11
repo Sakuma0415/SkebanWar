@@ -10,12 +10,14 @@ using UnityEngine.UI;
 /// </summary>
 public class CharacterChoice : MonoBehaviour
 {
+    // 画面移行する変数
     [SerializeField]
     int select = 0;
 
     [SerializeField]
     GameObject[] Character;
 
+    // はい、いいえの○を表示する変数
     [SerializeField]
     int choice = 0;
 
@@ -32,6 +34,7 @@ public class CharacterChoice : MonoBehaviour
     Button buttonI;
     Button buttonN;
 
+    // テキストの枠画像
     [SerializeField]
     GameObject Image1P;
 
@@ -100,7 +103,9 @@ public class CharacterChoice : MonoBehaviour
         choice = 2;
         StartCoroutine(DelayMethod(1.5f, () =>
         {
+            // 1Pが選んだキャラは2Pは押せない
             buttonA.interactable = false;
+            // GameManagerからキャラのデータを取得
             GameManager.Instance.ChoiseChar_1P = 0;
             text1P.SetActive(false);
             text2P.SetActive(true);
@@ -220,9 +225,11 @@ public class CharacterChoice : MonoBehaviour
 
     void Start()
     {
+        // 各キャラのボタンを取得
         buttonA = GameObject.Find("Select/CharacterSelect2P/ButtonA").GetComponent<Button>();
         buttonI = GameObject.Find("Select/CharacterSelect2P/ButtonI").GetComponent<Button>();
         buttonN = GameObject.Find("Select/CharacterSelect2P/ButtonN").GetComponent<Button>();
+        // 1P,2Pの選択中を表示、非表示する
         text1P.SetActive(true);
         text2P.SetActive(false);
         Image1P.SetActive(true);
