@@ -9,6 +9,6 @@ public class RandomNumber : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        slideTime = Random.Range(3.0f, 5.0f);
+        slideTime = Random.Range(2.5f, 6.0f);
     }
 }
