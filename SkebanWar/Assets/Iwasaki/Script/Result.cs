@@ -45,6 +45,7 @@ public class Result : SingletonMonoBehaviour<Result>
         bluePointText = GameObject.FindGameObjectWithTag("BlueText").GetComponent<Text>();
         redPointText = GameObject.FindGameObjectWithTag("RedText").GetComponent<Text>();
         StartCoroutine(Roulette());
+        SoundManager.Instans.FadeInBGM("Explosion");
     }
 
     void Update()
