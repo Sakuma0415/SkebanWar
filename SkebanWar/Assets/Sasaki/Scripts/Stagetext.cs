@@ -11,6 +11,8 @@ public class Stagetext : MonoBehaviour
     public Text text3;
     public Text text4;
     public GameObject text5;
+    [HideInInspector]
+    public static bool goStageBool;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +23,10 @@ public class Stagetext : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !Stage.TextBool)
         {
+            Debug.Log("aassssa");
+            Stage.TextBool = true;
             text.text = "戦うナワバリを決めます";
             text1.text = "タッチしてください";
             text2.text = " ";
@@ -31,10 +35,13 @@ public class Stagetext : MonoBehaviour
             text5.SetActive(true);
 
         }
-        if (Input.GetMouseButtonUp(2))
+        if (goStageBool)
         {
-            text.text = "戦うナワバリが決まりました";
-            text1.text = "バトルを開始します";
-        }
+            if (Input.GetMouseButtonUp(0))
+            {
+                text.text = "戦うナワバリが決まりました";
+                text1.text = "バトルを開始します";
+            }
+        }        
     }
 }

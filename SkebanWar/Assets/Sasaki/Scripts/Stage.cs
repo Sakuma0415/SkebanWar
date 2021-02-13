@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Stage : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class Stage : MonoBehaviour
     private float speed = 15.0f;
     private float slideInt;
     private int x;
+    [HideInInspector]
+    public static bool TextBool;
 
     void start()
     {
@@ -30,26 +33,40 @@ public class Stage : MonoBehaviour
             gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(-3000, 0, 0);
         }
 
-        if(Input.GetMouseButtonDown(2))
+        if (Input.GetMouseButtonDown(0))
         {
-            inputDetected = false;
-            if (x >= -1 && x <= 1)
+            if (inputDetected)
             {
-                this.transform.position += new Vector3(1000, 2000, 0);
-            }
+                TextBool = false;
+                inputDetected = false;
+                if (x >= -1 && x <= 1)
+                {
+                    this.transform.position += new Vector3(1000, 2000, 0);
+                }
 
-            if (transform.position.x >= 5000)
-            {
-                gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+                if (transform.position.x >= 5000)
+                {
+                    gameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+                    GameManager.Instance.ChoiseStage = stageNumber;
+                    StartCoroutine(WaitTime(1.5f));
+                }
+                Stagetext.goStageBool = true;
             }
         }
-
-        if (Input.GetMouseButtonDown(1))
+        
+        
+        if (Input.GetMouseButtonDown(0))
         {
-            inputDetected = true;
+            if (TextBool)
+            {
+                inputDetected = true;
+            }            
         }
 
-        if (inputDetected) transform.position += Vector3.right * speed;
+        if (inputDetected)
+        {
+            transform.position += Vector3.right * speed;
+        }
 
         if (slideInt >= 750)
         {
@@ -65,5 +82,11 @@ public class Stage : MonoBehaviour
                 slideInt += 10;
             }
         }
+    }
+    private IEnumerator WaitTime(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        SceneManager.LoadScene("Action");
+        yield break;
     }
 }
